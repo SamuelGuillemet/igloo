@@ -52,6 +52,6 @@ Pour compiler et installer le module Maven du logiciel, exécuter la commande qu
 (cd Code; mvn install)
 ```
 
-# In Eclipse:
+# Dans Eclipse:
 
 Dans Eclipse, pour charger le projet Maven: File > Import > Maven > Existing maven project.
