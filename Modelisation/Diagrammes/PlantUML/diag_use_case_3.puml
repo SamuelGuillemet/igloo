@@ -1,0 +1,20 @@
+@startuml  
+title Diagramme de cas d'utilisation des tâches
+
+left to right direction
+
+actor Utilisateur #Orange;line:Orange;line.bold
+
+package "Gestion des tâches" {
+    usecase "== Créer une tâche" as UC3 #PaleGreen;line:Green;line.bold
+    usecase "== Mettre une tâche à la corbeille" as UC7 #PaleGreen;line:Green;line.bold
+    usecase "== Afficher les tâches" as UC10 #PaleGreen;line:Green;line.bold
+    usecase "== Restaurer une tâche" as UC23 #PaleGreen;line:Green;line.bold
+}
+
+Utilisateur -- UC3
+Utilisateur -- UC7
+Utilisateur -- UC10
+Utilisateur -- UC23
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml  
+title Diagramme de cas d'utilisation de la corbeille
+
+left to right direction
+
+actor Utilisateur #Orange;line:Orange;line.bold
+
+package "Gestion de la corbeille" {
+    usecase "== Vider la corbeille" as UC24 #PaleGreen;line:Green;line.bold
+}
+
+Utilisateur -- UC24
+
+@enduml

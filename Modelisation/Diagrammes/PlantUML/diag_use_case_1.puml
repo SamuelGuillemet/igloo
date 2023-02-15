@@ -1,0 +1,20 @@
+@startuml  
+title Diagramme de cas d'utilisation des développeurs
+
+left to right direction
+
+actor Utilisateur #Orange;line:Orange;line.bold
+
+package "Gestion des développeurs" {
+    usecase "== Créer un développeur" as UC1 #PaleGreen;line:Green;line.bold
+    usecase "== Mettre un développeur à la corbeille" as UC5 #PaleGreen;line:Green;line.bold
+    usecase "== Afficher les développeurs" as UC8 #PaleGreen;line:Green;line.bold
+    usecase "== Restaurer un développeur" as UC21 #PaleGreen;line:Green;line.bold
+}
+
+Utilisateur -- UC1
+Utilisateur -- UC5
+Utilisateur -- UC8
+Utilisateur -- UC21
+
+@enduml

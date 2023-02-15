@@ -1,0 +1,21 @@
+@startuml  
+title Diagramme de cas d'utilisation des calculs
+
+left to right direction
+
+actor Utilisateur #Orange;line:Orange;line.bold
+
+package "Calculs" {
+    usecase "== Calculer le temps passé sur un projet" as UC14 #PaleGreen;line:Green;line.bold
+    usecase "== Calculer le temps passé sur une activité" as UC15 #PaleGreen;line:Green;line.bold
+    usecase "== Calculer le temps passé sur une tâche" as UC16 #PaleGreen;line:Green;line.bold
+    usecase "== Calculer le temps passé par un développeur" as UC17 #PaleGreen;line:Green;line.bold
+}
+
+
+Utilisateur -- UC14
+Utilisateur -- UC15
+Utilisateur -- UC16
+Utilisateur -- UC17
+
+@enduml

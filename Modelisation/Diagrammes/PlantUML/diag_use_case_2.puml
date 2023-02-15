@@ -1,0 +1,21 @@
+@startuml  
+title Diagramme de cas d'utilisation des activités
+
+left to right direction
+
+actor Utilisateur #Orange;line:Orange;line.bold
+
+
+package "Gestion des activités" {
+  usecase "== Créer une activité" as UC2 #PaleGreen;line:Green;line.bold
+    usecase "== Mettre une activité à la corbeille" as UC6 #PaleGreen;line:Green;line.bold
+    usecase "== Afficher les activités" as UC9 #PaleGreen;line:Green;line.bold
+    usecase "== Restaurer une activité" as UC22 #PaleGreen;line:Green;line.bold
+}
+
+Utilisateur -- UC2
+Utilisateur -- UC6
+Utilisateur -- UC9
+Utilisateur -- UC22
+
+@enduml
