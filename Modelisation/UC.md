@@ -48,6 +48,9 @@
 | **Postconditions**          |     |     |     |     |     |
 | _Création d'un développeur_ | Non | Non | Non | Non | Oui |
 | _Message d'erreur_          | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**         | 1   | 1   | 1   | 1   | 1   |
+
+#### Tests `5`:
 
 ---
 
@@ -88,6 +91,9 @@
 | **Postconditions**        |     |     |     |     |
 | _Création d'une activité_ | Non | Non | Non | Oui |
 | _Message d'erreur_        | Oui | Oui | Oui | Non |
+| **Nombre de tests**       | 1   | 1   | 1   | 1   |
+
+#### Tests `4`:
 
 ---
 
@@ -135,6 +141,9 @@
 | **Postconditions**     |     |     |     |     |     |     |     |
 | _Création d'une tâche_ | Non | Non | Non | Non | Non | Non | Oui |
 | _Message d'erreur_     | Oui | Oui | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**    | 1   | 1   | 1   | 1   | 1   | 1   | 1   |
+
+#### Tests `7`:
 
 ---
 
@@ -191,6 +200,9 @@
 | **Postconditions**                                       |     |     |     |     |     |     |     |     |     |     |     |
 | _Création d'une période de travail_                      | Non | Non | Non | Non | Non | Non | Non | Non | Non | Non | Oui |
 | _Message d'erreur_                                       | Oui | Oui | Oui | Oui | Oui | Oui | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**                                      | 1   | 1   | 1   | 1   | 1   | 1   | 2   | 2   | 2   | 2   | 2   |
+
+#### Tests `16`:
 
 ---
 
@@ -234,6 +246,11 @@
 | _Développeur mis à la corbeille_                          | Non | Non | Non | Oui |
 | _Périodes de travail du développeur mises à la corbeille_ | Non | Non | Non | Oui |
 | _Message d'erreur_                                        | Oui | Oui | Oui | Non |
+| **Nombre de tests**                                       | 1   | 1   | 1   | 2   |
+
+> Pour le cas `4`, il faut aussi tester un développeur sans période de travail.
+
+#### Tests `5`:
 
 ---
 
@@ -277,6 +294,11 @@
 | _Tâches de l'activité mises à la corbeille_           | Non | Non | Non | Oui |
 | _Périodes de travail des tâches mises à la corbeille_ | Non | Non | Non | Oui |
 | _Message d'erreur_                                    | Oui | Oui | Oui | Non |
+| **Nombre de tests**                                   | 1   | 1   | 1   | 3   |
+
+> Pour le cas `4` il faut 3 tests pour tester les 3 postconditions, donc les cas où il n'existe pas de tâches active pour l'activité, ni de périodes de travail actvies pour les tâches.
+
+#### Tests `6`:
 
 ---
 
@@ -318,6 +340,11 @@
 | _Tâche mise à la corbeille_                            | Non | Non | Non | Oui |
 | _Périodes de travail de la tâche mises à la corbeille_ | Non | Non | Non | Oui |
 | _Message d'erreur_                                     | Oui | Oui | Oui | Non |
+| **Nombre de tests**                                    | 1   | 1   | 1   | 2   |
+
+> Pour le cas `4` on fait 2 tests pour le cas ou il n'existe pas de période de travail actives pour la tâche
+
+#### Tests `5`:
 
 ---
 
@@ -364,6 +391,11 @@ public enum SortType {
 | _Affichage des développeurs inactifs_ | Non | Non | Non          | Oui            | Non       |
 | _Affichage de tous les développeurs_  | Non | Non | Non          | Non            | Oui       |
 | _Message d'erreur_                    | Oui | Oui | Non          | Non            | Non       |
+| **Nombre de tests**                   | 1   | 1   | 2            | 2              | 2         |
+
+> 2 tests pour les cas où le résultat renvoie une liste vide
+
+#### Tests `8`:
 
 ---
 
@@ -408,6 +440,11 @@ public enum SortType {
 | _Affichage des activités inactives_ | Non | Non | Non          | Oui            | Non       |
 | _Affichage de toutes les activités_ | Non | Non | Non          | Non            | Oui       |
 | _Message d'erreur_                  | Oui | Oui | Non          | Non            | Non       |
+| **Nombre de tests**                 | 1   | 1   | 2            | 2              | 2         |
+
+> 2 tests pour les cas où le résultat renvoie une liste vide
+
+#### Tests `8`:
 
 ---
 
@@ -443,6 +480,11 @@ public enum SortType {
 | **Postconditions**                   |     |     |     |
 | _Affichage des tâches de l'activité_ | Non | Non | Oui |
 | _Message d'erreur_                   | Oui | Oui | Non |
+| **Nombre de tests**                  | 1   | 1   | 2   |
+
+> 2 tests pour les cas où le résultat renvoie une liste vide
+
+#### Tests `4`:
 
 ---
 
@@ -489,6 +531,11 @@ public enum SortType {
 | _Affichage des périodes de travail inactives_ | Non | Non | Non       | Oui            | Non          |
 | _Affichage de toutes les périodes de travail_ | Non | Non | Oui       | Non            | Non          |
 | _Message d'erreur_                            | Oui | Oui | Non       | Non            | Non          |
+| **Nombre de tests**                           | 1   | 1   | 2         | 2              | 2            |
+
+> 2 tests pour les cas où le résultat renvoie une liste vide
+
+#### Tests `8`:
 
 ---
 
@@ -529,6 +576,11 @@ public enum SortType {
 | **Postconditions**                  |     |     |     |     |     |
 | _Affichage des périodes de travail_ | Non | Non | Non | Non | Oui |
 | _Message d'erreur_                  | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**                 | 1   | 1   | 1   | 1   | 2   |
+
+> 2 tests pour les cas où le résultat renvoie une liste vide (activité existante, tâche existante)
+
+#### Tests `6`:
 
 ---
 
@@ -564,6 +616,11 @@ public enum SortType {
 | **Postconditions**                  |     |     |     |
 | _Affichage des périodes de travail_ | Non | Non | Oui |
 | _Message d'erreur_                  | Oui | Oui | Non |
+| **Nombre de tests**                 | 1   | 1   | 2   |
+
+> 2 tests pour les cas où le résultat renvoie une liste vide
+
+#### Tests `4`:
 
 ---
 
@@ -596,6 +653,9 @@ public enum SortType {
 | ---------------------------------------- | --- |
 | **Postconditions**                       |     |
 | _Affichage du temps passé sur le projet_ | Oui |
+| **Nombre de tests**                      | 1   |
+
+#### Tests `1`:
 
 ---
 
@@ -633,6 +693,9 @@ public enum SortType {
 | **Postconditions**                        |     |     |     |
 | _Affichage du temps passé sur l'activité_ | Non | Non | Oui |
 | _Message d'erreur_                        | Oui | Oui | Non |
+| **Nombre de tests**                       | 1   | 1   | 1   |
+
+#### Tests `3`:
 
 ---
 
@@ -676,6 +739,9 @@ public enum SortType {
 | **Postconditions**                      |     |     |     |     |     |     |     |
 | _Affichage du temps passé sur la tâche_ | Non | Non | Non | Non | Non | Non | Oui |
 | _Message d'erreur_                      | Oui | Oui | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**                     | 1   | 1   | 1   | 1   | 1   | 1   | 1   |
+
+#### Tests `7`:
 
 ---
 
@@ -711,6 +777,9 @@ public enum SortType {
 | **Postconditions**                    |     |     |     |
 | _Affichage du temps passé par le dev_ | Non | Non | Oui |
 | _Message d'erreur_                    | Oui | Oui | Non |
+| **Nombre de tests**                   | 1   | 1   | 1   |
+
+#### Tests `3`:
 
 ---
 
@@ -752,6 +821,9 @@ public enum SortType {
 | **Postconditions**  |     |     |     |     |
 | _Création du label_ | Non | Non | Non | Oui |
 | _Message d'erreur_  | Oui | Oui | Oui | Non |
+| **Nombre de tests** | 1   | 1   | 1   | 1   |
+
+#### Tests `4`:
 
 ---
 
@@ -794,6 +866,9 @@ public enum SortType {
 | **Postconditions**            |     |     |     |     |     |     |
 | _Ajout du label à l'activité_ | Non | Non | Non | Non | Non | Oui |
 | _Message d'erreur_            | Oui | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**           | 1   | 1   | 1   | 1   | 1   | 1   |
+
+#### Tests `6`:
 
 ---
 
@@ -842,6 +917,9 @@ public enum SortType {
 | **Postconditions**          |     |     |     |     |     |     |     |     |     |
 | _Ajout du label à la tâche_ | Non | Non | Non | Non | Non | Non | Non | Non | Oui |
 | _Message d'erreur_          | Oui | Oui | Oui | Oui | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**         | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   |
+
+#### Tests `9`:
 
 ---
 
@@ -881,6 +959,9 @@ public enum SortType {
 | **Postconditions**            |     |     |     |     |
 | _Restauration du développeur_ | Non | Non | Non | Oui |
 | _Message d'erreur_            | Oui | Oui | Oui | Non |
+| **Nombre de tests**           | 1   | 1   | 1   | 1   |
+
+#### Tests `4`:
 
 ---
 
@@ -924,6 +1005,11 @@ public enum SortType {
 | _Restauration des tâches_    | Non | Non | Non | Oui |
 | _Restauration des périodes_  | Non | Non | Non | Oui |
 | _Message d'erreur_           | Oui | Oui | Oui | Non |
+| **Nombre de tests**          | 1   | 1   | 1   | 3   |
+
+> On fait `3` tests car il y a la possibilité que les périodes de travail des tâches de l'activité ne soient pas restaurées si le développeur est inactif.
+
+#### Tests `6`:
 
 ---
 
@@ -970,6 +1056,11 @@ public enum SortType {
 | _Restauration de la tâche_  | Non | Non | Non | Non | Non | Non | Oui |
 | _Restauration des périodes_ | Non | Non | Non | Non | Non | Non | Oui |
 | _Message d'erreur_          | Oui | Oui | Oui | Oui | Oui | Oui | Non |
+| **Nombre de tests**         | 1   | 1   | 1   | 1   | 1   | 1   | 2   |
+
+> On fait `2` tests car il y a la possibilité que les périodes de travail de la tâche ne soient pas restaurées si le développeur est inactif.
+
+#### Tests `8`:
 
 ---
 
@@ -1000,7 +1091,14 @@ public enum SortType {
 | ------------------------ | --- |
 | **Postconditions**       |     |
 | _Vidage de la corbeille_ | Oui |
+| **Nombre de tests**      | 1   |
+
+#### Tests `1`:
 
 ---
 
 </details>
+
+# Tests
+
+## Tests unitaires (JUnit) - `138`
