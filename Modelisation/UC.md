@@ -50,7 +50,30 @@
 | _Message d'erreur_          | Oui | Oui | Oui | Oui | Non |
 | **Nombre de tests**         | 1   | 1   | 1   | 1   | 1   |
 
-#### Tests `5`:
+#### Tests `5`
+
+#### UML:
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+rectangle "Créer un développeur" {
+    (Saisie du nom) as (1)
+    (Saisie du prénom) as (2)
+    (Saisie de l'alias) as (3)
+    (Création du développeur) as (4)
+    (Message de confirmation) as (5)
+
+    (1) --> (2)
+    (2) --> (3)
+    (3) --> (4)
+    (4) --> (5)
+}
+@enduml
+```
 
 ---
 
