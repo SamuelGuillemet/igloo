@@ -52,28 +52,59 @@
 
 #### Tests `5`
 
-#### UML:
+> TODO
+
+#### Diagramme de séquence:
+
+<div hidden>
 
 ```plantuml
-@startuml
-left to right direction
-skinparam packageStyle rectangle
-skinparam classAttributeIconSize 0
 
-rectangle "Créer un développeur" {
-    (Saisie du nom) as (1)
-    (Saisie du prénom) as (2)
-    (Saisie de l'alias) as (3)
-    (Création du développeur) as (4)
-    (Message de confirmation) as (5)
+@startuml uc1
 
-    (1) --> (2)
-    (2) --> (3)
-    (3) --> (4)
-    (4) --> (5)
-}
+title Creation d'un développeur
+
+skinparam style strictuml
+skinparam sequenceArrowThickness 2
+
+actor Utilisateur #Orange
+
+== Interface utilisateur ==
+
+Utilisateur -> CLI : Demande la création d'un utilisateur
+activate CLI
+CLI --> Utilisateur ++ : Demande le nom
+Utilisateur -> CLI : Saisit le nom
+CLI --> Utilisateur : Demande le prénom
+Utilisateur -> CLI : Saisit le prénom
+CLI --> Utilisateur : Demande l'alias
+Utilisateur -> CLI -- : Saisit l'alias
+
+== Création du développeur ==
+
+CLI -> SuiPro : CreeDeveloppeur(nom, prenom, alias)
+activate SuiPro #Gray
+deactivate CLI
+SuiPro -> SuiPro : Vérifie l'unicité de l'alias
+group#Gold #LightGreen Alias Unique ? [true]
+SuiPro -> Developpeur ** : Cree(nom, prenom, alias)
+activate Developpeur
+Developpeur -> SuiPro -- : Confirme la création
+SuiPro -[#Green]> CLI ++ : Envoi le message de confirmation
+else #Pink false
+SuiPro -[#Red]> CLI : Envoi un message d'erreur
+deactivate SuiPro
+end
+
+CLI --> Utilisateur : Affiche le résultat de la demande de création
+
 @enduml
+
 ```
+
+</div>
+
+![Créer un développeur](uc1.svg)
 
 ---
 
