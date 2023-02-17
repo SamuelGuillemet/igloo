@@ -11,6 +11,7 @@ pdf:	$(SOURCES)
 
 md:
 	plantuml ./UC/UseCase.md -o ./Diagrammes/UC
+	plantuml "./UC/UCs/*" -o ../Diagrammes/Seq
 
 	cd UC; pandoc -s -f gfm -o ./UseCase.pdf ./UseCase.md --filter hide.py --template=../template.tex
 
