@@ -4,6 +4,9 @@ title Creation d'un développeur
 
 skinparam style strictuml
 skinparam sequenceArrowThickness 2
+skinparam backgroundColor #EEEBDC
+skinparam classFontName Aapex
+
 
 actor Utilisateur #Orange
 
