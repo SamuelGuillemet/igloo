@@ -1,0 +1,129 @@
+' ------------------------------------------------------------------------------------------------------------ '
+' -------------------------------------------------- DATA ---------------------------------------------------- '
+' ------------------------------------------------------------------------------------------------------------ '
+
+' !$dataFormat = {
+'     "entity": "Développeur", // Nom de l'entité sur laquelle porte l'opération
+'     "name": "Création d'un développeur", //Nom de l'opération
+'     "demande": "Demande la création d'un développeur", // Phrase de demande de l'opération
+'     "create": "CreeDeveloppeur(nom, prenom, alias)", // Fonction qui va être appelée
+'     "requirements": [ // Liste des prérequis
+'         "nom",
+'         "prénom",
+'         "alias"
+'     ],
+'     "preconditions": [ // Liste des préconditions
+'         "Vérifie l'unicité de l'alias"
+'     ],
+'     "postconditions": [ // Liste des postconditions
+'         {
+'             "entity": "Développeur", // Nom de l'entité sur laquelle porte la postcondition
+'             "name": "Le développeur est créé" // Nom de la postcondition
+'         }
+'     ]
+' }
+
+' ------------------------------------------------------------------------------------------------------------ '
+' -------------------------------------------------- CODE ---------------------------------------------------- '
+' ------------------------------------------------------------------------------------------------------------ '
+skinparam style strictuml
+skinparam sequenceArrowThickness 2
+skinparam backgroundColor #EEEBDC
+skinparam classFontName Aapex
+
+!procedure $requirement($nameTemp) 
+    CLI --> Utilisateur ++ : Demande $nameTemp
+    Utilisateur -> CLI -- : Saisit $nameTemp
+!endprocedure
+
+!procedure $precondition($nameTemp) 
+    SuiPro -> SuiPro : $nameTemp
+!endprocedure
+
+!procedure $postcondition($postconditionTemp) 
+    Entity -> $postconditionTemp.entity ** : $postconditionTemp.name
+!endprocedure
+
+!procedure $generatePostcondition($dataTemp)
+    !if $dataTemp.postconditions
+            !foreach $postcondition in $dataTemp.postconditions
+                $postcondition($postcondition)
+            !endfor
+    !endif
+!endprocedure
+
+!procedure $generateRequirement($dataTemp)
+    !foreach $requirement in $dataTemp.requirements
+        $requirement($requirement)
+    !endfor
+!endprocedure
+
+!procedure $generatePrecondition($dataTemp)
+    !if $dataTemp.preconditions
+        group Vérification des préconditions
+            !foreach $precondition in $dataTemp.preconditions
+                $precondition($precondition)
+            !endfor
+        end
+    !endif
+!endprocedure
+
+
+
+!procedure Draw($data) 
+    skinparam style strictuml
+
+    !$entity = $data.entity
+    !$name = $data.name
+    !$demande = $data.demande
+    !$create = $data.create
+
+    title $name
+
+
+    actor Développeur as Utilisateur #Orange
+
+    boundary Constructeur as CLI
+    control SuiPro as SuiPro
+    participant $entity as Entity
+
+    == Interface==
+
+    Utilisateur -> CLI : $demande
+    activate CLI
+    $generateRequirement($data)
+
+    == $name ==
+
+    CLI -> SuiPro : $create
+    activate SuiPro #Gray
+    deactivate CLI
+
+    $generatePrecondition($data)
+
+    !if $data.preconditions
+
+        group#Gold #LightGreen Préconditions vérifiées ? [true]
+            SuiPro -> Entity ** : $create
+            activate Entity
+            $generatePostcondition($data)
+            Entity -> SuiPro -- : Confirme l'opération
+            SuiPro -[#Green]> CLI ++ : Envoi le message de confirmation
+        else #Pink false
+            SuiPro -[#Red]> CLI : Envoi un message d'erreur
+            deactivate SuiPro
+        end
+
+    !else 
+        
+        SuiPro -> Entity ** : $create
+        activate Entity
+        $generatePostcondition($data)
+        Entity -> SuiPro -- : Confirme l'opération
+        SuiPro -> CLI ++ : Envoi le message de confirmation
+        deactivate SuiPro
+    !endif
+
+    CLI --> Utilisateur : Affiche le résultat de l'opération
+
+!endprocedure
