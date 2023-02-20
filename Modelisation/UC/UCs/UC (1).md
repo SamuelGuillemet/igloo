@@ -51,42 +51,24 @@
 ```plantuml
 @startuml UC1
 
-title Creation d'un développeur
+!include diag_seq_template.iuml
 
-skinparam style strictuml
-skinparam sequenceArrowThickness 2
-skinparam backgroundColor #EEEBDC
+!$schema = {
+    "entity": "Développeur",
+    "name": "Création d'un développeur",
+    "demande": "Demande la création d'un développeur",
+    "create": "CreeDeveloppeur(nom, prenom, alias)",
+    "requirements": [
+        "nom",
+        "prénom",
+        "alias"
+    ],
+    "preconditions": [
+        "Vérifie l'unicité de l'alias"
+    ]
+}
 
-actor Utilisateur #Orange
-
-== Interface utilisateur ==
-
-Utilisateur -> CLI : Demande la création d'un utilisateur
-activate CLI
-CLI --> Utilisateur ++ : Demande le nom
-Utilisateur -> CLI : Saisit le nom
-CLI --> Utilisateur : Demande le prénom
-Utilisateur -> CLI : Saisit le prénom
-CLI --> Utilisateur : Demande l'alias
-Utilisateur -> CLI -- : Saisit l'alias
-
-== Création du développeur ==
-
-CLI -> SuiPro : CreeDeveloppeur(nom, prenom, alias)
-activate SuiPro #Gray
-deactivate CLI
-SuiPro -> SuiPro : Vérifie l'unicité de l'alias
-group#Gold #LightGreen Alias Unique ? [true]
-SuiPro -> Developpeur ** : Cree(nom, prenom, alias)
-activate Developpeur
-Developpeur -> SuiPro -- : Confirme la création
-SuiPro -[#Green]> CLI ++ : Envoi le message de confirmation
-else #Pink false
-SuiPro -[#Red]> CLI : Envoi un message d'erreur
-deactivate SuiPro
-end
-
-CLI --> Utilisateur : Affiche le résultat de la demande de création
+Draw($schema)
 
 @enduml
 

@@ -44,40 +44,23 @@
 ```plantuml
 @startuml UC2
 
-title Création d'une activité
+!include diag_seq_template.iuml
 
-skinparam style strictuml
-skinparam sequenceArrowThickness 2
-skinparam backgroundColor #EEEBDC
+!$schema = {
+    "entity": "Activité",
+    "name": "Création d'une activité",
+    "demande": "Demande la création d'une activité",
+    "create": "CreeActivite(nom, id)",
+    "requirements": [
+        "nom",
+        "id"
+    ],
+    "preconditions": [
+        "Vérifie l'unicité de l'id"
+    ]
+}
 
-actor Utilisateur #Orange
-
-== Interface utilisateur ==
-
-Utilisateur -> CLI : Demande la création d'une activité
-activate CLI
-CLI --> Utilisateur ++ : Demande le nom
-Utilisateur -> CLI : Saisit le nom
-CLI --> Utilisateur : Demande l'id
-Utilisateur -> CLI -- : Saisit l'id
-
-== Création de l'activité ==
-
-CLI -> SuiPro : CreeActivite(nom, id)
-activate SuiPro #Gray
-deactivate CLI
-SuiPro -> SuiPro : Vérifie l'unicité de l'id
-group#Gold #LightGreen Id Unique ? [true]
-SuiPro -> Activite ** : Cree(nom, id)
-activate Activite
-Activite -> SuiPro -- : Confirme la création
-SuiPro -[#Green]> CLI ++ : Envoie le message de confirmation
-else #Pink false
-SuiPro -[#Red]> CLI : Envoie un message d'erreur
-deactivate SuiPro
-end
-
-CLI --> Utilisateur : Affiche le résultat de la demande de création
+Draw($schema)
 
 @enduml
 ```
