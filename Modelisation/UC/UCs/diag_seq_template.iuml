@@ -2,26 +2,28 @@
 ' -------------------------------------------------- DATA ---------------------------------------------------- '
 ' ------------------------------------------------------------------------------------------------------------ '
 
-' !$dataFormat = {
-'     "entity": "Développeur", // Nom de l'entité sur laquelle porte l'opération
-'     "name": "Création d'un développeur", //Nom de l'opération
-'     "demande": "Demande la création d'un développeur", // Phrase de demande de l'opération
-'     "create": "CreeDeveloppeur(nom, prenom, alias)", // Fonction qui va être appelée
-'     "requirements": [ // Liste des prérequis
-'         "nom",
-'         "prénom",
-'         "alias"
-'     ],
-'     "preconditions": [ // Liste des préconditions
-'         "Vérifie l'unicité de l'alias"
-'     ],
-'     "postconditions": [ // Liste des postconditions
-'         {
-'             "entity": "Développeur", // Nom de l'entité sur laquelle porte la postcondition
-'             "name": "Le développeur est créé" // Nom de la postcondition
-'         }
-'     ]
-' }
+!$dataFormat = {
+    "entity": "Développeur", 
+    "name": "Création d'un développeur",
+    "demande": "Demande la création d'un développeur", 
+    "create": "CreeDeveloppeur(nom, prenom, alias)", 
+    "requirements": [
+        "nom",
+        "prénom",
+        "alias"
+    ],
+    "preconditions": [
+        "Vérifie l'unicité de l'alias"
+    ],
+    "postconditions": [
+        {
+            "entity": "Développeur",
+            "name": "Le développeur est créé" 
+        }
+    ]
+}
+
+
 
 ' ------------------------------------------------------------------------------------------------------------ '
 ' -------------------------------------------------- CODE ---------------------------------------------------- '
@@ -32,8 +34,9 @@ skinparam backgroundColor #EEEBDC
 skinparam classFontName Aapex
 
 !procedure $requirement($nameTemp) 
-    CLI --> Utilisateur ++ : Demande $nameTemp
-    Utilisateur -> CLI -- : Saisit $nameTemp
+    ' CLI --> Utilisateur ++ : Demande $nameTemp
+    ' Utilisateur -> CLI -- : Saisit $nameTemp
+    $nameTemp
 !endprocedure
 
 !procedure $precondition($nameTemp) 
@@ -83,21 +86,28 @@ skinparam classFontName Aapex
 
     actor Développeur as Utilisateur #Orange
 
-    boundary Constructeur as CLI
+    ' boundary Constructeur as CLI
     control SuiPro as SuiPro
     participant $entity as Entity
 
-    == Interface==
+    ' == Interface==
 
-    Utilisateur -> CLI : $demande
-    activate CLI
-    $generateRequirement($data)
+    ' Utilisateur -> CLI : $demande
+    ' activate CLI
+    ' $generateRequirement($data)
 
-    == $name ==
+    ' == $name ==
 
-    CLI -> SuiPro : $create
+    Utilisateur -> SuiPro : $create
     activate SuiPro #Gray
-    deactivate CLI
+    deactivate Utilisateur
+
+    opt #LightBlue 
+        SuiPro -> SuiPro : Vérifie les préconditions $generateRequirement($data)
+        $generatePrecondition($data)
+        SuiPro --> Utilisateur ++ : Envoi le message de confirmation
+        deactivate SuiPro
+    end
 
     $generatePrecondition($data)
 
@@ -107,10 +117,10 @@ skinparam classFontName Aapex
             SuiPro -> Entity ** : $create
             activate Entity
             $generatePostcondition($data)
-            Entity -> SuiPro -- : Confirme l'opération
-            SuiPro -[#Green]> CLI ++ : Envoi le message de confirmation
+            Entity --> SuiPro -- : Confirme l'opération
+            SuiPro -[#Green]> Utilisateur ++ : Envoi le message de confirmation
         else #Pink false
-            SuiPro -[#Red]> CLI : Envoi un message d'erreur
+            SuiPro -[#Red]> Utilisateur : Envoi un message d'erreur
             deactivate SuiPro
         end
 
@@ -120,10 +130,13 @@ skinparam classFontName Aapex
         activate Entity
         $generatePostcondition($data)
         Entity -> SuiPro -- : Confirme l'opération
-        SuiPro -> CLI ++ : Envoi le message de confirmation
+        SuiPro -> Utilisateur ++ : Envoi le message de confirmation
         deactivate SuiPro
     !endif
 
-    CLI --> Utilisateur : Affiche le résultat de l'opération
+    ' CLI --> Utilisateur : Affiche le résultat de l'opération
 
 !endprocedure
+
+
+Draw($dataFormat)
