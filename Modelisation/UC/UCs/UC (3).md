@@ -55,7 +55,6 @@
 !$schema = {
     "entity": "Tâche",
     "name": "Création d'une tâche",
-    "demande": "Demande la création d'une tâche",
     "create": "CreeTache(nom, id, activite)",
     "requirements": [
         "nom",
@@ -63,9 +62,24 @@
         "activite"
     ],
     "preconditions": [
-        "Vérifie l'unicité de l'id",
-        "Vérifie l'existence de l'activité",
-        "Vérifie que l'activité est active"
+        {
+            "bool": "existante",
+            "condition": "ChercherActivitée(activité)",
+            "entity": "Activité",
+            "opt": "non null"
+        },
+        {
+            "bool": "active",
+            "condition": "ActivitéeActive(activité)",
+            "entity": "Activité",
+            "opt": "= true"
+        },
+        {
+            "bool": "unique",
+            "condition": "ChercherTache(id)",
+            "entity": "Tâche",
+            "opt": "= true"
+        }
     ]
 }
 

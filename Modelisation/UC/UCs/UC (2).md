@@ -49,14 +49,17 @@
 !$schema = {
     "entity": "Activité",
     "name": "Création d'une activité",
-    "demande": "Demande la création d'une activité",
     "create": "CreeActivite(nom, id)",
     "requirements": [
         "nom",
         "id"
     ],
     "preconditions": [
-        "Vérifie l'unicité de l'id"
+        {
+            "bool": "unique",
+            "condition": "ChercherActivitée(id)",
+            "entity": "Activité"
+        }
     ]
 }
 
