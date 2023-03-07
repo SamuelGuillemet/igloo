@@ -36,3 +36,54 @@
 > Pour le cas `4` on fait 2 tests pour le cas ou il n'existe pas de période de travail actives pour la tâche
 
 #### Tests `5`:
+
+> TODO
+
+#### Diagramme de séquence:
+
+<div hidden>
+
+```plantuml
+@startuml UC7
+
+!include diag_seq_template.iuml
+
+!$schema = {
+    "entity": "Tâche",
+    "name": "Mise à la corbeille d'une tâche",
+    "create": "MettreALaCorbeilleTache(nom, id, activite)",
+    "requirements": [
+        "nom",
+        "id",
+        "activite"
+    ],
+    "preconditions": [
+        {
+            "bool": "existante",
+            "condition": "ChercherActivitée(activité)",
+            "entity": "Activité",
+            "opt": "non null"
+        },
+        {
+            "bool": "active",
+            "condition": "ActivitéeActive(activité)",
+            "entity": "Activité",
+            "opt": "= true"
+        },
+        {
+            "bool": "unique",
+            "condition": "ChercherTache(id)",
+            "entity": "Tâche",
+            "opt": "= true"
+        }
+    ]
+}
+
+Draw($schema)
+
+@enduml
+```
+
+</div>
+
+![UC7](../Diagrammes/Seq/UC7.png)

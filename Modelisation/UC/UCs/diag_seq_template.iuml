@@ -118,10 +118,12 @@ skinparam classFontName Aapex
     $generatePrecondition($data)
 
     !if $data.preconditions
-        SuiPro -> Entity ** : $create
-        activate Entity
-        $generatePostcondition($data)
-        Entity --> SuiPro -- 
+        opt $generatePreconditionName($data)
+            SuiPro -> Entity ** : $create
+            activate Entity
+            $generatePostcondition($data)
+            Entity --> SuiPro -- 
+        end
     end
     $generateOptEnd($data)
     SuiPro --> Utilisateur
