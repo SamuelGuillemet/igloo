@@ -6,10 +6,10 @@
 
 - Nom fourni
 - Id fourni
-- Id unique
 - Activité fournie
 - Activité existante
 - Activité active
+- Id unique
 
 #### Postconditions:
 
@@ -30,13 +30,50 @@
 | ---------------------- | --- | --- | --- | --- | --- | --- | --- |
 | _Nom fourni_           | Non | Oui | Oui | Oui | Oui | Oui | Oui |
 | _Id fourni_            |     | Non | Oui | Oui | Oui | Oui | Oui |
-| _Id unique_            |     |     | Non | Oui | Oui | Oui | Oui |
-| _Activité fournie_     |     |     |     | Non | Oui | Oui | Oui |
-| _Activité existante_   |     |     |     |     | Non | Oui | Oui |
-| _Activité active_      |     |     |     |     |     | Non | Oui |
+| _Activité fournie_     |     |     | Non | Oui | Oui | Oui | Oui |
+| _Activité existante_   |     |     |     | Non | Oui | Oui | Oui |
+| _Activité active_      |     |     |     |     | Non | Oui | Oui |
+| _Id unique_            |     |     |     |     |     | Non | Oui |
 | **Postconditions**     |     |     |     |     |     |     |     |
 | _Création d'une tâche_ | Non | Non | Non | Non | Non | Non | Oui |
 | _Message d'erreur_     | Oui | Oui | Oui | Oui | Oui | Oui | Non |
 | **Nombre de tests**    | 1   | 1   | 1   | 1   | 1   | 1   | 1   |
 
 #### Tests `7`:
+
+> TODO
+
+#### Diagramme de séquence:
+
+<div hidden>
+
+```plantuml
+@startuml UC3
+
+!include diag_seq_template.iuml
+
+!$schema = {
+    "entity": "Tâche",
+    "name": "Création d'une tâche",
+    "demande": "Demande la création d'une tâche",
+    "create": "CreeTache(nom, id, activite)",
+    "requirements": [
+        "nom",
+        "id",
+        "activite"
+    ],
+    "preconditions": [
+        "Vérifie l'unicité de l'id",
+        "Vérifie l'existence de l'activité",
+        "Vérifie que l'activité est active"
+    ]
+}
+
+Draw($schema)
+
+@enduml
+```
+
+</div>
+
+![UC3](../Diagrammes/Seq/UC3.png)

@@ -1,0 +1,32 @@
+@startuml
+
+skinparam linetype polyline
+
+SuiPro  o-- "0..*" "Developpeur" : Créer
+SuiPro  o-- "0..*" "Activité" : Créer
+SuiPro  o-- "0..*" "Tâche" : Créer
+
+Corbeille -u- "0..*" "Developpeur" : mettre
+Corbeille -u- "0..*" "Tâche" : mettre
+Corbeille -u- "0..*" "Activité" : mettre
+
+Activité "1" -r- "0..*" Tâche : "\t\t"
+Tâche "1" -r- "0..*" "Période de travail" : "\t\t"
+"Période de travail" "1" -r- "0..*" "Developpeur" : "\t\t"
+
+
+
+Developpeur : Nom
+Developpeur : Prenom
+Developpeur : Alias
+
+Activité : Nom
+Activité : Id
+
+Tâche : Nom
+Tâche : Id
+
+"Période de travail" : Date de début
+"Période de travail" : Date de fin
+
+@enduml

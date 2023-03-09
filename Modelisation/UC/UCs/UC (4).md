@@ -10,9 +10,9 @@
 - Tâche fournie
 - Tâche existante
 - Tâche active
-- Développeur fourni
-- Développeur existant
-- Développeur actif
+- Développeur(s) fourni(s)
+- Développeur(s) existant(s)
+- Développeur(s) actif(s)
 - Pas de chevauchement avec une autre période de travail
 
 #### Postconditions:
@@ -25,7 +25,7 @@
 - Saisie du début
 - Saisie de la fin
 - Saisie de la tâche
-- Saisie du développeur
+- Saisie du/des développeur(s)
 - Création de la période de travail
 - Message de confirmation
 
@@ -49,3 +49,44 @@
 | **Nombre de tests**                                      | 1   | 1   | 1   | 1   | 1   | 1   | 2   | 2   | 2   | 2   | 2   |
 
 #### Tests `16`:
+
+> TODO
+
+#### Diagramme de séquence:
+
+<div hidden>
+
+```plantuml
+@startuml UC4
+
+!include diag_seq_template.iuml
+
+!$schema = {
+    "entity": "PériodeDeTravail",
+    "name": "Créer une période de travail",
+    "demande": "Demande la création d'une période de travail",
+    "create": "CreePeriodeTravail(debut, fin, tache, developpeurs)",
+    "requirements": [
+        "début",
+        "fin",
+        "tâche",
+        "développeur(s)"
+    ],
+    "preconditions": [
+        "Vérifie que le début est plus petit que la fin",
+        "Vérifie l'existance de la tâche",
+        "Vérifie que la tâche est active",
+        "Vérifie l'existance du/des développeur(s)",
+        "Vérifie que le/des développeur(s) est/sont actif(s)",
+        "Vérifie le chevauchement avec une autre période de travail"
+    ]
+}
+
+Draw($schema)
+
+@enduml
+```
+
+</div>
+
+![UC4](../Diagrammes/Seq/UC4.png)

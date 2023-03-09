@@ -44,3 +44,36 @@
 
 > TODO
 
+#### Diagramme de séquence:
+
+<div hidden>
+
+```plantuml
+@startuml UC1
+
+!include diag_seq_template.iuml
+
+!$schema = {
+    "entity": "Développeur",
+    "name": "Création d'un développeur",
+    "demande": "Demande la création d'un développeur",
+    "create": "CreeDeveloppeur(nom, prenom, alias)",
+    "requirements": [
+        "nom",
+        "prénom",
+        "alias"
+    ],
+    "preconditions": [
+        "Vérifie l'unicité de l'alias"
+    ]
+}
+
+Draw($schema)
+
+@enduml
+
+```
+
+</div>
+
+![Créer un développeur](/Modelisation/UC/Diagrammes/Seq/UC1.png)
