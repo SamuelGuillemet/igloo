@@ -1,7 +1,3 @@
-[Go back](../UseCase.md)
-
----
-
 ### **Créer un développeur**
 
 > Priorité : 1
@@ -43,40 +39,3 @@
 #### Tests `5`
 
 > TODO
-
-#### Diagramme de séquence:
-
-<div hidden>
-
-```plantuml
-@startuml UC1
-
-!include diag_seq_template.iuml
-
-!$schema = {
-    "entity": "Développeur",
-    "name": "Création d'un développeur",
-    "create": "CreeDeveloppeur(nom, prenom, alias)",
-    "requirements": [
-        "nom",
-        "prénom",
-        "alias"
-    ],
-    "preconditions": [
-        {
-            "bool": "unique",
-            "condition": "ChercherDeveloppeur(alias)",
-            "entity": "Développeur"
-        }
-    ]
-}
-
-Draw($schema)
-
-@enduml
-
-```
-
-</div>
-
-![Créer un développeur](/Modelisation/UC/Diagrammes/Seq/UC1.png)

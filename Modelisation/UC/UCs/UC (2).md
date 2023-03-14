@@ -37,37 +37,13 @@
 
 > TODO
 
-#### Diagramme de séquence:
-
-<div hidden>
-
-```plantuml
-@startuml UC2
-
-!include diag_seq_template.iuml
-
-!$schema = {
-    "entity": "Activité",
-    "name": "Création d'une activité",
-    "create": "CreeActivite(nom, id)",
-    "requirements": [
-        "nom",
-        "id"
-    ],
-    "preconditions": [
-        {
-            "bool": "unique",
-            "condition": "ChercherActivitée(id)",
-            "entity": "Activité"
-        }
-    ]
-}
-
 Draw($schema)
 
 @enduml
+
 ```
 
 </div>
 
 ![UC2](../Diagrammes/Seq/UC2.png)
+```
