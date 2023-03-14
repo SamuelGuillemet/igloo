@@ -42,38 +42,3 @@
 #### Tests `7`:
 
 > TODO
-
-#### Diagramme de séquence:
-
-<div hidden>
-
-```plantuml
-@startuml UC3
-
-!include diag_seq_template.iuml
-
-!$schema = {
-    "entity": "Tâche",
-    "name": "Création d'une tâche",
-    "demande": "Demande la création d'une tâche",
-    "create": "CreeTache(nom, id, activite)",
-    "requirements": [
-        "nom",
-        "id",
-        "activite"
-    ],
-    "preconditions": [
-        "Vérifie l'unicité de l'id",
-        "Vérifie l'existence de l'activité",
-        "Vérifie que l'activité est active"
-    ]
-}
-
-Draw($schema)
-
-@enduml
-```
-
-</div>
-
-![UC3](../Diagrammes/Seq/UC3.png)
