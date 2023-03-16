@@ -65,6 +65,24 @@ public class Developpeur {
 		return alias;
 	}
 
+	/**
+	 * obtient le nom.
+	 * 
+	 * @return le nom.
+	 */
+	public String getNom() {
+		return nom;
+	}
+
+	/**
+	 * obtient le prenom
+	 * 
+	 * @return le prenom.
+	 */
+	public String getPrenom() {
+		return prenom;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(alias);
