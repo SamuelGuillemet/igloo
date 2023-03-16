@@ -15,10 +15,13 @@ public class SuiPro {
 	 * le nom du projet.
 	 */
 	private final String nomDeProjet;
+
 	/**
 	 * la collection de développeurs. La clef est l'identifiant du développeur.
 	 */
 	private Map<String, Developpeur> developpeurs;
+
+	private Map<String, Activite> activites;
 
 	/**
 	 * construit une façade.
@@ -63,6 +66,40 @@ public class SuiPro {
 			throw new OperationImpossible("développeur déjà dans le système");
 		}
 		developpeurs.put(alias, new Developpeur(alias, nom, prenom));
+		assert invariant();
+	}
+
+	public void ajouterUneActivite(final String id, final String nom)
+			throws OperationImpossible {
+		if (id == null || id.isBlank()) {
+			throw new OperationImpossible("activiteId ne peut pas être null ou vide");
+		}
+		if (nom == null || nom.isBlank()) {
+			throw new OperationImpossible("nom ne peut pas être null ou vide");
+		}
+		if (activites.get(id) != null) {
+			throw new OperationImpossible("activite déjà dans le système");
+		}
+		activites.put(id, new Activite(id, nom));
+		assert invariant();
+	}
+
+	public void ajouterUneTache(final String id, final String nom, final String activiteId)
+			throws OperationImpossible {
+		if (id == null || id.isBlank()) {
+			throw new OperationImpossible("tacheId ne peut pas être null ou vide");
+		}
+		if (nom == null || nom.isBlank()) {
+			throw new OperationImpossible("nom ne peut pas être null ou vide");
+		}
+		if (activiteId == null || activiteId.isBlank()) {
+			throw new OperationImpossible("activiteId ne peut pas être null ou vide");
+		}
+		if (activites.get(activiteId) == null) {
+			throw new OperationImpossible("activiteId ne correspond à aucune activite");
+		}
+		Activite activite = activites.get(activiteId);
+		new Tache(id, nom, activite);
 		assert invariant();
 	}
 
