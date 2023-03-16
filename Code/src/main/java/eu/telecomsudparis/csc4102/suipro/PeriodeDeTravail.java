@@ -12,7 +12,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * 
  * @author Denis Conan
  */
-public class PeriodeDeTravail {
+public class PeriodeDeTravail extends ElementJetable {
 	/**
 	 * l'intervalle d'instants.
 	 */
