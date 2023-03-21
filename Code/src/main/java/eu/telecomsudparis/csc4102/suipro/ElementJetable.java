@@ -1,11 +1,7 @@
 package eu.telecomsudparis.csc4102.suipro;
 
 public abstract class ElementJetable {
-    private boolean actif;
-
-    public ElementJetable() {
-        this.actif = true;
-    }
+    private boolean actif = true;
 
     public boolean estActif() {
         return this.actif;
@@ -15,7 +11,7 @@ public abstract class ElementJetable {
         this.actif = false;
     }
 
-    public void restaurer() {
-        this.actif = true;
-    }
+    // public void restaurer() {
+    //     this.actif = true;
+    // }
 }
