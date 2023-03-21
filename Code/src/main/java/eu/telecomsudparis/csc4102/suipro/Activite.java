@@ -23,8 +23,6 @@ public class Activite extends ElementJetable implements IActivite {
         this.id = id;
         this.taches = new LinkedHashMap<>();
 
-        this.taches = new ArrayList<Tache>();
-
         assert invariant();
     }
 
