@@ -1,7 +1,8 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Instant;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
@@ -19,9 +20,9 @@ public class SuiPro {
 	/**
 	 * la collection de développeurs. La clef est l'identifiant du développeur.
 	 */
-	private Map<String, Developpeur> developpeurs;
+	private LinkedHashMap<String, Developpeur> developpeurs;
 
-	private Map<String, Activite> activites;
+	private LinkedHashMap<String, Activite> activites;
 
 	/**
 	 * construit une façade.
@@ -30,7 +31,8 @@ public class SuiPro {
 	 */
 	public SuiPro(final String nomDeProjet) {
 		this.nomDeProjet = nomDeProjet;
-		developpeurs = new HashMap<>();
+		developpeurs = new LinkedHashMap<>();
+		activites = new LinkedHashMap<>();
 	}
 
 	/**
@@ -39,8 +41,10 @@ public class SuiPro {
 	 * @return {@code true} si l'invariant est respecté.
 	 */
 	public boolean invariant() {
-		return nomDeProjet != null && !nomDeProjet.isBlank() && developpeurs != null;
+		return nomDeProjet != null && !nomDeProjet.isBlank() && developpeurs != null && activites != null;
 	}
+
+	//#region Ajouts
 
 	/**
 	 * ajoute un développeur.
@@ -62,7 +66,7 @@ public class SuiPro {
 		if (prenom == null || prenom.isBlank()) {
 			throw new OperationImpossible("prenom ne peut pas être null ou vide");
 		}
-		if (developpeurs.get(alias) != null) {
+		if (developpeurs.containsKey(alias)) {
 			throw new OperationImpossible("développeur déjà dans le système");
 		}
 		developpeurs.put(alias, new Developpeur(alias, nom, prenom));
@@ -77,10 +81,10 @@ public class SuiPro {
 		if (nom == null || nom.isBlank()) {
 			throw new OperationImpossible("nom ne peut pas être null ou vide");
 		}
-		if (activites.get(id) != null) {
+		if (activites.containsKey(id)) {
 			throw new OperationImpossible("activite déjà dans le système");
 		}
-		activites.put(id, new Activite(id, nom));
+		activites.put(id, new Activite(nom, id));
 		assert invariant();
 	}
 
@@ -95,12 +99,211 @@ public class SuiPro {
 		if (activiteId == null || activiteId.isBlank()) {
 			throw new OperationImpossible("activiteId ne peut pas être null ou vide");
 		}
-		if (activites.get(activiteId) == null) {
+		if (!activites.containsKey(activiteId)) {
+			throw new OperationImpossible("activiteId ne correspond à aucune activite");
+		}
+
+		Activite activite = activites.get(activiteId);
+
+		if (!activite.estActif()) {
+			throw new OperationImpossible("activite n'est pas active");
+		}
+		if (activite.getTache(id) != null) {
+			throw new OperationImpossible("tache déjà dans le système");
+		}
+		new Tache(nom, id, activite);
+		assert invariant();
+	}
+
+	public void ajouterUnePeriodeDeTravail(final String tacheId, final String activiteId, final String developpeurId,
+			final Instant debut, final Instant fin) throws OperationImpossible {
+		if (tacheId == null || tacheId.isBlank()) {
+			throw new OperationImpossible("tacheId ne peut pas être null ou vide");
+		}
+		if (activiteId == null || activiteId.isBlank()) {
+			throw new OperationImpossible("activiteId ne peut pas être null ou vide");
+		}
+		if (developpeurId == null || developpeurId.isBlank()) {
+			throw new OperationImpossible("developpeurId ne peut pas être null ou vide");
+		}
+		if (debut == null) {
+			throw new OperationImpossible("debut ne peut pas être null");
+		}
+		if (fin == null) {
+			throw new OperationImpossible("fin ne peut pas être null");
+		}
+		if (debut.compareTo(fin) > 0) {
+			throw new OperationImpossible("debut doit être avant fin");
+		}
+		if (!activites.containsKey(activiteId)) {
 			throw new OperationImpossible("activiteId ne correspond à aucune activite");
 		}
 		Activite activite = activites.get(activiteId);
-		new Tache(id, nom, activite);
+
+		if (!activite.estActif()) {
+			throw new OperationImpossible("activite n'est pas active");
+		}
+
+		Tache tache = activite.getTache(tacheId);
+
+		if (tache == null) {
+			throw new OperationImpossible("tacheId ne correspond à aucune tache");
+		}
+		if (!tache.estActif()) {
+			throw new OperationImpossible("tache n'est pas active");
+		}
+		if (!developpeurs.containsKey(developpeurId)) {
+			throw new OperationImpossible(String.format("%s ne correspond à aucun developpeur", developpeurId));
+		}
+		Developpeur developpeur = developpeurs.get(developpeurId);
+		if (!developpeur.estActif()) {
+			throw new OperationImpossible("developpeur n'est pas actif");
+		}
+
+		new PeriodeDeTravail(debut, fin, tache, developpeur);
+
 		assert invariant();
+	}
+
+	public void ajouterUnePeriodeDeTravail(final String tacheId, final String activiteId,
+			final List<String> developpeurIds, final Instant debut, final Instant fin)
+			throws OperationImpossible {
+		if (developpeurIds == null || developpeurIds.isEmpty()) {
+			throw new OperationImpossible("developpeurIds ne peut pas être null ou vide");
+		}
+		for (String developpeurId : developpeurIds) {
+			ajouterUnePeriodeDeTravail(tacheId, activiteId, developpeurId, debut, fin);
+		}
+	}
+
+	//#endregion
+
+	//#region Affichages
+
+	public String afficherLesDeveloppeurs(final PrintType printType) {
+		StringBuilder res = new StringBuilder();
+
+		List<Developpeur> developpeursList = Utils.filterPrintType(developpeurs.values(), printType);
+
+		for (Developpeur developpeur : developpeursList) {
+			res.append(developpeur.toString());
+			res.append("\n");
+		}
+
+		if (res.length() > 0) {
+			res.deleteCharAt(res.length() - 1);
+		}
+
+		return res.toString();
+	}
+
+	public String afficherLesDeveloppeurs() {
+		return afficherLesDeveloppeurs(PrintType.ACTIF);
+	}
+
+	public String afficherLesActivites(final PrintType printType) {
+		StringBuilder res = new StringBuilder();
+
+		List<Activite> activitesList = Utils.filterPrintType(activites.values(), printType);
+
+		for (Activite activite : activitesList) {
+			res.append(activite.toString());
+			res.append("\n");
+		}
+
+		if (res.length() > 0) {
+			res.deleteCharAt(res.length() - 1);
+		}
+
+		System.out.println(res.toString());
+		return res.toString();
+	}
+
+	public String afficherLesActivites() {
+		return afficherLesActivites(PrintType.ACTIF);
+	}
+
+	public String afficherLesTaches(final String activiteId, final PrintType printType) throws OperationImpossible {
+		if (activiteId == null || activiteId.isBlank()) {
+			throw new IllegalArgumentException("activiteId ne peut pas être null ou vide");
+		}
+		if (!activites.containsKey(activiteId)) {
+			throw new OperationImpossible("activiteId ne correspond à aucune activite");
+		}
+
+		Activite activite = activites.get(activiteId);
+
+		StringBuilder res = new StringBuilder();
+
+		List<Tache> tachesList = Utils.filterPrintType(activite.getTaches(), printType);
+
+		for (Tache tache : tachesList) {
+			res.append(tache.toString());
+			res.append("\n");
+		}
+
+		if (res.length() > 0) {
+			res.deleteCharAt(res.length() - 1);
+		}
+
+		System.out.println(res.toString());
+		return res.toString();
+	}
+
+	public String afficherLesTaches(final String activiteId) throws OperationImpossible {
+		return afficherLesTaches(activiteId, PrintType.ACTIF);
+	}
+
+	public String afficherLesPeriodesDeTravail(final String activiteId, final String tacheId, final PrintType printType)
+			throws OperationImpossible {
+		if (activiteId == null || activiteId.isBlank()) {
+			throw new IllegalArgumentException("activiteId ne peut pas être null ou vide");
+		}
+		if (tacheId == null || tacheId.isBlank()) {
+			throw new IllegalArgumentException("tacheId ne peut pas être null ou vide");
+		}
+		if (activites.get(activiteId) == null) {
+			throw new OperationImpossible("activiteId ne correspond à aucune activite");
+		}
+
+		Activite activite = activites.get(activiteId);
+
+		Tache tache = activite.getTache(tacheId);
+
+		if (tache == null) {
+			throw new OperationImpossible("tacheId ne correspond à aucune tache");
+		}
+
+		StringBuilder res = new StringBuilder();
+
+		List<PeriodeDeTravail> periodesDeTravailList = Utils.filterPrintType(tache.getPeriodesDeTravail(), printType);
+
+		for (PeriodeDeTravail periodeDeTravail : periodesDeTravailList) {
+			res.append(periodeDeTravail.toString());
+			res.append("\n");
+		}
+
+		if (res.length() > 0) {
+			res.deleteCharAt(res.length() - 1);
+		}
+
+		System.out.println(res.toString());
+		return res.toString();
+	}
+
+	public String afficherLesPeriodesDeTravail(final String activiteId, final String tacheId)
+			throws OperationImpossible {
+		return afficherLesPeriodesDeTravail(activiteId, tacheId, PrintType.ACTIF);
+	}
+
+	//#endregion
+
+	public List<Developpeur> getDeveloppeurs() {
+		return developpeurs.values().stream().toList();
+	}
+
+	public List<String> getDeveloppeursIds() {
+		return developpeurs.keySet().stream().toList();
 	}
 
 	/**
