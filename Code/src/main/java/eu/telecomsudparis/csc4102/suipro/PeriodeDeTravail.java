@@ -1,7 +1,6 @@
 package eu.telecomsudparis.csc4102.suipro;
 
 import java.time.Instant;
-import java.util.Objects;
 
 import eu.telecomsudparis.csc4102.util.IntervalleInstants;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -18,6 +17,9 @@ public class PeriodeDeTravail extends ElementJetable {
 	 */
 	private final IntervalleInstants intervalle;
 
+	private final Developpeur developpeur;
+	private final Tache tache;
+
 	/**
 	 * construit une période de travail.
 	 * 
@@ -25,12 +27,30 @@ public class PeriodeDeTravail extends ElementJetable {
 	 * @param fin         l'instant de fin.
 	 * @throws OperationImpossible exception levée lorsque ...
 	 */
-	public PeriodeDeTravail(final Instant debut, final Instant fin)
+	public PeriodeDeTravail(final Instant debut, final Instant fin, final Tache tache, final Developpeur developpeur)
 			throws OperationImpossible {
 		super();
-		Objects.requireNonNull(debut, "debut ne peut pas être null");
-		Objects.requireNonNull(fin, "fin ne peut pas être null");
+		if (debut == null) {
+			throw new IllegalArgumentException("debut ne peut pas être null");
+		}
+		if (fin == null) {
+			throw new IllegalArgumentException("fin ne peut pas être null");
+		}
+		if (tache == null) {
+			throw new IllegalArgumentException("tache ne peut pas être null");
+		}
+		if (developpeur == null) {
+			throw new IllegalArgumentException("developpeur ne peut pas être null");
+		}
 		this.intervalle = new IntervalleInstants(debut, fin);
+
+		this.developpeur = developpeur;
+		this.developpeur.ajouterPeriodeDeTravail(this);
+
+		this.tache = tache;
+		this.tache.ajouterPeriodeDeTravail(this);
+
+		assert invariant();
 	}
 
 	/**
@@ -39,9 +59,12 @@ public class PeriodeDeTravail extends ElementJetable {
 	 * @return {@code true} si l'invariant est respecté.
 	 */
 	public boolean invariant() {
-		return intervalle != null;
+		return intervalle != null
+				&& developpeur != null
+				&& tache != null;
 	}
 
+	//#region Getters
 	/**
 	 * obtient l'intervalle d'instants.
 	 * 
@@ -50,4 +73,35 @@ public class PeriodeDeTravail extends ElementJetable {
 	public IntervalleInstants getIntervalle() {
 		return intervalle;
 	}
+
+	/**
+	 * obtient le développeur.
+	 * 
+	 * @return le développeur.
+	 */
+	public Developpeur getDeveloppeur() {
+		return developpeur;
+	}
+
+	/**
+	 * obtient la tâche.
+	 * 
+	 * @return la tâche.
+	 */
+	public Tache getTache() {
+		return tache;
+	}
+	//#endregion
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("PeriodeDeTravail [" + intervalle.getInstantDebut() + "->" + intervalle.getInstantFin() + "]");
+		builder.append("\n\t↳ ");
+		builder.append(developpeur.toString());
+		builder.append("\n\t↳ ");
+		builder.append(tache.toString());
+		return builder.toString();
+	}
+
 }
