@@ -1,6 +1,9 @@
 package eu.telecomsudparis.csc4102.suipro;
 
+import java.util.ArrayList;
 import java.util.Objects;
+
+import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 /**
  * Cette classe réalise le concept de développeur. Un développeur est un élément
@@ -8,7 +11,7 @@ import java.util.Objects;
  * 
  * @author Denis Conan
  */
-public class Developpeur {
+public class Developpeur extends ElementJetable {
 	/**
 	 * l'alias du développeur.
 	 */
@@ -16,11 +19,13 @@ public class Developpeur {
 	/**
 	 * le nom du développeur.
 	 */
-	private String nom;
+	private final String nom;
 	/**
 	 * le prénom du développeur.
 	 */
-	private String prenom;
+	private final String prenom;
+
+	private ArrayList<PeriodeDeTravail> periodesDeTravail;
 
 	/**
 	 * construit un développeur.
@@ -43,6 +48,8 @@ public class Developpeur {
 		this.alias = alias;
 		this.nom = nom;
 		this.prenom = prenom;
+		this.periodesDeTravail = new ArrayList<>();
+
 		assert invariant();
 	}
 
@@ -52,10 +59,45 @@ public class Developpeur {
 	 * @return {@code true} si l'invariant est respecté.
 	 */
 	public boolean invariant() {
-		return alias != null && !alias.isBlank() && nom != null && !nom.isBlank() && prenom != null
-				&& !prenom.isBlank();
+		return alias != null && !alias.isBlank()
+				&& nom != null && !nom.isBlank()
+				&& prenom != null && !prenom.isBlank()
+				&& periodesDeTravail != null;
 	}
 
+	/**
+	 * ajoute une période de travail.
+	 * 
+	 * @param periodeDeTravail la période de travail.
+	 * @throws OperationImpossible
+	 */
+	public void ajouterPeriodeDeTravail(final PeriodeDeTravail periodeDeTravail) throws OperationImpossible {
+		if (periodeDeTravail == null) {
+			throw new IllegalArgumentException("periodeDeTravail ne peut pas être null");
+		}
+		if (periodesDeTravail.contains(periodeDeTravail)) {
+			throw new OperationImpossible("La période de travail ne peut pas être ajoutée car elle existe déjà");
+		}
+		if (!periodeDeTravail.estActif()) {
+			throw new OperationImpossible("La période de travail ne peut pas être ajoutée car elle n'est pas active");
+		}
+		if (periodeDeTravail.getDeveloppeur() != this) {
+			throw new OperationImpossible(
+					"La période de travail ne peut pas être ajoutée car elle est déjà associée à un développeur");
+		}
+		for (PeriodeDeTravail p : periodesDeTravail) {
+			if (p.getIntervalle().intervalleInstantsSIntersectent(periodeDeTravail.getIntervalle())) {
+				throw new OperationImpossible(
+						"La période de travail ne peut pas être ajoutée car elle chevauche une autre période de travail");
+			}
+		}
+
+		periodesDeTravail.add(periodeDeTravail);
+
+		assert invariant();
+	}
+
+	//#region getters
 	/**
 	 * obtient l'alias.
 	 * 
@@ -81,6 +123,25 @@ public class Developpeur {
 	 */
 	public String getPrenom() {
 		return prenom;
+	}
+
+	/**
+	 * obtient la liste des périodes de travail.
+	 * 
+	 * @return la liste des périodes de travail.
+	 */
+	public ArrayList<PeriodeDeTravail> getPeriodesDeTravail() {
+		return periodesDeTravail;
+	}
+
+	//#endregion
+
+	@Override
+	public void mettreALaCorbeille() {
+		super.mettreALaCorbeille();
+		for (PeriodeDeTravail p : periodesDeTravail) {
+			p.mettreALaCorbeille();
+		}
 	}
 
 	@Override
