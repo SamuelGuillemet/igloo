@@ -211,7 +211,7 @@ Contributor(s):
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.4.1</version>
         <configuration>
-          <excludePackageNames>*.unitaires:*.validation</excludePackageNames>
+          <excludePackageNames>*.unitaires:*.validation:*.e2e</excludePackageNames>
         </configuration>
       </plugin>
       <plugin>
