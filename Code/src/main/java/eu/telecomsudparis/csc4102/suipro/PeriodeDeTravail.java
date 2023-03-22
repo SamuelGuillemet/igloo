@@ -11,14 +11,14 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * 
  * @author Denis Conan
  */
-public class PeriodeDeTravail extends ElementJetable {
+public class PeriodeDeTravail extends ElementJetable implements IPeriodeDeTravail {
 	/**
 	 * l'intervalle d'instants.
 	 */
 	private final IntervalleInstants intervalle;
 
-	private final Developpeur developpeur;
-	private final Tache tache;
+	private final IDeveloppeur developpeur;
+	private final ITache tache;
 
 	/**
 	 * construit une période de travail.
@@ -91,7 +91,7 @@ public class PeriodeDeTravail extends ElementJetable {
 	 * 
 	 * @return le développeur.
 	 */
-	public Developpeur getDeveloppeur() {
+	public IDeveloppeur getDeveloppeur() {
 		return developpeur;
 	}
 
@@ -100,7 +100,7 @@ public class PeriodeDeTravail extends ElementJetable {
 	 * 
 	 * @return la tâche.
 	 */
-	public Tache getTache() {
+	public ITache getTache() {
 		return tache;
 	}
 	//#endregion
@@ -108,7 +108,8 @@ public class PeriodeDeTravail extends ElementJetable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PeriodeDeTravail [" + intervalle.getInstantDebut() + "->" + intervalle.getInstantFin() + "]");
+		builder.append("PeriodeDeTravail [" + intervalle.getInstantDebut() + "->" + intervalle.getInstantFin()
+				+ " | Durée:" + intervalle.calculerDuree() + "]");
 		builder.append("\n\t↳ ");
 		builder.append(developpeur.toString());
 		builder.append("\n\t↳ ");
