@@ -65,6 +65,9 @@ public class Activite extends ElementJetable implements IActivite {
         if (tache.getActivite() != this) {
             throw new OperationImpossible("La tâche doit être associée à cette activité.");
         }
+        if (!this.estActif()) {
+            throw new OperationImpossible("L'activité doit être active.");
+        }
 
         taches.put(tache.getId(), tache);
 

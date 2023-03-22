@@ -88,6 +88,10 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 						"La période de travail ne peut pas être ajoutée car elle chevauche une autre période de travail");
 			}
 		}
+		if (!this.estActif()) {
+			throw new OperationImpossible(
+					"La période de travail ne peut pas être ajoutée car le développeur n'est pas actif");
+		}
 
 		periodesDeTravail.add(periodeDeTravail);
 

@@ -78,6 +78,9 @@ public class Tache extends ElementJetable implements ITache {
         if (periodeDeTravail.getTache() != this) {
             throw new OperationImpossible("La période de travail doit être associée à cette tâche.");
         }
+        if (!this.estActif()) {
+            throw new OperationImpossible("La tâche doit être active.");
+        }
 
         this.periodesDeTravail.add(periodeDeTravail);
 
