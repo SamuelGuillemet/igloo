@@ -50,4 +50,13 @@ class TestActivite {
 		}
 	}
 
+	@Test
+	void TestMettreALaCorbeille() throws Exception {
+		Activite activite = new Activite("nom", "id");
+		Assertions.assertTrue(activite.estActif());
+		activite.mettreALaCorbeille();
+		Assertions.assertFalse(activite.estActif());
+		// missing Tache inactives test
+	}
+
 }

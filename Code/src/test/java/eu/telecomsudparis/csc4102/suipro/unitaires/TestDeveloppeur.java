@@ -7,7 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import eu.telecomsudparis.csc4102.suipro.Developpeur;
@@ -52,7 +51,7 @@ class TestDeveloppeur {
 		}
 
 		@Test
-		void Test5() throws Exception {
+		void Test4() throws Exception {
 			Developpeur developpeur = new Developpeur("alias", "nom", "prénom");
 			Assertions.assertNotNull(developpeur);
 			Assertions.assertEquals("alias", developpeur.getAlias());
@@ -60,4 +59,16 @@ class TestDeveloppeur {
 			Assertions.assertEquals("prénom", developpeur.getPrenom());
 		}
 	}
+
+	@Test
+	void TestMettreALaCorbeille() throws Exception {
+		Developpeur developpeur = new Developpeur("alias", "nom", "prénom");
+		Assertions.assertTrue(developpeur.estActif());
+		developpeur.mettreALaCorbeille();
+		Assertions.assertFalse(developpeur.estActif());
+		// Test PeriodeDeTravail inactif missing
+	}
+
 }
+
+	  

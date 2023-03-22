@@ -50,6 +50,13 @@ class TestTache {
         }
 
         @Test
+        void Test3Jeu2() throws Exception {
+            Activite activiteInactive = new Activite("nom2", "id2");
+            activiteInactive.mettreALaCorbeille();
+            Assertions.assertThrows(IllegalArgumentException.class, () -> new Tache("nom", "id", activiteInactive));
+        }
+
+        @Test
         void Test4Jeu1() throws Exception {
             Tache tache = new Tache("nom", "id", activite);
             Assertions.assertNotNull(tache);
@@ -57,6 +64,15 @@ class TestTache {
             Assertions.assertEquals("id", tache.getId());
             Assertions.assertEquals(activite, tache.getActivite());
         }
+    }
+
+    @Test
+    void TestMettreALaCorbeille() throws Exception {
+        Tache tache = new Tache("nom", "id", activite);
+        Assertions.assertTrue(tache.estActif());
+        tache.mettreALaCorbeille();
+        Assertions.assertFalse(tache.estActif());
+        // Test Periode de Travail Inactif missing
     }
 
 }
