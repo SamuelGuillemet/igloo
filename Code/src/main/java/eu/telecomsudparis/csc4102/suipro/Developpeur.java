@@ -11,7 +11,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * 
  * @author Denis Conan
  */
-public class Developpeur extends ElementJetable {
+public class Developpeur extends ElementJetable implements IDeveloppeur {
 	/**
 	 * l'alias du développeur.
 	 */
@@ -25,7 +25,7 @@ public class Developpeur extends ElementJetable {
 	 */
 	private final String prenom;
 
-	private ArrayList<PeriodeDeTravail> periodesDeTravail;
+	private ArrayList<IPeriodeDeTravail> periodesDeTravail;
 
 	/**
 	 * construit un développeur.
@@ -71,12 +71,9 @@ public class Developpeur extends ElementJetable {
 	 * @param periodeDeTravail la période de travail.
 	 * @throws OperationImpossible
 	 */
-	public void ajouterPeriodeDeTravail(final PeriodeDeTravail periodeDeTravail) throws OperationImpossible {
+	public void ajouterPeriodeDeTravail(final IPeriodeDeTravail periodeDeTravail) throws OperationImpossible {
 		if (periodeDeTravail == null) {
 			throw new IllegalArgumentException("periodeDeTravail ne peut pas être null");
-		}
-		if (periodesDeTravail.contains(periodeDeTravail)) {
-			throw new OperationImpossible("La période de travail ne peut pas être ajoutée car elle existe déjà");
 		}
 		if (!periodeDeTravail.estActif()) {
 			throw new OperationImpossible("La période de travail ne peut pas être ajoutée car elle n'est pas active");
@@ -85,7 +82,7 @@ public class Developpeur extends ElementJetable {
 			throw new OperationImpossible(
 					"La période de travail ne peut pas être ajoutée car elle est déjà associée à un développeur");
 		}
-		for (PeriodeDeTravail p : periodesDeTravail) {
+		for (IPeriodeDeTravail p : periodesDeTravail) {
 			if (p.getIntervalle().intervalleInstantsSIntersectent(periodeDeTravail.getIntervalle())) {
 				throw new OperationImpossible(
 						"La période de travail ne peut pas être ajoutée car elle chevauche une autre période de travail");
@@ -130,7 +127,7 @@ public class Developpeur extends ElementJetable {
 	 * 
 	 * @return la liste des périodes de travail.
 	 */
-	public ArrayList<PeriodeDeTravail> getPeriodesDeTravail() {
+	public ArrayList<IPeriodeDeTravail> getPeriodesDeTravail() {
 		return periodesDeTravail;
 	}
 
@@ -139,7 +136,7 @@ public class Developpeur extends ElementJetable {
 	@Override
 	public void mettreALaCorbeille() {
 		super.mettreALaCorbeille();
-		for (PeriodeDeTravail p : periodesDeTravail) {
+		for (IPeriodeDeTravail p : periodesDeTravail) {
 			p.mettreALaCorbeille();
 		}
 	}
