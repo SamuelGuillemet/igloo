@@ -151,7 +151,7 @@ public class SuiPro {
 			throw new OperationImpossible("activite n'est pas active");
 		}
 
-		Tache tache = activite.getTache(tacheId);
+		Tache tache = (Tache) activite.getTache(tacheId);
 
 		if (tache == null) {
 			throw new OperationImpossible("tacheId ne correspond à aucune tache");
@@ -215,9 +215,9 @@ public class SuiPro {
 			throw new OperationImpossible("activiteId ne correspond à aucune activite");
 		}
 
-		Activite activite = activites.get(activiteId);
+		Activite activite = (Activite) activites.get(activiteId);
 
-		List<Tache> tachesList = Utils.filterPrintType(activite.getTaches(), printType);
+		List<ITache> tachesList = Utils.filterPrintType(activite.getTaches(), printType);
 
 		return Utils.printCollection(tachesList);
 	}
@@ -239,13 +239,13 @@ public class SuiPro {
 		}
 
 		Activite activite = activites.get(activiteId);
-		Tache tache = activite.getTache(tacheId);
+		Tache tache = (Tache) activite.getTache(tacheId);
 
 		if (tache == null) {
 			throw new OperationImpossible("tacheId ne correspond à aucune tache");
 		}
 
-		List<PeriodeDeTravail> periodesDeTravailList = Utils.filterPrintType(tache.getPeriodesDeTravail(), printType);
+		List<IPeriodeDeTravail> periodesDeTravailList = Utils.filterPrintType(tache.getPeriodesDeTravail(), printType);
 
 		return Utils.printCollection(periodesDeTravailList);
 	}
