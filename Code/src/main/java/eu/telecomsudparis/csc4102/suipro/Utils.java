@@ -18,10 +18,7 @@ enum PrintType {
     INACTIF
 }
 
-public final class Utils {
-    private Utils() {
-    }
-
+public abstract class Utils {
     public static <T extends IElementJetable> List<T> filterPrintType(final Collection<T> collection,
             final PrintType printType) {
         switch (printType) {
