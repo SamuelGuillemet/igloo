@@ -65,10 +65,11 @@ class TestDeveloppeur {
 		@Test
 		void Test1() throws Exception {
 			Developpeur developpeur = new Developpeur("alias", "nom", "prénom");
+			MockedPeriodeDeTravail periodeDeTravail = new MockedPeriodeDeTravail(developpeur);
 			Assertions.assertNotNull(developpeur);
 
 			try {
-				developpeur.ajouterPeriodeDeTravail(new MockedPeriodeDeTravail(developpeur));
+				developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
 			} catch (OperationImpossible e) {
 				Assertions.fail("Test impossible : impossible d'ajouter une période de travail");
 			}
@@ -77,7 +78,7 @@ class TestDeveloppeur {
 			Assertions.assertFalse(developpeur.estActif());
 
 			// Assert that the method mettreALaCorbeille() of MockedPeriodeDeTravail has been called
-			Assertions.assertFalse(((MockedPeriodeDeTravail) developpeur.getPeriodesDeTravail().get(0)).estActif());
+			Assertions.assertEquals(1, periodeDeTravail.mettreALaCorbeilleCalledTimes);
 
 			developpeur.mettreALaCorbeille();
 			Assertions.assertFalse(developpeur.estActif());
@@ -137,6 +138,14 @@ class TestDeveloppeur {
 			Assertions.assertEquals(1, developpeur.getPeriodesDeTravail().size());
 			Assertions.assertTrue(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
 		}
+
+		@Test
+		void Test6() throws Exception {
+			developpeur.mettreALaCorbeille();
+			Assertions.assertFalse(developpeur.estActif());
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> developpeur.ajouterPeriodeDeTravail(periodeDeTravail));
+		}
 	}
 }
 
@@ -145,9 +154,12 @@ class MockedPeriodeDeTravail implements IPeriodeDeTravail {
 	private IDeveloppeur developpeur;
 	private boolean estActif;
 
+	public int mettreALaCorbeilleCalledTimes;
+
 	public MockedPeriodeDeTravail(IDeveloppeur developpeur, boolean estActif) {
 		this.developpeur = developpeur;
 		this.estActif = estActif;
+		this.mettreALaCorbeilleCalledTimes = 0;
 	}
 
 	public MockedPeriodeDeTravail(IDeveloppeur developpeur) {
@@ -162,11 +174,7 @@ class MockedPeriodeDeTravail implements IPeriodeDeTravail {
 	@Override
 	public void mettreALaCorbeille() {
 		estActif = false;
-	}
-
-	@Override
-	public boolean invariant() {
-		throw new UnsupportedOperationException("Unimplemented method 'invariant'");
+		mettreALaCorbeilleCalledTimes++;
 	}
 
 	@Override
@@ -183,5 +191,4 @@ class MockedPeriodeDeTravail implements IPeriodeDeTravail {
 	public ITache getTache() {
 		throw new UnsupportedOperationException("Unimplemented method 'getTache'");
 	}
-
 }
