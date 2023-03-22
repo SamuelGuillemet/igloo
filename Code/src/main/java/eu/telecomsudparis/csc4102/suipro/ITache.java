@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 public interface ITache extends IElementJetable {
-    boolean invariant();
 
     String getNom();
 

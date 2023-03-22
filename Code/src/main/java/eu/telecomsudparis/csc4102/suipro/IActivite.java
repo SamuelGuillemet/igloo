@@ -5,7 +5,6 @@ import java.util.Collection;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 public interface IActivite extends IElementJetable {
-    boolean invariant();
 
     void ajouterTache(ITache tache) throws OperationImpossible;
 
