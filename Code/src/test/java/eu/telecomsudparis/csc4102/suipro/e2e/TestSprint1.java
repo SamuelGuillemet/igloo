@@ -1,3 +1,4 @@
+// CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.e2e;
 
 import java.time.Duration;
@@ -51,7 +52,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * (20) ✓ afficher les périodes de travail de la tâche mi de l’activité cd
  * • 1 pour vergniaud
  * (21) ✓ afficher les périodes de travail dans la corbeille
- * • 1 pour pastoret
+ * • 2 pour pastoret
  * (22) ✗ pour le développeur pastoret, qui est dans la corbeille, ajouter une nouvelle période de travail d’une heure à la tâche dc et après-demain
  * (23) ✓ mettre à la corbeille le développeur pastoret
  * (24) ✓ afficher les développeurs
@@ -207,6 +208,99 @@ public class TestSprint1 {
         } catch (OperationImpossible e) {
             Assertions.fail(e.getMessage());
         }
-    }
 
+        // (16) ✓ mettre à la corbeille le développeur pastoret
+        try {
+            suiPro.mettreUnDeveloppeurALaCorbeille("pastoret");
+        } catch (OperationImpossible e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (17) ✓ afficher les développeurs
+        try {
+            String affichage = suiPro.afficherLesDeveloppeurs();
+            Assertions.assertFalse(affichage.contains("pastoret"));
+            Assertions.assertTrue(affichage.contains("ducastel"));
+            Assertions.assertTrue(affichage.contains("vergniaud"));
+            Assertions.assertTrue(affichage.contains("viénot-vaublanc"));
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (18) ✓ afficher les développeurs dans la corbeille
+        try {
+            String affichage = suiPro.afficherLesDeveloppeurALaCorebille();
+            Assertions.assertTrue(affichage.contains("pastoret"));
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (19) ✓ afficher les périodes de travail de la tâche dc de l’activité cd
+        try {
+            String affichage = suiPro.afficherLesPeriodesDeTravail("cd", "dc");
+            Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 0);
+            Assertions.assertTrue(StringUtils.countMatches(affichage, "vergniaud") == 1);
+            Assertions.assertTrue(StringUtils.countMatches(affichage, "ducastel") == 2);
+            Assertions.assertTrue(StringUtils.countMatches(affichage, "viénot-vaublanc") == 2);
+        } catch (OperationImpossible e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (20) ✓ afficher les périodes de travail de la tâche mi de l’activité cd
+        try {
+            String affichage = suiPro.afficherLesPeriodesDeTravail("cd", "mi");
+            Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 0);
+            Assertions.assertTrue(StringUtils.countMatches(affichage, "vergniaud") == 1);
+        } catch (OperationImpossible e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (21) ✓ afficher les périodes de travail dans la corbeille
+        try {
+            System.out.println("Affichage des périodes de travail dans la corbeille :");
+            String affichage = suiPro.afficherLesPeriodesDeTravailALaCorbeille();
+            Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 2);
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (22) ✗ pour le développeur pastoret, qui est dans la corbeille, ajouter une nouvelle période de travail d’une heure à la tâche dc et après-demain
+        try {
+            Instant debut = Instant.now().plus(Duration.ofDays(2));
+            Instant fin = debut.plus(Duration.ofHours(1));
+            List<String> devs = List.of("pastoret");
+            suiPro.ajouterUnePeriodeDeTravail("dc", "cd", devs, debut, fin);
+            Assertions.fail("L'exception OperationImpossible aurait du être levée");
+        } catch (OperationImpossible e) {
+            // ok
+        }
+
+        // (23) ✓ mettre à la corbeille le développeur pastoret
+        try {
+            suiPro.mettreUnDeveloppeurALaCorbeille("pastoret");
+        } catch (OperationImpossible e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (24) ✓ afficher les développeurs
+        try {
+            String affichage = suiPro.afficherLesDeveloppeurs();
+            Assertions.assertFalse(affichage.contains("pastoret"));
+            Assertions.assertTrue(affichage.contains("ducastel"));
+            Assertions.assertTrue(affichage.contains("vergniaud"));
+            Assertions.assertTrue(affichage.contains("viénot-vaublanc"));
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        // (25) ✓ afficher les développeurs dans la corbeille
+        try {
+            System.out.println("Affichage des développeurs dans la corbeille :");
+            String affichage = suiPro.afficherLesDeveloppeurALaCorebille();
+            Assertions.assertTrue(affichage.contains("pastoret"));
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+
+    }
 }
