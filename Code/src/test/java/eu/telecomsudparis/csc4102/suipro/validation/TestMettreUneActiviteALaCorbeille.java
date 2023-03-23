@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import eu.telecomsudparis.csc4102.suipro.Activite;
+import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
@@ -27,6 +29,7 @@ class TestMettreUneActiviteALaCorbeille {
         suiPro = null;
         id = null;
         nom = null;
+        Corbeille.getInstance().viderLaCorbeille();
     }
 
     @Test
@@ -42,15 +45,24 @@ class TestMettreUneActiviteALaCorbeille {
     }
 
     @Test
-    void Test2Jeu1() throws Exception {
+    void Test2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.mettreUneActiviteALaCorbeille("act2"));
     }
 
     @Test
-    void Test3Jeu1() throws Exception {
+    void Test3() throws Exception {
         suiPro.mettreUneActiviteALaCorbeille(id);
-        Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneActiviteALaCorbeille(id));
+
+        Corbeille.getInstance().getElementsJetable(Activite.class).forEach(act -> {
+            Assertions.assertEquals(id, act.getId());
+            Assertions.assertEquals(nom, act.getNom());
+        });
+        suiPro.mettreUneActiviteALaCorbeille(id);
+
+        int size = Corbeille.getInstance().getElementsJetable(Activite.class).size();
+        Assertions.assertEquals(1, size);
+
+        Assertions.assertFalse(suiPro.getActivite(id).estActif());
     }
 }

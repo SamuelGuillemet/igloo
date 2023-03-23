@@ -50,7 +50,7 @@ class TestAjouterUneActivite {
     }
 
     @Test
-    void Test5Puis4() throws Exception {
+    void Test4Puis3() throws Exception {
         suiPro.ajouterUneActivite(identifiant, nom);
         Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUneActivite(identifiant, nom));
     }

@@ -67,7 +67,7 @@ class TestAjouterUneTache {
     }
 
     @Test
-    void Test4Jeu1() throws Exception {
+    void Test4() throws Exception {
         suiPro.mettreUneActiviteALaCorbeille(idActivite);
         Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.ajouterUneTache(idTache, nomTache, idActivite));

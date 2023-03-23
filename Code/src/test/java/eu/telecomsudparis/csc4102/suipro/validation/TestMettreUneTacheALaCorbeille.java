@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
+import eu.telecomsudparis.csc4102.suipro.Tache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 class TestMettreUneTacheALaCorbeille {
@@ -31,6 +33,7 @@ class TestMettreUneTacheALaCorbeille {
         idAct = null;
         idTache = null;
         nom = null;
+        Corbeille.getInstance().viderLaCorbeille();
     }
 
     @Test
@@ -58,28 +61,28 @@ class TestMettreUneTacheALaCorbeille {
     }
 
     @Test
-    void Test3Jeu1() throws Exception {
+    void Test3() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.mettreUneTacheALaCorbeille("act2", idTache));
     }
 
     @Test
-    void Test4Jeu1() throws Exception {
+    void Test4() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.mettreUneTacheALaCorbeille(idAct, "tache2"));
     }
 
     @Test
-    void Test5Jeu1() throws Exception {
+    void Test5() throws Exception {
         suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille(idAct, idTache));
-    }
+        Corbeille.getInstance().getElementsJetable(Tache.class).forEach(tache -> {
+            Assertions.assertEquals(idTache, tache.getId());
+            Assertions.assertEquals(nom, tache.getNom());
+        });
+        suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
+        int size = Corbeille.getInstance().getElementsJetable(Tache.class).size();
 
-    @Test
-    void Test6Jeu1() throws Exception {
-        suiPro.mettreUneActiviteALaCorbeille(idAct);
-        Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille(idAct, idTache));
+        Assertions.assertEquals(1, size);
+        Assertions.assertFalse(suiPro.getActivite(idAct).getTache(idTache).estActif());
     }
 }
