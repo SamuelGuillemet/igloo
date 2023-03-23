@@ -20,7 +20,7 @@ enum PrintType {
 
 public abstract class Utils {
     public static <T extends IElementJetable> List<T> filterPrintType(final Collection<T> collection,
-            final PrintType printType) {
+            final PrintType printType) throws IllegalArgumentException {
         switch (printType) {
             case ALL:
                 return collection.stream().toList();

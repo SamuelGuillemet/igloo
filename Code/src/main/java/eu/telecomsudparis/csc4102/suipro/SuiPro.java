@@ -266,7 +266,7 @@ public class SuiPro {
 
 		Developpeur developpeur = developpeurs.get(developpeurId);
 
-		List<PeriodeDeTravail> periodesDeTravailList = Utils.filterPrintType(developpeur.getPeriodesDeTravail(),
+		List<IPeriodeDeTravail> periodesDeTravailList = Utils.filterPrintType(developpeur.getPeriodesDeTravail(),
 				printType);
 
 		return Utils.printCollection(periodesDeTravailList);
@@ -341,7 +341,7 @@ public class SuiPro {
 		}
 
 		Activite activite = activites.get(activiteId);
-		Tache tache = activite.getTache(tacheId);
+		Tache tache = (Tache) activite.getTache(tacheId);
 
 		if (tache == null) {
 			throw new OperationImpossible("La tache n'existe pas");
