@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public final class Corbeille {
     private static Corbeille instance;
 
-    private LinkedHashSet<ElementJetable> elementsJetable;
+    private LinkedHashSet<IElementJetable> elementsJetable;
 
     private Corbeille() {
         this.elementsJetable = new LinkedHashSet<>();
@@ -26,17 +26,17 @@ public final class Corbeille {
         return this.elementsJetable != null;
     }
 
-    public void ajouterALaCorbeille(final ElementJetable elementJetable) throws IllegalArgumentException {
+    public void ajouterALaCorbeille(final IElementJetable elementJetable) throws IllegalArgumentException {
         Objects.requireNonNull(elementJetable);
         this.elementsJetable.add(elementJetable);
     }
 
-    public void supprimerDeLaCorbeille(final ElementJetable elementJetable) throws IllegalArgumentException {
+    public void supprimerDeLaCorbeille(final IElementJetable elementJetable) throws IllegalArgumentException {
         Objects.requireNonNull(elementJetable);
         this.elementsJetable.remove(elementJetable);
     }
 
-    public <T extends ElementJetable> ArrayList<T> getElementsJetable(final Class<T> type) {
+    public <T extends IElementJetable> ArrayList<T> getElementsJetable(final Class<T> type) {
         Objects.requireNonNull(type);
 
         return this.elementsJetable.stream()

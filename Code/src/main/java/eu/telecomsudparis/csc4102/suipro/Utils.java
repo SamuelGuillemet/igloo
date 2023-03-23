@@ -18,11 +18,8 @@ enum PrintType {
     INACTIF
 }
 
-public final class Utils {
-    private Utils() {
-    }
-
-    public static <T extends ElementJetable> List<T> filterPrintType(final Collection<T> collection,
+public abstract class Utils {
+    public static <T extends IElementJetable> List<T> filterPrintType(final Collection<T> collection,
             final PrintType printType) throws IllegalArgumentException {
         switch (printType) {
             case ALL:
@@ -36,9 +33,9 @@ public final class Utils {
         }
     }
 
-    public static String printCollection(final Collection<? extends ElementJetable> collection) {
+    public static String printCollection(final Collection<? extends IElementJetable> collection) {
         StringBuilder sb = new StringBuilder();
-        for (ElementJetable element : collection) {
+        for (IElementJetable element : collection) {
             sb.append(element.toString());
             sb.append("\n");
         }

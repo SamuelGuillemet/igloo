@@ -5,11 +5,11 @@ import java.util.LinkedHashMap;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-public class Activite extends ElementJetable {
+public class Activite extends ElementJetable implements IActivite {
     private final String nom;
     private final String id;
 
-    private LinkedHashMap<String, Tache> taches;
+    private LinkedHashMap<String, ITache> taches;
 
     public Activite(final String nom, final String id) {
         if (nom == null || nom.isBlank()) {
@@ -42,17 +42,17 @@ public class Activite extends ElementJetable {
         return id;
     }
 
-    public Collection<Tache> getTaches() {
+    public Collection<ITache> getTaches() {
         return taches.values();
     }
 
-    public Tache getTache(final String id) {
+    public ITache getTache(final String id) {
         return taches.get(id);
     }
 
     //#endregion
 
-    public void ajouterTache(final Tache tache) throws OperationImpossible {
+    public void ajouterTache(final ITache tache) throws OperationImpossible {
         if (tache == null) {
             throw new IllegalArgumentException("La tâche ne peut pas être null.");
         }
@@ -65,6 +65,9 @@ public class Activite extends ElementJetable {
         if (tache.getActivite() != this) {
             throw new OperationImpossible("La tâche doit être associée à cette activité.");
         }
+        if (!this.estActif()) {
+            throw new OperationImpossible("L'activité doit être active.");
+        }
 
         taches.put(tache.getId(), tache);
 
@@ -74,7 +77,7 @@ public class Activite extends ElementJetable {
     @Override
     public void mettreALaCorbeille() {
         super.mettreALaCorbeille();
-        for (Tache tache : taches.values()) {
+        for (ITache tache : taches.values()) {
             tache.mettreALaCorbeille();
         }
     }

@@ -1,6 +1,6 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-public abstract class ElementJetable {
+public abstract class ElementJetable implements IElementJetable {
     private boolean actif = true;
 
     public boolean estActif() {
@@ -11,8 +11,4 @@ public abstract class ElementJetable {
         this.actif = false;
         Corbeille.getInstance().ajouterALaCorbeille(this);
     }
-
-    // public void restaurer() {
-    //     this.actif = true;
-    // }
 }

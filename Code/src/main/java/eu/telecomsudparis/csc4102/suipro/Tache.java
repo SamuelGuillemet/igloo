@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-public class Tache extends ElementJetable {
+public class Tache extends ElementJetable implements ITache {
     private final String nom;
     private final String id;
 
-    private ArrayList<PeriodeDeTravail> periodesDeTravail;
-    private Activite activite;
+    private ArrayList<IPeriodeDeTravail> periodesDeTravail;
+    private IActivite activite;
 
-    public Tache(final String nom, final String id, final Activite activite) throws OperationImpossible {
+    public Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new IllegalArgumentException("Le nom ne peut pas être null ou vide.");
         }
@@ -31,7 +31,7 @@ public class Tache extends ElementJetable {
         this.nom = nom;
         this.id = id;
         this.activite = activite;
-        this.periodesDeTravail = new ArrayList<PeriodeDeTravail>();
+        this.periodesDeTravail = new ArrayList<>();
 
         this.activite.ajouterTache(this);
 
@@ -55,17 +55,17 @@ public class Tache extends ElementJetable {
         return id;
     }
 
-    public ArrayList<PeriodeDeTravail> getPeriodesDeTravail() {
+    public ArrayList<IPeriodeDeTravail> getPeriodesDeTravail() {
         return periodesDeTravail;
     }
 
-    public Activite getActivite() {
+    public IActivite getActivite() {
         return activite;
     }
 
     //#endregion
 
-    public void ajouterPeriodeDeTravail(final PeriodeDeTravail periodeDeTravail) throws OperationImpossible {
+    public void ajouterPeriodeDeTravail(final IPeriodeDeTravail periodeDeTravail) throws OperationImpossible {
         if (periodeDeTravail == null) {
             throw new IllegalArgumentException("La période de travail ne peut pas être null.");
         }
@@ -78,6 +78,9 @@ public class Tache extends ElementJetable {
         if (periodeDeTravail.getTache() != this) {
             throw new OperationImpossible("La période de travail doit être associée à cette tâche.");
         }
+        if (!this.estActif()) {
+            throw new OperationImpossible("La tâche doit être active.");
+        }
 
         this.periodesDeTravail.add(periodeDeTravail);
 
@@ -89,7 +92,7 @@ public class Tache extends ElementJetable {
     @Override
     public void mettreALaCorbeille() {
         super.mettreALaCorbeille();
-        for (PeriodeDeTravail periodeDeTravail : periodesDeTravail) {
+        for (IPeriodeDeTravail periodeDeTravail : periodesDeTravail) {
             periodeDeTravail.mettreALaCorbeille();
         }
     }
