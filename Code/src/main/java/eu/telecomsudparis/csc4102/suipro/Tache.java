@@ -11,7 +11,7 @@ public class Tache extends ElementJetable implements ITache {
     private ArrayList<IPeriodeDeTravail> periodesDeTravail;
     private IActivite activite;
 
-    public Tache(final String nom, final String id, final Activite activite) throws OperationImpossible {
+    public Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new IllegalArgumentException("Le nom ne peut pas être null ou vide.");
         }

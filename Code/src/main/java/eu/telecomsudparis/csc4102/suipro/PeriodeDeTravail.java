@@ -11,7 +11,7 @@ public class PeriodeDeTravail extends ElementJetable implements IPeriodeDeTravai
 	private final IDeveloppeur developpeur;
 	private final ITache tache;
 
-	public PeriodeDeTravail(final Instant debut, final Instant fin, final Tache tache, final Developpeur developpeur)
+	public PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur)
 			throws OperationImpossible {
 		super();
 		if (debut == null) {
