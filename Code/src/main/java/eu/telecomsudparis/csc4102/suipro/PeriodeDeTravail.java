@@ -29,7 +29,7 @@ public class PeriodeDeTravail extends ElementJetable implements IPeriodeDeTravai
 
 		//! Because of a bug inside the IntervalleInstants class,
 		//! we need to check if `debut` is before `fin` manually.
-		if (debut.isAfter(fin)) {
+		if (debut.isAfter(fin) || debut.equals(fin)) {
 			throw new IllegalArgumentException("debut ne peut pas être après fin");
 		}
 		this.intervalle = new IntervalleInstants(debut, fin);

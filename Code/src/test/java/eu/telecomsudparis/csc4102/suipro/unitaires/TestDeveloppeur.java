@@ -1,19 +1,16 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.unitaires;
 
-import java.time.Instant;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.Developpeur;
-import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
-import eu.telecomsudparis.csc4102.suipro.ITache;
-import eu.telecomsudparis.csc4102.util.IntervalleInstants;
+import eu.telecomsudparis.csc4102.suipro.mocks.MockedPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 class TestDeveloppeur {
@@ -65,8 +62,9 @@ class TestDeveloppeur {
 		@Test
 		void Test1() throws Exception {
 			Developpeur developpeur = new Developpeur("alias", "nom", "prénom");
-			MockedPeriodeDeTravail periodeDeTravail = new MockedPeriodeDeTravail(developpeur);
+			MockedPeriodeDeTravail periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 			Assertions.assertNotNull(developpeur);
+			Assertions.assertTrue(developpeur.estActif());
 
 			try {
 				developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
@@ -82,6 +80,9 @@ class TestDeveloppeur {
 
 			developpeur.mettreALaCorbeille();
 			Assertions.assertFalse(developpeur.estActif());
+
+			int size = Corbeille.getInstance().getElementsJetable(Developpeur.class).size();
+			Assertions.assertEquals(1, size);
 		}
 
 	}
@@ -95,7 +96,7 @@ class TestDeveloppeur {
 		@BeforeEach
 		void setUp() {
 			developpeur = new Developpeur("alias", "nom", "prénom");
-			periodeDeTravail = new MockedPeriodeDeTravail(developpeur);
+			periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 		}
 
 		@AfterEach
@@ -119,7 +120,7 @@ class TestDeveloppeur {
 
 		@Test
 		void Test3() throws Exception {
-			periodeDeTravail = new MockedPeriodeDeTravail(new Developpeur("other", "other", "other"));
+			periodeDeTravail = new MockedPeriodeDeTravail(new Developpeur("other", "other", "other"), true);
 
 			Assertions.assertThrows(OperationImpossible.class,
 					() -> developpeur.ajouterPeriodeDeTravail(periodeDeTravail));
@@ -134,61 +135,17 @@ class TestDeveloppeur {
 
 		@Test
 		void Test5() throws Exception {
-			developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
-			Assertions.assertEquals(1, developpeur.getPeriodesDeTravail().size());
-			Assertions.assertTrue(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
-		}
-
-		@Test
-		void Test6() throws Exception {
 			developpeur.mettreALaCorbeille();
 			Assertions.assertFalse(developpeur.estActif());
 			Assertions.assertThrows(OperationImpossible.class,
 					() -> developpeur.ajouterPeriodeDeTravail(periodeDeTravail));
 		}
-	}
-}
 
-class MockedPeriodeDeTravail implements IPeriodeDeTravail {
-
-	private IDeveloppeur developpeur;
-	private boolean estActif;
-
-	public int mettreALaCorbeilleCalledTimes;
-
-	public MockedPeriodeDeTravail(IDeveloppeur developpeur, boolean estActif) {
-		this.developpeur = developpeur;
-		this.estActif = estActif;
-		this.mettreALaCorbeilleCalledTimes = 0;
-	}
-
-	public MockedPeriodeDeTravail(IDeveloppeur developpeur) {
-		this(developpeur, true);
-	}
-
-	@Override
-	public boolean estActif() {
-		return estActif;
-	}
-
-	@Override
-	public void mettreALaCorbeille() {
-		estActif = false;
-		mettreALaCorbeilleCalledTimes++;
-	}
-
-	@Override
-	public IntervalleInstants getIntervalle() {
-		return new IntervalleInstants(Instant.MIN, Instant.MAX);
-	}
-
-	@Override
-	public IDeveloppeur getDeveloppeur() {
-		return developpeur;
-	}
-
-	@Override
-	public ITache getTache() {
-		throw new UnsupportedOperationException("Unimplemented method 'getTache'");
+		@Test
+		void Test6() throws Exception {
+			developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
+			Assertions.assertEquals(1, developpeur.getPeriodesDeTravail().size());
+			Assertions.assertTrue(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
+		}
 	}
 }
