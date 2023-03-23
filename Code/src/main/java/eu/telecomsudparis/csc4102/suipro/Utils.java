@@ -35,4 +35,19 @@ public final class Utils {
                 throw new IllegalArgumentException("Invalid print type");
         }
     }
+
+    public static String printCollection(final Collection<? extends ElementJetable> collection) {
+        StringBuilder sb = new StringBuilder();
+        for (ElementJetable element : collection) {
+            sb.append(element.toString());
+            sb.append("\n");
+        }
+
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        System.out.println(sb.toString());
+        return sb.toString();
+    }
 }
