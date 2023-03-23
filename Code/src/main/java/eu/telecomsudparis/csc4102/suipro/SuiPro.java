@@ -226,8 +226,8 @@ public class SuiPro {
 		return afficherLesTaches(activiteId, PrintType.ACTIF);
 	}
 
-	public String afficherLesPeriodesDeTravail(final String activiteId, final String tacheId, final PrintType printType)
-			throws OperationImpossible {
+	public String afficherLesPeriodesDeTravailPourUneTache(final String activiteId, final String tacheId,
+			final PrintType printType) throws OperationImpossible {
 		if (activiteId == null || activiteId.isBlank()) {
 			throw new IllegalArgumentException("activiteId ne peut pas être null ou vide");
 		}
@@ -250,21 +250,55 @@ public class SuiPro {
 		return Utils.printCollection(periodesDeTravailList);
 	}
 
-	public String afficherLesPeriodesDeTravail(final String activiteId, final String tacheId)
+	public String afficherLesPeriodesDeTravailPourUneTache(final String activiteId, final String tacheId)
 			throws OperationImpossible {
-		return afficherLesPeriodesDeTravail(activiteId, tacheId, PrintType.ACTIF);
+		return afficherLesPeriodesDeTravailPourUneTache(activiteId, tacheId, PrintType.ACTIF);
 	}
 
-	public String afficherLesPeriodesDeTravailALaCorbeille() {
-		ArrayList<PeriodeDeTravail> periodesDeTravail = corbeille.getPeriodesDeTravail();
+	public String afficherLesPeriodesDeTravailPourUnDeveloppeur(final String developpeurId, final PrintType printType)
+			throws OperationImpossible {
+		if (developpeurId == null || developpeurId.isBlank()) {
+			throw new IllegalArgumentException("developpeurId ne peut pas être null ou vide");
+		}
+		if (!developpeurs.containsKey(developpeurId)) {
+			throw new OperationImpossible("developpeurId ne correspond à aucun developpeur");
+		}
 
-		return Utils.printCollection(periodesDeTravail);
+		Developpeur developpeur = developpeurs.get(developpeurId);
+
+		List<PeriodeDeTravail> periodesDeTravailList = Utils.filterPrintType(developpeur.getPeriodesDeTravail(),
+				printType);
+
+		return Utils.printCollection(periodesDeTravailList);
+	}
+
+	public String afficherLesPeriodesDeTravailPourUnDeveloppeur(final String developpeurId)
+			throws OperationImpossible {
+		return afficherLesPeriodesDeTravailPourUnDeveloppeur(developpeurId, PrintType.ACTIF);
 	}
 
 	public String afficherLesDeveloppeurALaCorebille() {
-		ArrayList<Developpeur> devs = corbeille.getDeveloppeurs();
+		ArrayList<Developpeur> devs = corbeille.getElementsJetable(Developpeur.class);
 
 		return Utils.printCollection(devs);
+	}
+
+	public String afficherLesActivitesALaCorbeille() {
+		ArrayList<Activite> activites = corbeille.getElementsJetable(Activite.class);
+
+		return Utils.printCollection(activites);
+	}
+
+	public String afficherLesTachesALaCorbeille() {
+		ArrayList<Tache> taches = corbeille.getElementsJetable(Tache.class);
+
+		return Utils.printCollection(taches);
+	}
+
+	public String afficherLesPeriodesDeTravailALaCorbeille() {
+		ArrayList<PeriodeDeTravail> periodesDeTravail = corbeille.getElementsJetable(PeriodeDeTravail.class);
+
+		return Utils.printCollection(periodesDeTravail);
 	}
 
 	//#endregion
@@ -282,6 +316,41 @@ public class SuiPro {
 		Developpeur dev = developpeurs.get(id);
 		dev.mettreALaCorbeille();
 	}
+
+	public void mettreUneActiviteALaCorbeille(final String id) throws OperationImpossible {
+		if (id == null || id.isBlank()) {
+			throw new IllegalArgumentException("id ne peut pas être nul ou vide");
+		}
+		if (!activites.containsKey(id)) {
+			throw new OperationImpossible("L'activite n'existe pas");
+		}
+
+		Activite activite = activites.get(id);
+		activite.mettreALaCorbeille();
+	}
+
+	public void mettreUneTacheALaCorbeille(final String activiteId, final String tacheId) throws OperationImpossible {
+		if (activiteId == null || activiteId.isBlank()) {
+			throw new IllegalArgumentException("activiteId ne peut pas être nul ou vide");
+		}
+		if (tacheId == null || tacheId.isBlank()) {
+			throw new IllegalArgumentException("tacheId ne peut pas être nul ou vide");
+		}
+		if (!activites.containsKey(activiteId)) {
+			throw new OperationImpossible("L'activite n'existe pas");
+		}
+
+		Activite activite = activites.get(activiteId);
+		Tache tache = activite.getTache(tacheId);
+
+		if (tache == null) {
+			throw new OperationImpossible("La tache n'existe pas");
+		}
+
+		tache.mettreALaCorbeille();
+	}
+
+	//#endregion
 
 	public List<Developpeur> getDeveloppeurs() {
 		return developpeurs.values().stream().toList();
