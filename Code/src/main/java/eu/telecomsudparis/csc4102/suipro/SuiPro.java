@@ -1,6 +1,7 @@
 package eu.telecomsudparis.csc4102.suipro;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class SuiPro {
 
 	private LinkedHashMap<String, Activite> activites;
 
+	private Corbeille corbeille;
+
 	/**
 	 * construit une façade.
 	 * 
@@ -33,6 +36,7 @@ public class SuiPro {
 		this.nomDeProjet = nomDeProjet;
 		developpeurs = new LinkedHashMap<>();
 		activites = new LinkedHashMap<>();
+		corbeille = Corbeille.getInstance();
 	}
 
 	/**
@@ -41,7 +45,10 @@ public class SuiPro {
 	 * @return {@code true} si l'invariant est respecté.
 	 */
 	public boolean invariant() {
-		return nomDeProjet != null && !nomDeProjet.isBlank() && developpeurs != null && activites != null;
+		return nomDeProjet != null && !nomDeProjet.isBlank()
+				&& developpeurs != null
+				&& activites != null
+				&& corbeille != null;
 	}
 
 	//#region Ajouts
@@ -181,20 +188,9 @@ public class SuiPro {
 	//#region Affichages
 
 	public String afficherLesDeveloppeurs(final PrintType printType) {
-		StringBuilder res = new StringBuilder();
-
 		List<Developpeur> developpeursList = Utils.filterPrintType(developpeurs.values(), printType);
 
-		for (Developpeur developpeur : developpeursList) {
-			res.append(developpeur.toString());
-			res.append("\n");
-		}
-
-		if (res.length() > 0) {
-			res.deleteCharAt(res.length() - 1);
-		}
-
-		return res.toString();
+		return Utils.printCollection(developpeursList);
 	}
 
 	public String afficherLesDeveloppeurs() {
@@ -202,21 +198,9 @@ public class SuiPro {
 	}
 
 	public String afficherLesActivites(final PrintType printType) {
-		StringBuilder res = new StringBuilder();
-
 		List<Activite> activitesList = Utils.filterPrintType(activites.values(), printType);
 
-		for (Activite activite : activitesList) {
-			res.append(activite.toString());
-			res.append("\n");
-		}
-
-		if (res.length() > 0) {
-			res.deleteCharAt(res.length() - 1);
-		}
-
-		System.out.println(res.toString());
-		return res.toString();
+		return Utils.printCollection(activitesList);
 	}
 
 	public String afficherLesActivites() {
@@ -233,21 +217,9 @@ public class SuiPro {
 
 		Activite activite = activites.get(activiteId);
 
-		StringBuilder res = new StringBuilder();
-
 		List<Tache> tachesList = Utils.filterPrintType(activite.getTaches(), printType);
 
-		for (Tache tache : tachesList) {
-			res.append(tache.toString());
-			res.append("\n");
-		}
-
-		if (res.length() > 0) {
-			res.deleteCharAt(res.length() - 1);
-		}
-
-		System.out.println(res.toString());
-		return res.toString();
+		return Utils.printCollection(tachesList);
 	}
 
 	public String afficherLesTaches(final String activiteId) throws OperationImpossible {
@@ -262,33 +234,20 @@ public class SuiPro {
 		if (tacheId == null || tacheId.isBlank()) {
 			throw new IllegalArgumentException("tacheId ne peut pas être null ou vide");
 		}
-		if (activites.get(activiteId) == null) {
+		if (!activites.containsKey(activiteId)) {
 			throw new OperationImpossible("activiteId ne correspond à aucune activite");
 		}
 
 		Activite activite = activites.get(activiteId);
-
 		Tache tache = activite.getTache(tacheId);
 
 		if (tache == null) {
 			throw new OperationImpossible("tacheId ne correspond à aucune tache");
 		}
 
-		StringBuilder res = new StringBuilder();
-
 		List<PeriodeDeTravail> periodesDeTravailList = Utils.filterPrintType(tache.getPeriodesDeTravail(), printType);
 
-		for (PeriodeDeTravail periodeDeTravail : periodesDeTravailList) {
-			res.append(periodeDeTravail.toString());
-			res.append("\n");
-		}
-
-		if (res.length() > 0) {
-			res.deleteCharAt(res.length() - 1);
-		}
-
-		System.out.println(res.toString());
-		return res.toString();
+		return Utils.printCollection(periodesDeTravailList);
 	}
 
 	public String afficherLesPeriodesDeTravail(final String activiteId, final String tacheId)
@@ -296,7 +255,33 @@ public class SuiPro {
 		return afficherLesPeriodesDeTravail(activiteId, tacheId, PrintType.ACTIF);
 	}
 
+	public String afficherLesPeriodesDeTravailALaCorbeille() {
+		ArrayList<PeriodeDeTravail> periodesDeTravail = corbeille.getPeriodesDeTravail();
+
+		return Utils.printCollection(periodesDeTravail);
+	}
+
+	public String afficherLesDeveloppeurALaCorebille() {
+		ArrayList<Developpeur> devs = corbeille.getDeveloppeurs();
+
+		return Utils.printCollection(devs);
+	}
+
 	//#endregion
+
+	//#region MiseALaCorbeille
+
+	public void mettreUnDeveloppeurALaCorbeille(final String id) throws OperationImpossible {
+		if (id == null || id.isBlank()) {
+			throw new IllegalArgumentException("id ne peut pas être nul ou vide");
+		}
+		if (!developpeurs.containsKey(id)) {
+			throw new OperationImpossible("Le developpeur n'existe pas");
+		}
+
+		Developpeur dev = developpeurs.get(id);
+		dev.mettreALaCorbeille();
+	}
 
 	public List<Developpeur> getDeveloppeurs() {
 		return developpeurs.values().stream().toList();
