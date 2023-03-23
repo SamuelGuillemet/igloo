@@ -35,48 +35,50 @@ class TestAjouterUneTache {
     @Test
     void Test1Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.ajouterUneTache(null, nomTache, idActivite));
+                () -> suiPro.ajouterUneTache(idTache, null, idActivite));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.ajouterUneTache("", nomTache, idActivite));
+                () -> suiPro.ajouterUneTache(idTache, "", idActivite));
     }
 
     @Test
     void Test2Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.ajouterUneTache(idTache, null, idActivite));
+                () -> suiPro.ajouterUneTache(null, nomTache, idActivite));
     }
 
     @Test
     void Test2Jeu2() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUneTache(idTache, nomTache, null));
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterUneTache("", nomTache, idActivite));
     }
 
     @Test
     void Test3Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.ajouterUneTache(idTache, null, idActivite));
+                () -> suiPro.ajouterUneTache(idTache, nomTache, null));
     }
 
     @Test
     void Test3Jeu2() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUneTache(idTache, nomTache, ""));
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterUneTache(idTache, nomTache, ""));
     }
 
     @Test
     void Test4() throws Exception {
-        suiPro.mettreUneActiviteALaCorbeille(idActivite);
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.ajouterUneTache(idTache, nomTache, idActivite));
+                () -> suiPro.ajouterUneTache(idTache, nomTache, "wrongID"));
     }
 
     @Test
     void Test5() throws Exception {
+        suiPro.mettreUneActiviteALaCorbeille(idActivite);
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.ajouterUneTache(idTache, nomTache, "wrongIdActivite"));
+                () -> suiPro.ajouterUneTache(idTache, nomTache, idActivite));
     }
 
     @Test
@@ -85,4 +87,13 @@ class TestAjouterUneTache {
         Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.ajouterUneTache(idTache, nomTache, idActivite));
     }
+
+    // @Test
+    // void Test7() throws Exception {
+    // suiPro.ajouterUneTache(idTache, nomTache, idActivite);
+    // Assertions.assertEquals(suiPro.getTache(idTache).getNom(), nomTache);
+    // Assertions.assertEquals(suiPro.getTache(idTache).getId(), idTache);
+    // Assertions.assertEquals(suiPro.getTache(idTache).getIdActivite(),
+    // idActivite);
+    // }
 }
