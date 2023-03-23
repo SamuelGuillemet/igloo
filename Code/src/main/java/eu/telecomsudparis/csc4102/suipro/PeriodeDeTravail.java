@@ -42,11 +42,23 @@ public class PeriodeDeTravail extends ElementJetable {
 		if (developpeur == null) {
 			throw new IllegalArgumentException("developpeur ne peut pas être null");
 		}
+
+		//! Because of a bug inside the IntervalleInstants class,
+		//! we need to check if `debut` is before `fin` manually.
+		if (debut.isAfter(fin)) {
+			throw new IllegalArgumentException("debut ne peut pas être après fin");
+		}
 		this.intervalle = new IntervalleInstants(debut, fin);
 
+		if (!developpeur.estActif()) {
+			throw new OperationImpossible("le développeur n'est pas actif");
+		}
 		this.developpeur = developpeur;
 		this.developpeur.ajouterPeriodeDeTravail(this);
 
+		if (!tache.estActif()) {
+			throw new OperationImpossible("la tâche n'est pas actif");
+		}
 		this.tache = tache;
 		this.tache.ajouterPeriodeDeTravail(this);
 
