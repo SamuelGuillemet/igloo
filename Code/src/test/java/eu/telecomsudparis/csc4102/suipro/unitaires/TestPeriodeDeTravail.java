@@ -3,94 +3,153 @@ package eu.telecomsudparis.csc4102.suipro.unitaires;
 
 import java.time.Instant;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import eu.telecomsudparis.csc4102.suipro.PeriodeDeTravail;
-import eu.telecomsudparis.csc4102.suipro.Tache;
+import eu.telecomsudparis.csc4102.suipro.mocks.MockedDeveloppeur;
+import eu.telecomsudparis.csc4102.suipro.mocks.MockedTache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
-import eu.telecomsudparis.csc4102.suipro.Developpeur;
-import eu.telecomsudparis.csc4102.suipro.Activite;
+import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
+import eu.telecomsudparis.csc4102.suipro.ITache;
+import eu.telecomsudparis.csc4102.suipro.Corbeille;
 
 class TestPeriodeDeTravail {
+	static Instant debut;
+	static Instant fin;
+	static Instant mauvaiseFin;
 
-	Instant debut;
-	Instant fin;
-	Instant mauvaiseFin;
-	Developpeur developpeur;
-	Tache tache;
-	Activite activite;
-
-	@BeforeEach
-	void setUp() throws OperationImpossible {
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
 		debut = Instant.now();
 		fin = debut.plusSeconds(10);
 		mauvaiseFin = debut.minusSeconds(10);
-		developpeur = new Developpeur("alias", "nomDev", "prénomDev");
-		activite = new Activite("nomAct", "idAct");
-		tache = new Tache("nomTache", "idTache", activite);
-	}
-
-	@AfterEach
-	void tearDown() {
 	}
 
 	@Nested
-	class TestContructeur {
+	class Contructeur {
+
+		IDeveloppeur developpeur;
+		ITache tache;
+
+		@BeforeEach
+		void setUp() {
+			developpeur = new MockedDeveloppeur(true, false);
+			tache = new MockedTache(true, false);
+		}
+
+		@AfterEach
+		void tearDown() {
+			developpeur = null;
+			tache = null;
+		}
+
 		@Test
-		void Test1Jeu1() throws Exception {
+		void Test1() throws Exception {
 			Assertions.assertThrows(IllegalArgumentException.class,
 					() -> new PeriodeDeTravail(null, fin, tache, developpeur));
 		}
 
 		@Test
-		void Test1Jeu2() throws Exception {
+		void Test2() throws Exception {
 			Assertions.assertThrows(IllegalArgumentException.class,
 					() -> new PeriodeDeTravail(debut, null, tache, developpeur));
 		}
 
 		@Test
-		void Test1Jeu3() throws Exception {
+		void Test3() throws Exception {
 			Assertions.assertThrows(IllegalArgumentException.class,
 					() -> new PeriodeDeTravail(debut, fin, null, developpeur));
 		}
 
 		@Test
-		void Test1Jeu4() throws Exception {
+		void Test4() throws Exception {
+			tache = new MockedTache(false, false);
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+		}
+
+		@Test
+		void Test5() throws Exception {
 			Assertions.assertThrows(IllegalArgumentException.class,
 					() -> new PeriodeDeTravail(debut, fin, tache, null));
 		}
 
 		@Test
-		void Test3Jeu1() throws Exception {
+		void Test6() throws Exception {
+			developpeur = new MockedDeveloppeur(false, false);
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+		}
+
+		@Test
+		void Test7Jeu1() throws Exception {
+			Assertions.assertThrows(IllegalArgumentException.class,
+					() -> new PeriodeDeTravail(debut, debut, tache, developpeur));
+		}
+
+		@Test
+		void Test7Jeu2() throws Exception {
 			Assertions.assertThrows(IllegalArgumentException.class,
 					() -> new PeriodeDeTravail(debut, mauvaiseFin, tache, developpeur));
 		}
 
 		@Test
-		void Test4Jeu1() throws Exception {
-			developpeur.mettreALaCorbeille();
-			Assertions.assertThrows(IllegalArgumentException.class,
+		void Test8() throws Exception {
+			developpeur = new MockedDeveloppeur(true, true);
+			Assertions.assertThrows(OperationImpossible.class,
 					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
 		}
 
 		@Test
-		void Test4Jeu2() throws Exception {
-			tache.mettreALaCorbeille();
-			Assertions.assertThrows(IllegalArgumentException.class,
+		void Test9() throws Exception {
+			tache = new MockedTache(true, true);
+			Assertions.assertThrows(OperationImpossible.class,
 					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+		}
+
+		@Test
+		void Test10() throws Exception {
+			PeriodeDeTravail PeriodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
+			Assertions.assertEquals(debut, PeriodeDeTravail.getIntervalle().getInstantDebut());
+			Assertions.assertEquals(fin, PeriodeDeTravail.getIntervalle().getInstantFin());
+			Assertions.assertEquals(tache, PeriodeDeTravail.getTache());
+			Assertions.assertEquals(developpeur, PeriodeDeTravail.getDeveloppeur());
+			Assertions.assertTrue(PeriodeDeTravail.estActif());
 		}
 	}
 
-	@Test
-	void TestMettreALaCorbeille() throws Exception {
-		PeriodeDeTravail PeriodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
-		Assertions.assertTrue(PeriodeDeTravail.estActif());
-		PeriodeDeTravail.mettreALaCorbeille();
-		Assertions.assertFalse(PeriodeDeTravail.estActif());
+	@Nested
+	class MettreALaCorbeille {
+
+		@AfterAll
+		static void tearDownAfterClass() throws Exception {
+			Corbeille.getInstance().viderLaCorbeille();
+		}
+
+		@Test
+		void Test1() throws Exception {
+			ITache tache = new MockedTache(true, false);
+			IDeveloppeur developpeur = new MockedDeveloppeur(true, false);
+
+			PeriodeDeTravail periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
+			Assertions.assertNotNull(periodeDeTravail);
+			Assertions.assertTrue(periodeDeTravail.estActif());
+
+			periodeDeTravail.mettreALaCorbeille();
+			Assertions.assertFalse(periodeDeTravail.estActif());
+
+			periodeDeTravail.mettreALaCorbeille();
+			Assertions.assertFalse(periodeDeTravail.estActif());
+
+			int size = Corbeille.getInstance().getElementsJetable(PeriodeDeTravail.class).size();
+			Assertions.assertEquals(1, size);
+		}
 	}
 
 }
