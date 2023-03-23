@@ -9,6 +9,7 @@ public abstract class ElementJetable {
 
     public void mettreALaCorbeille() {
         this.actif = false;
+        Corbeille.getInstance().ajouterALaCorbeille(this);
     }
 
     // public void restaurer() {

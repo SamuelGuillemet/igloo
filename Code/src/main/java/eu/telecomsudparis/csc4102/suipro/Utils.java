@@ -23,7 +23,7 @@ public final class Utils {
     }
 
     public static <T extends ElementJetable> List<T> filterPrintType(final Collection<T> collection,
-            final PrintType printType) {
+            final PrintType printType) throws IllegalArgumentException {
         switch (printType) {
             case ALL:
                 return collection.stream().toList();
@@ -34,5 +34,20 @@ public final class Utils {
             default:
                 throw new IllegalArgumentException("Invalid print type");
         }
+    }
+
+    public static String printCollection(final Collection<? extends ElementJetable> collection) {
+        StringBuilder sb = new StringBuilder();
+        for (ElementJetable element : collection) {
+            sb.append(element.toString());
+            sb.append("\n");
+        }
+
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        System.out.println(sb.toString());
+        return sb.toString();
     }
 }
