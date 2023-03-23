@@ -31,13 +31,13 @@ class TestMettreUneActiviteALaCorbeille {
 
     @Test
     void Test1Jeu1() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> suiPro.mettreUneActiviteALaCorbeille(null));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> suiPro.mettreUneActiviteALaCorbeille(""));
     }
 

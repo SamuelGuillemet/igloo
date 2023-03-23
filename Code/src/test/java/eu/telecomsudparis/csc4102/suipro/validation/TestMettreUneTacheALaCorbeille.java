@@ -35,25 +35,25 @@ class TestMettreUneTacheALaCorbeille {
 
     @Test
     void Test1Jeu1() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> suiPro.mettreUneTacheALaCorbeille(idAct, null));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> suiPro.mettreUneTacheALaCorbeille(idAct, ""));
     }
 
     @Test
     void Test2Jeu1() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> suiPro.mettreUneTacheALaCorbeille(null, idTache));
     }
 
     @Test
     void Test2Jeu2() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> suiPro.mettreUneTacheALaCorbeille("", idTache));
     }
 
