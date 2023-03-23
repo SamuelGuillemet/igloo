@@ -171,40 +171,48 @@ public class TestSprint1 {
 
         // (12) ✓ afficher les développeurs
         try {
+            System.out.println("Affichage des développeurs :");
             String affichage = suiPro.afficherLesDeveloppeurs();
             Assertions.assertTrue(affichage.contains("pastoret"));
             Assertions.assertTrue(affichage.contains("ducastel"));
             Assertions.assertTrue(affichage.contains("vergniaud"));
             Assertions.assertTrue(affichage.contains("viénot-vaublanc"));
+            System.out.println("\n");
         } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
 
         // (13) ✓ afficher les tâches de l’activité cd
         try {
+            System.out.println("Affichage des tâches de l'activité cd :");
             String affichage = suiPro.afficherLesTaches("cd");
             Assertions.assertTrue(affichage.contains("dc"));
             Assertions.assertTrue(affichage.contains("mi"));
+            System.out.println("\n");
         } catch (OperationImpossible e) {
             Assertions.fail(e.getMessage());
         }
 
         // (14) ✓ afficher les périodes de travail de la tâche dc de l’activité cd
         try {
-            String affichage = suiPro.afficherLesPeriodesDeTravail("cd", "dc");
+            System.out.println("Affichage des périodes de travail de la tâche dc de l'activité cd :");
+            String affichage = suiPro.afficherLesPeriodesDeTravailPourUneTache("cd", "dc");
             Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 1);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "vergniaud") == 1);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "ducastel") == 2);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "viénot-vaublanc") == 2);
+            System.out.println("\n");
         } catch (OperationImpossible e) {
             Assertions.fail(e.getMessage());
         }
 
         // (15) ✓ afficher les périodes de travail de la tâche mi de l’activité cd
         try {
-            String affichage = suiPro.afficherLesPeriodesDeTravail("cd", "mi");
+            System.out.println("Affichage des périodes de travail de la tâche mi de l'activité cd :");
+            String affichage = suiPro.afficherLesPeriodesDeTravailPourUneTache("cd", "mi");
             Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 1);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "vergniaud") == 1);
+            System.out.println("\n");
         } catch (OperationImpossible e) {
             Assertions.fail(e.getMessage());
         }
@@ -218,39 +226,47 @@ public class TestSprint1 {
 
         // (17) ✓ afficher les développeurs
         try {
+            System.out.println("Affichage des développeurs :");
             String affichage = suiPro.afficherLesDeveloppeurs();
             Assertions.assertFalse(affichage.contains("pastoret"));
             Assertions.assertTrue(affichage.contains("ducastel"));
             Assertions.assertTrue(affichage.contains("vergniaud"));
             Assertions.assertTrue(affichage.contains("viénot-vaublanc"));
+            System.out.println("\n");
         } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
 
         // (18) ✓ afficher les développeurs dans la corbeille
         try {
+            System.out.println("Affichage des développeurs dans la corbeille :");
             String affichage = suiPro.afficherLesDeveloppeurALaCorebille();
             Assertions.assertTrue(affichage.contains("pastoret"));
+            System.out.println("\n");
         } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
 
         // (19) ✓ afficher les périodes de travail de la tâche dc de l’activité cd
         try {
-            String affichage = suiPro.afficherLesPeriodesDeTravail("cd", "dc");
+            System.out.println("Affichage des périodes de travail de la tâche dc de l'activité cd :");
+            String affichage = suiPro.afficherLesPeriodesDeTravailPourUneTache("cd", "dc");
             Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 0);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "vergniaud") == 1);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "ducastel") == 2);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "viénot-vaublanc") == 2);
+            System.out.println("\n");
         } catch (OperationImpossible e) {
             Assertions.fail(e.getMessage());
         }
 
         // (20) ✓ afficher les périodes de travail de la tâche mi de l’activité cd
         try {
-            String affichage = suiPro.afficherLesPeriodesDeTravail("cd", "mi");
+            System.out.println("Affichage des périodes de travail de la tâche mi de l'activité cd :");
+            String affichage = suiPro.afficherLesPeriodesDeTravailPourUneTache("cd", "mi");
             Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 0);
             Assertions.assertTrue(StringUtils.countMatches(affichage, "vergniaud") == 1);
+            System.out.println("\n");
         } catch (OperationImpossible e) {
             Assertions.fail(e.getMessage());
         }
@@ -260,6 +276,7 @@ public class TestSprint1 {
             System.out.println("Affichage des périodes de travail dans la corbeille :");
             String affichage = suiPro.afficherLesPeriodesDeTravailALaCorbeille();
             Assertions.assertTrue(StringUtils.countMatches(affichage, "pastoret") == 2);
+            System.out.println("\n");
         } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
@@ -284,11 +301,13 @@ public class TestSprint1 {
 
         // (24) ✓ afficher les développeurs
         try {
+            System.out.println("Affichage des développeurs :");
             String affichage = suiPro.afficherLesDeveloppeurs();
             Assertions.assertFalse(affichage.contains("pastoret"));
             Assertions.assertTrue(affichage.contains("ducastel"));
             Assertions.assertTrue(affichage.contains("vergniaud"));
             Assertions.assertTrue(affichage.contains("viénot-vaublanc"));
+            System.out.println("\n");
         } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
@@ -298,6 +317,7 @@ public class TestSprint1 {
             System.out.println("Affichage des développeurs dans la corbeille :");
             String affichage = suiPro.afficherLesDeveloppeurALaCorebille();
             Assertions.assertTrue(affichage.contains("pastoret"));
+            System.out.println("\n");
         } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
