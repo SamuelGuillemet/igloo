@@ -83,3 +83,40 @@ En fait ça doit ce lire comme du code, et il faut pas mal de rigueur, comme qua
 Au final : la façon de constituer les diagrammes, les sections du document pose problème : le PDF pourrait utilement permettre le copier-coller autant que possible pour faciliter le travail des équipes qui le récupèrent et en dérivent d'autres choses comme le code ? ou bien il faut aller chercher ça ailleurs dans le source qui a servi à le fabriquer ? Je vous parlerai du principe KISS (Keep It Simple Stupid) si on a le temps ... Et surtout le format d'UML sans l'outil qu'on préconise me laisse entrevoir des incohérences entre diagramme de classe et diagrammes de séquences... Modelio pourrait aider, j'ai l'impression :-/
 
 J'arrête la ma revue faute de plus de temps. Bon courage pour la suite.
+
+---
+
+# Suivi du mer. 15 mars 2023 16:47:00
+
+Olivier Berger
+
+## Diagrammes de séquence
+
+- [x] Dans le diagramme de "création d'une tâche", l'activité mériterait d'être identifiée dans le cartouche au-dessus de la ligne de vie, en tant que "activite:Activité"
+- [x] L'appel au create() de tache devrait prendre activité en argument, et non l'identifiant de l'activité, maintenant qu'on connaît activité. Sinon, le constructeur de tache ne peut invoquer l'appel à ajouterTache() / envoyer le message correspondant
+
+### Invariants
+
+- [x] INV-03-Invariant-à-compléter
+  - L'invariant contient en général des termes sur l'ensemble des attributs : par exemple telle référence non `null`, telle chaîne de caractères non `null` et non vide, etc. Cela peut paraître rébarbatif, mais c'est très important lors de la programmation : nous utilisons le principe [_fail fast_](https://en.wikipedia.org/wiki/Fail-fast) et donc détectons par exemple les erreurs de déréférencement le plus tôt possible.
+  - Autre exemple, il est important d'indiquer dans quelles conditions les attributs qui traduisent les associations sont `null`. (qu'est-ce qui matérialise le fait d'être dans l'état Dans la Corbeille ou en fonctionnement ?)
+
+### 6.1. Table de décision des tests unitaires
+
+- [x] TABLEDECTU-07-Incohérence-pré-post-conditions-avec-conception
+  - Les attributs utilisés dans les pré-condition et post-condition des tables de décsion doivent correspondre aux arguments des prototypes des méthodes et/ou aux attributs de la conception (diagramme de classes et diagrammes de séquence) (quid des périodes de travail après l'appel aux constructeurs ?)
+
+Remarque additionnelle : à quoi correspond l'attribut "actif" de Développeur... est-ce lié à l'état "EnFonctionnement" (donc pas à la Corbeille) ? Est-ce lié à l'association entre Développeur et Corbeille dans le diagramme de classe ? J'ai peur d'une certaine redondance, ici... Dans tous les cas, ce n'est pas très clair de décoder la table de décision du test unitaire de la "Mét_H_ode mettreALaCorbeille() de la classe Développeur" : table pas formée avec la diagonale habituelle...
+
+- [x] TABLEDECTU-03-Incohérence-prototype
+  - La préconditon de la table de décision d'une opération est exprimée avec les arguments de l'opération et la postcondition est exprimée avec les attributs de la classe. Vérifiez la cohérence. (dansle diagramme de séquence, vérifiez ce que vous avez spécifié (modulo les remarques ci-dessus) au niveau des arguments du create() de Tâche)
+
+Vous avez bien avancé. Keep up the good work.
+
+---
+
+# Suivi du mar. 21 mars 2023 22:39:07
+
+Olivier Berger
+
+- [x] Problème de continuité de l'historique Git : je me retrouve à devoir, pour la deuxième fois, repositionner ma branche sprint1 sur la nouvelle branche sprint1 que vous avez créée, sans qu'il y ait de continuité entre les deux... c'est loin d'être optimal. Je ne sais pas exactement comment vous vous y prenez, mais, normalement, les branches devraient rester sur un même chemin avec des merges vers la branche, mais sans la transplanter (abus de rebase ?) ailleurs :-/ Il faudrait peut-être tirer cela au clair... Néanmoins, je m'adapte et ferai le suivi sur la nouvelle branche sprint1.
