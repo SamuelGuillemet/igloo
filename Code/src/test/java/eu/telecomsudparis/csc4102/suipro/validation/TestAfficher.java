@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
-import eu.telecomsudparis.csc4102.suipro.Utils;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 class TestAfficher {
