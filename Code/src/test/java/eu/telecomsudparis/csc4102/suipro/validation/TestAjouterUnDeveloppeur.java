@@ -33,38 +33,53 @@ class TestAjouterUnDeveloppeur {
 
 	@Test
 	void Test1Jeu1() throws Exception {
-		Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUnDeveloppeur(null, nom, prenom));
-	}
-
-	@Test
-	void Test1Jeu2() throws Exception {
-		Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUnDeveloppeur("", nom, prenom));
-	}
-
-	@Test
-	void Test2Jeu1() throws Exception {
 		Assertions.assertThrows(OperationImpossible.class,
 				() -> suiPro.ajouterUnDeveloppeur(identifiant, null, prenom));
 	}
 
 	@Test
+	void Test1Jeu2() throws Exception {
+		Assertions.assertThrows(OperationImpossible.class,
+				() -> suiPro.ajouterUnDeveloppeur(identifiant, "", prenom));
+	}
+
+	@Test
+	void Test2Jeu1() throws Exception {
+		Assertions.assertThrows(OperationImpossible.class,
+				() -> suiPro.ajouterUnDeveloppeur(identifiant, nom, null));
+	}
+
+	@Test
 	void Test2Jeu2() throws Exception {
-		Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUnDeveloppeur(identifiant, "", prenom));
+		Assertions.assertThrows(OperationImpossible.class,
+				() -> suiPro.ajouterUnDeveloppeur(identifiant, nom, ""));
 	}
 
 	@Test
 	void Test3Jeu1() throws Exception {
-		Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUnDeveloppeur(identifiant, nom, null));
+		Assertions.assertThrows(OperationImpossible.class,
+				() -> suiPro.ajouterUnDeveloppeur(null, nom, prenom));
 	}
 
 	@Test
 	void Test3Jeu2() throws Exception {
-		Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUnDeveloppeur(identifiant, nom, ""));
+		Assertions.assertThrows(OperationImpossible.class,
+				() -> suiPro.ajouterUnDeveloppeur("", nom, prenom));
 	}
 
 	@Test
-	void Test5Puis4() throws Exception {
+	void Test4() throws Exception {
 		suiPro.ajouterUnDeveloppeur(identifiant, nom, prenom);
-		Assertions.assertThrows(OperationImpossible.class, () -> suiPro.ajouterUnDeveloppeur(identifiant, nom, prenom));
+		Assertions.assertThrows(OperationImpossible.class,
+				() -> suiPro.ajouterUnDeveloppeur(identifiant, nom, prenom));
 	}
+
+	@Test
+	void Test5() throws Exception {
+		suiPro.ajouterUnDeveloppeur(identifiant, nom, prenom);
+		Assertions.assertEquals(identifiant, suiPro.getDeveloppeur(identifiant).getAlias());
+		Assertions.assertEquals(nom, suiPro.getDeveloppeur(identifiant).getNom());
+		Assertions.assertEquals(prenom, suiPro.getDeveloppeur(identifiant).getPrenom());
+	}
+
 }

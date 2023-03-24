@@ -360,6 +360,22 @@ public class SuiPro {
 		return developpeurs.keySet().stream().toList();
 	}
 
+	public Developpeur getDeveloppeur(final String alias) {
+		return developpeurs.get(alias);
+	}
+
+	public List<Activite> getActivites() {
+		return activites.values().stream().toList();
+	}
+
+	public List<String> getActivitesIds() {
+		return activites.keySet().stream().toList();
+	}
+
+	public Activite getActivite(final String id) {
+		return activites.get(id);
+	}
+
 	/**
 	 * obtient le nom du projet.
 	 * 
