@@ -73,6 +73,7 @@ class TestTache {
             Assertions.assertEquals(activite, tache.getActivite());
             Assertions.assertTrue(tache.estActif());
             Assertions.assertEquals(1, activite.ajouterTacheCalledTimes);
+            Assertions.assertThrows(IllegalArgumentException.class, () -> new Tache("nom", "id", activite));
         }
     }
 
