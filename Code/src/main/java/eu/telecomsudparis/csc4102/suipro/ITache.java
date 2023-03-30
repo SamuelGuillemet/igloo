@@ -1,16 +1,21 @@
+// CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
+/**
+ * Cette interface définit le concept de tâche. Une tâche est un élément jetable
+ * référençant une activité et une collection de périodes de travail.
+ */
 public interface ITache extends IElementJetable {
 
     String getNom();
 
     String getId();
 
-    ArrayList<IPeriodeDeTravail> getPeriodesDeTravail();
+    Collection<IPeriodeDeTravail> getPeriodesDeTravail();
 
     IActivite getActivite();
 
