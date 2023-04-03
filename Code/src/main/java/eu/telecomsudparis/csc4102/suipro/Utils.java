@@ -5,20 +5,30 @@ import java.util.List;
 
 enum PrintType {
     /** 
-     * Tout les résultats
+     * Tout les résultats.
      */
     ALL,
     /** 
-     * Seulement les actifs
+     * Seulement les actifs.
      */
     ACTIF,
     /** 
-     * Seulement les inactifs
+     * Seulement les inactifs.
      */
     INACTIF
 }
 
+/**
+ * Classe utilitaire.
+ */
 public abstract class Utils {
+    /**
+     * @param <T>
+     * @param collection
+     * @param printType
+     * @return Une liste filtrée en fonction du type d'impression.
+     * @throws IllegalArgumentException
+     */
     public static <T extends IElementJetable> List<T> filterPrintType(final Collection<T> collection,
             final PrintType printType) throws IllegalArgumentException {
         switch (printType) {
@@ -33,6 +43,10 @@ public abstract class Utils {
         }
     }
 
+    /**
+     * @param collection
+     * @return Une chaîne de caractères représentant la collection.
+     */
     public static String printCollection(final Collection<? extends IElementJetable> collection) {
         StringBuilder sb = new StringBuilder();
         for (IElementJetable element : collection) {

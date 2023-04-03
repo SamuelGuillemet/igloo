@@ -12,7 +12,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * 
  * @author Denis Conan
  */
-public class SuiPro {
+public final class SuiPro {
 	/**
 	 * le nom du projet.
 	 */
@@ -23,8 +23,14 @@ public class SuiPro {
 	 */
 	private LinkedHashMap<String, Developpeur> developpeurs;
 
+	/**
+	 * la collection d'activités. La clef est l'identifiant de l'activité.
+	 */
 	private LinkedHashMap<String, Activite> activites;
 
+	/**
+	 * la corbeille.
+	 */
 	private Corbeille corbeille;
 
 	/**
@@ -80,6 +86,14 @@ public class SuiPro {
 		assert invariant();
 	}
 
+	/**
+	 * ajoute une activité.
+	 * 
+	 * @param id  l'identifiant de l'activité.
+	 * @param nom le nom de l'activité.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public void ajouterUneActivite(final String id, final String nom)
 			throws OperationImpossible {
 		if (id == null || id.isBlank()) {
@@ -95,6 +109,15 @@ public class SuiPro {
 		assert invariant();
 	}
 
+	/**
+	 * ajoute une tâche.
+	 * 
+	 * @param id          l'identifiant de la tâche.
+	 * @param nom         le nom de la tâche.
+	 * @param activiteId  l'identifiant de l'activité.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public void ajouterUneTache(final String id, final String nom, final String activiteId)
 			throws OperationImpossible {
 		if (id == null || id.isBlank()) {
@@ -122,6 +145,17 @@ public class SuiPro {
 		assert invariant();
 	}
 
+	/**
+	 * ajoute une période de travail.
+	 * 
+	 * @param tacheId     l'identifiant de la tâche.
+	 * @param activiteId  l'identifiant de l'activité.
+	 * @param developpeurId l'identifiant du développeur.
+	 * @param debut       l'heure de début de la période de travail.
+	 * @param fin         l'heure de fin de la période de travail.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public void ajouterUnePeriodeDeTravail(final String tacheId, final String activiteId, final String developpeurId,
 			final Instant debut, final Instant fin) throws OperationImpossible {
 		if (tacheId == null || tacheId.isBlank()) {
@@ -172,6 +206,17 @@ public class SuiPro {
 		assert invariant();
 	}
 
+	/**
+	 * ajoute une période de travail.
+	 * 
+	 * @param tacheId     l'identifiant de la tâche.
+	 * @param activiteId  l'identifiant de l'activité.
+	 * @param developpeurIds liste d'identifiants des développeurs.
+	 * @param debut       l'heure de début de la période de travail.
+	 * @param fin         l'heure de fin de la période de travail.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public void ajouterUnePeriodeDeTravail(final String tacheId, final String activiteId,
 			final List<String> developpeurIds, final Instant debut, final Instant fin)
 			throws OperationImpossible {
@@ -187,26 +232,57 @@ public class SuiPro {
 
 	//#region Affichages
 
+	/**
+	 * affiche les développeurs.
+	 * 
+	 * @param printType le type d'affichage.
+	 * @return la chaîne de caractères représentant la liste des développeurs.
+	 */
 	public String afficherLesDeveloppeurs(final PrintType printType) {
 		List<Developpeur> developpeursList = Utils.filterPrintType(developpeurs.values(), printType);
 
 		return Utils.printCollection(developpeursList);
 	}
 
+	/**
+	 * affiche les développeurs.
+	 * 
+	 * @return la chaîne de caractères représentant la liste des développeurs.
+	 */
 	public String afficherLesDeveloppeurs() {
 		return afficherLesDeveloppeurs(PrintType.ACTIF);
 	}
 
+	/**
+	 * affiche les activités.
+	 * 
+	 * @param printType le type d'affichage.
+	 * @return la chaîne de caractères représentant la liste des activités.
+	 */
 	public String afficherLesActivites(final PrintType printType) {
 		List<Activite> activitesList = Utils.filterPrintType(activites.values(), printType);
 
 		return Utils.printCollection(activitesList);
 	}
 
+	/**
+	 * affiche les activités.
+	 * 
+	 * @return la chaîne de caractères représentant la liste des activités.
+	 */
 	public String afficherLesActivites() {
 		return afficherLesActivites(PrintType.ACTIF);
 	}
 
+	/**
+	 * affiche les tâches.
+	 * 
+	 * @param activiteId l'identifiant de l'activité.
+	 * @param printType  le type d'affichage.
+	 * @return la chaîne de caractères représentant la liste des tâches.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public String afficherLesTaches(final String activiteId, final PrintType printType) throws OperationImpossible {
 		if (activiteId == null || activiteId.isBlank()) {
 			throw new IllegalArgumentException("activiteId ne peut pas être null ou vide");
@@ -222,10 +298,28 @@ public class SuiPro {
 		return Utils.printCollection(tachesList);
 	}
 
+	/**
+	 * affiche les tâches.
+	 * 
+	 * @param activiteId l'identifiant de l'activité.
+	 * @return la chaîne de caractères représentant la liste des tâches.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public String afficherLesTaches(final String activiteId) throws OperationImpossible {
 		return afficherLesTaches(activiteId, PrintType.ACTIF);
 	}
 
+	/**
+	 * affiche les périodes de travail.
+	 * 
+	 * @param activiteId l'identifiant de l'activité.
+	 * @param tacheId    l'identifiant de la tâche.
+	 * @param printType  le type d'affichage.
+	 * @return la chaîne de caractères représentant la liste des périodes de travail.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public String afficherLesPeriodesDeTravailPourUneTache(final String activiteId, final String tacheId,
 			final PrintType printType) throws OperationImpossible {
 		if (activiteId == null || activiteId.isBlank()) {
@@ -250,11 +344,29 @@ public class SuiPro {
 		return Utils.printCollection(periodesDeTravailList);
 	}
 
+	/**
+	 * affiche les périodes de travail.
+	 * 
+	 * @param activiteId l'identifiant de l'activité.
+	 * @param tacheId    l'identifiant de la tâche.
+	 * @return la chaîne de caractères représentant la liste des périodes de travail.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public String afficherLesPeriodesDeTravailPourUneTache(final String activiteId, final String tacheId)
 			throws OperationImpossible {
 		return afficherLesPeriodesDeTravailPourUneTache(activiteId, tacheId, PrintType.ACTIF);
 	}
 
+	/**
+	 * affiche les périodes de travail.
+	 * 
+	 * @param developpeurId l'identifiant du développeur.
+	 * @param printType     le type d'affichage.
+	 * @return la chaîne de caractères représentant la liste des périodes de travail.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public String afficherLesPeriodesDeTravailPourUnDeveloppeur(final String developpeurId, final PrintType printType)
 			throws OperationImpossible {
 		if (developpeurId == null || developpeurId.isBlank()) {
@@ -272,29 +384,54 @@ public class SuiPro {
 		return Utils.printCollection(periodesDeTravailList);
 	}
 
+	/**
+	 * affiche les périodes de travail.
+	 * 
+	 * @param developpeurId l'identifiant du développeur.
+	 * @return la chaîne de caractères représentant la liste des périodes de travail.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+	 *                             de décision des tests de validation).
+	 */
 	public String afficherLesPeriodesDeTravailPourUnDeveloppeur(final String developpeurId)
 			throws OperationImpossible {
 		return afficherLesPeriodesDeTravailPourUnDeveloppeur(developpeurId, PrintType.ACTIF);
 	}
 
+	/**
+	 * affiche les périodes de travail.
+	 * 
+	 * @return la chaîne de caractères représentant la liste des périodes de travail.
+	 */
 	public String afficherLesDeveloppeurALaCorebille() {
 		ArrayList<Developpeur> devs = corbeille.getElementsJetable(Developpeur.class);
 
 		return Utils.printCollection(devs);
 	}
 
+	/**
+	 * affiche les activités.
+	 * @return la chaîne de caractères représentant la liste des activités.
+	 */
 	public String afficherLesActivitesALaCorbeille() {
 		ArrayList<Activite> activites = corbeille.getElementsJetable(Activite.class);
 
 		return Utils.printCollection(activites);
 	}
 
+	/**
+	 * affiche les tâches.
+	 * @return la chaîne de caractères représentant la liste des tâches.
+	 */
 	public String afficherLesTachesALaCorbeille() {
 		ArrayList<Tache> taches = corbeille.getElementsJetable(Tache.class);
 
 		return Utils.printCollection(taches);
 	}
 
+	/**
+	 * affiche les périodes de travail.
+	 * @return la chaîne de caractères représentant la liste des périodes de travail.
+	 */
 	public String afficherLesPeriodesDeTravailALaCorbeille() {
 		ArrayList<PeriodeDeTravail> periodesDeTravail = corbeille.getElementsJetable(PeriodeDeTravail.class);
 
@@ -305,6 +442,11 @@ public class SuiPro {
 
 	//#region MiseALaCorbeille
 
+	/**
+	 * Met un developpeur à la corbeille.
+	 * @param id l'identifiant du developpeur.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+	 */
 	public void mettreUnDeveloppeurALaCorbeille(final String id) throws OperationImpossible {
 		if (id == null || id.isBlank()) {
 			throw new IllegalArgumentException("id ne peut pas être nul ou vide");
@@ -317,6 +459,11 @@ public class SuiPro {
 		dev.mettreALaCorbeille();
 	}
 
+	/**
+	 * Met une activité à la corbeille.
+	 * @param id l'identifiant de l'activité.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+	 */
 	public void mettreUneActiviteALaCorbeille(final String id) throws OperationImpossible {
 		if (id == null || id.isBlank()) {
 			throw new IllegalArgumentException("id ne peut pas être nul ou vide");
@@ -329,6 +476,12 @@ public class SuiPro {
 		activite.mettreALaCorbeille();
 	}
 
+	/**
+	 * Met une tâche à la corbeille.
+	 * @param activiteId l'identifiant de l'activité.
+	 * @param tacheId l'identifiant de la tâche.
+	 * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+	 */
 	public void mettreUneTacheALaCorbeille(final String activiteId, final String tacheId) throws OperationImpossible {
 		if (activiteId == null || activiteId.isBlank()) {
 			throw new IllegalArgumentException("activiteId ne peut pas être nul ou vide");
@@ -352,26 +505,52 @@ public class SuiPro {
 
 	//#endregion
 
+	/**
+	 * obtient la liste des développeurs.
+	 * @return la liste des développeurs.
+	 */
 	public List<Developpeur> getDeveloppeurs() {
 		return developpeurs.values().stream().toList();
 	}
 
+	/**
+	 * obtient la liste des identifiants des développeurs.
+	 * @return la liste des identifiants des développeurs.
+	 */
 	public List<String> getDeveloppeursIds() {
 		return developpeurs.keySet().stream().toList();
 	}
 
+	/**
+	 * obtient un développeur.
+	 * @param alias l'alias du développeur.
+	 * @return le développeur.
+	 */
 	public Developpeur getDeveloppeur(final String alias) {
 		return developpeurs.get(alias);
 	}
 
+	/**
+	 * obtient la liste des activités.
+	 * @return la liste des activités.
+	 */
 	public List<Activite> getActivites() {
 		return activites.values().stream().toList();
 	}
 
+	/**
+	 * obtient la liste des identifiants des activités.
+	 * @return la liste des identifiants des activités.
+	 */
 	public List<String> getActivitesIds() {
 		return activites.keySet().stream().toList();
 	}
 
+	/**
+	 * obtient une activité.
+	 * @param id l'identifiant de l'activité.
+	 * @return l'activité.
+	 */
 	public Activite getActivite(final String id) {
 		return activites.get(id);
 	}

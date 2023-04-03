@@ -1,6 +1,7 @@
 package eu.telecomsudparis.csc4102.suipro;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -11,7 +12,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * 
  * @author Denis Conan
  */
-public class Developpeur extends ElementJetable implements IDeveloppeur {
+public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	/**
 	 * l'alias du développeur.
 	 */
@@ -25,6 +26,9 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	 */
 	private final String prenom;
 
+	/**
+	 * les périodes de travail du développeur.
+	 */
 	private ArrayList<IPeriodeDeTravail> periodesDeTravail;
 
 	/**
@@ -118,7 +122,7 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	}
 
 	/**
-	 * obtient le prenom
+	 * obtient le prenom.
 	 * 
 	 * @return le prenom.
 	 */
@@ -131,15 +135,14 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	 * 
 	 * @return la liste des périodes de travail.
 	 */
-	public ArrayList<IPeriodeDeTravail> getPeriodesDeTravail() {
-		return periodesDeTravail;
+	public Collection<IPeriodeDeTravail> getPeriodesDeTravail() {
+		return periodesDeTravail.stream().toList();
 	}
 
 	//#endregion
 
 	@Override
-	public void mettreALaCorbeille() {
-		super.mettreALaCorbeille();
+	protected void specificMettreALaCorbeille() {
 		for (IPeriodeDeTravail p : periodesDeTravail) {
 			p.mettreALaCorbeille();
 		}

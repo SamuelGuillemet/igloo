@@ -124,7 +124,7 @@ class TestAjouterUnePeriodeDeTravail {
     @Test
     void Test10Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.ajouterUnePeriodeDeTravail(idTache, idActivite, idDev, null, fin));
+                () -> suiPro.ajouterUnePeriodeDeTravail(idTache, idActivite, (String) null, debut, fin));
     }
 
     @Test

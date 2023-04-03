@@ -1,16 +1,42 @@
 package eu.telecomsudparis.csc4102.suipro;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-public class Tache extends ElementJetable implements ITache {
+/**
+ * Cette classe définit le concept de tâche. Une tâche est un élément jetable
+ * référençant une activité et une collection de périodes de travail.
+ */
+public final class Tache extends ElementJetable implements ITache {
+    /**
+     * nom de la tâche.
+     */
     private final String nom;
+
+    /**
+     * identifiant de la tâche.
+     */
     private final String id;
 
+    /**
+     * périodes de travail de la tâche.
+     */
     private ArrayList<IPeriodeDeTravail> periodesDeTravail;
+
+    /**
+     * activité de la tâche.
+     */
     private IActivite activite;
 
+    /**
+     * @param nom
+     * @param id
+     * @param activite
+     * @throws OperationImpossible
+     */
     public Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new IllegalArgumentException("Le nom ne peut pas être null ou vide.");
@@ -38,6 +64,9 @@ public class Tache extends ElementJetable implements ITache {
         assert invariant();
     }
 
+    /**
+     * @return true si l'invariant est respecté, false sinon
+     */
     public boolean invariant() {
         return nom != null && !nom.isBlank()
                 && id != null && !id.isBlank()
@@ -47,24 +76,40 @@ public class Tache extends ElementJetable implements ITache {
 
     //#region Getters
 
+    /**
+     * @return le nom de la tâche
+     */
     public String getNom() {
         return nom;
     }
 
+    /**
+     * @return l'id de la tâche
+     */
     public String getId() {
         return id;
     }
 
-    public ArrayList<IPeriodeDeTravail> getPeriodesDeTravail() {
-        return periodesDeTravail;
+    /**
+     * @return les périodes de travail de la tâche
+     */
+    public Collection<IPeriodeDeTravail> getPeriodesDeTravail() {
+        return periodesDeTravail.stream().toList();
     }
 
+    /**
+     * @return l'activité de la tâche
+     */
     public IActivite getActivite() {
         return activite;
     }
 
     //#endregion
 
+    /**
+     * @param periodeDeTravail
+     * @throws OperationImpossible
+     */
     public void ajouterPeriodeDeTravail(final IPeriodeDeTravail periodeDeTravail) throws OperationImpossible {
         if (periodeDeTravail == null) {
             throw new IllegalArgumentException("La période de travail ne peut pas être null.");
@@ -90,8 +135,7 @@ public class Tache extends ElementJetable implements ITache {
     //#region ElementJetable
 
     @Override
-    public void mettreALaCorbeille() {
-        super.mettreALaCorbeille();
+    protected void specificMettreALaCorbeille() {
         for (IPeriodeDeTravail periodeDeTravail : periodesDeTravail) {
             periodeDeTravail.mettreALaCorbeille();
         }
@@ -106,5 +150,25 @@ public class Tache extends ElementJetable implements ITache {
         builder.append("\n\t↳ ");
         builder.append(activite.toString());
         return builder.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Tache)) {
+            return false;
+        }
+        Tache tache = (Tache) obj;
+        return tache.id.equals(this.id);
     }
 }
