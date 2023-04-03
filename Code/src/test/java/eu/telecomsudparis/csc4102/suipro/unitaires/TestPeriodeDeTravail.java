@@ -126,6 +126,10 @@ class TestPeriodeDeTravail {
 
 	@Nested
 	class MettreALaCorbeille {
+		@BeforeEach
+		void setUp() {
+			Corbeille.getInstance().viderLaCorbeille();
+		}
 
 		@AfterAll
 		static void tearDownAfterClass() throws Exception {
