@@ -1,5 +1,6 @@
 package eu.telecomsudparis.csc4102.suipro;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -29,13 +30,14 @@ public final class Activite extends ElementJetable implements IActivite {
     /**
      * @param nom
      * @param id
+     * @throws OperationImpossible
      */
-    public Activite(final String nom, final String id) {
+    public Activite(final String nom, final String id) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
-            throw new IllegalArgumentException("Le nom ne peut pas être null ou vide.");
+            throw new OperationImpossible("Le nom ne peut pas être null ou vide.");
         }
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("L'id ne peut pas être null ou vide.");
+            throw new OperationImpossible("L'id ne peut pas être null ou vide.");
         }
 
         this.nom = nom;
@@ -90,22 +92,21 @@ public final class Activite extends ElementJetable implements IActivite {
     /**
      * @param tache
      * @throws OperationImpossible
-     * @throws IllegalArgumentException
      */
     public void ajouterTache(final ITache tache) throws OperationImpossible {
         if (tache == null) {
-            throw new IllegalArgumentException("La tâche ne peut pas être null.");
+            throw new OperationImpossible("La tâche ne peut pas être null.");
         }
         if (taches.containsValue(tache)) {
             throw new OperationImpossible("La tâche est déjà associée à cette activité.");
         }
-        if (!tache.estActif()) {
+        if (!tache.estEnFonctionnement()) {
             throw new OperationImpossible("La tâche doit être active.");
         }
         if (tache.getActivite() != this) {
             throw new OperationImpossible("La tâche doit être associée à cette activité.");
         }
-        if (!this.estActif()) {
+        if (!this.estEnFonctionnement()) {
             throw new OperationImpossible("L'activité doit être active.");
         }
 
@@ -115,15 +116,22 @@ public final class Activite extends ElementJetable implements IActivite {
     }
 
     @Override
-    protected void specificMettreALaCorbeille() {
+    protected void specificMettreALaCorbeille() throws OperationImpossible {
         for (ITache tache : taches.values()) {
             tache.mettreALaCorbeille();
         }
     }
 
     @Override
+    protected void specificRestaurer() throws OperationImpossible {
+        for (ITache tache : taches.values()) {
+            tache.restaurer();
+        }
+    }
+
+    @Override
     public String toString() {
-        return "Activite [id=" + id + ", nom=" + nom + ", actif=" + estActif() + "]";
+        return "Activite [id=" + id + ", nom=" + nom + ", enFonctionnement=" + estEnFonctionnement() + "]";
     }
 
     @Override
@@ -147,5 +155,27 @@ public final class Activite extends ElementJetable implements IActivite {
             return false;
         }
         return true;
+    }
+
+    /**
+     * This method is called when an event is fire by the Corbeille when a Tache is removed from it.
+     * 
+     * @param evt {@code source} must be a {@link Corbeille} and {@code propertyName} must be {@link Tache} string.
+     */
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt) {
+        if (evt.getSource().getClass() != Corbeille.class) {
+            return;
+        }
+        if (!evt.getPropertyName().equals(Tache.class.getSimpleName())) {
+            return;
+        }
+        if (evt.getNewValue() != null) {
+            return;
+        }
+        ITache tache = (ITache) evt.getOldValue();
+        taches.remove(tache.getId());
+
+        assert invariant();
     }
 }
