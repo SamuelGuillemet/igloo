@@ -1,5 +1,6 @@
 package eu.telecomsudparis.csc4102.suipro;
 
+import java.beans.PropertyChangeEvent;
 import java.time.Instant;
 
 import eu.telecomsudparis.csc4102.util.IntervalleInstants;
@@ -37,33 +38,33 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 			throws OperationImpossible {
 		super();
 		if (debut == null) {
-			throw new IllegalArgumentException("debut ne peut pas être null");
+			throw new OperationImpossible("debut ne peut pas être null");
 		}
 		if (fin == null) {
-			throw new IllegalArgumentException("fin ne peut pas être null");
+			throw new OperationImpossible("fin ne peut pas être null");
 		}
 		if (tache == null) {
-			throw new IllegalArgumentException("tache ne peut pas être null");
+			throw new OperationImpossible("tache ne peut pas être null");
 		}
 		if (developpeur == null) {
-			throw new IllegalArgumentException("developpeur ne peut pas être null");
+			throw new OperationImpossible("developpeur ne peut pas être null");
 		}
 
 		//! Because of a bug inside the IntervalleInstants class,
 		//! we need to check if `debut` is before `fin` manually.
 		if (debut.isAfter(fin) || debut.equals(fin)) {
-			throw new IllegalArgumentException("debut ne peut pas être après fin");
+			throw new OperationImpossible("debut ne peut pas être après fin");
 		}
 		this.intervalle = new IntervalleInstants(debut, fin);
 
-		if (!developpeur.estActif()) {
-			throw new OperationImpossible("le développeur n'est pas actif");
+		if (!developpeur.estEnFonctionnement()) {
+			throw new OperationImpossible("le développeur n'est pas en fonctionnement");
 		}
 		this.developpeur = developpeur;
 		this.developpeur.ajouterPeriodeDeTravail(this);
 
-		if (!tache.estActif()) {
-			throw new OperationImpossible("la tâche n'est pas actif");
+		if (!tache.estEnFonctionnement()) {
+			throw new OperationImpossible("la tâche n'est pas en fonctionnement");
 		}
 		this.tache = tache;
 		this.tache.ajouterPeriodeDeTravail(this);
@@ -109,6 +110,16 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	}
 
 	@Override
+	protected void specificRestaurer() {
+		if (!developpeur.estEnFonctionnement()) {
+			throw new IllegalStateException("le développeur n'est pas en fonctionnement");
+		}
+		if (!tache.estEnFonctionnement()) {
+			throw new IllegalStateException("la tâche n'est pas en fonctionnement");
+		}
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PeriodeDeTravail [" + intervalle.getInstantDebut() + "->" + intervalle.getInstantFin()
@@ -150,5 +161,10 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		return;
 	}
 }
