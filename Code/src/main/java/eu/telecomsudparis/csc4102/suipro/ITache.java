@@ -11,8 +11,6 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  */
 public interface ITache extends IElementJetable {
 
-    String getNom();
-
     String getId();
 
     Collection<IPeriodeDeTravail> getPeriodesDeTravail();
