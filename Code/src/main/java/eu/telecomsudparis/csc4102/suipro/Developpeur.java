@@ -202,6 +202,5 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 		}
 		IPeriodeDeTravail periodeDeTravail = (IPeriodeDeTravail) evt.getOldValue();
 		periodesDeTravail.remove(periodeDeTravail);
-		System.out.println("La période de travail " + periodeDeTravail + " a été supprimée de la corbeille");
 	}
 }

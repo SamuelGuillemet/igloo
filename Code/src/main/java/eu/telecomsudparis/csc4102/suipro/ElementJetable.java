@@ -50,7 +50,7 @@ public abstract class ElementJetable implements IElementJetable {
             corbeille.supprimerDeLaCorbeille(this);
         } catch (IllegalStateException e) {
             this.enFonctionnement = false;
-            System.err.println(e.getMessage());
+            // System.err.println(e.getMessage());
         }
     }
 
