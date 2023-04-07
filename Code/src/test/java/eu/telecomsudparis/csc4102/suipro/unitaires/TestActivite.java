@@ -1,7 +1,8 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.unitaires;
 
-import org.junit.jupiter.api.AfterAll;
+import java.beans.PropertyChangeEvent;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +12,9 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.Activite;
 import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.ITache;
+import eu.telecomsudparis.csc4102.suipro.Tache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
-
+import eu.telecomsudparis.csc4102.suipro.mocks.MockedCorbeille;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedTache;
 
 class TestActivite {
@@ -21,22 +23,22 @@ class TestActivite {
     class Contructeur {
         @Test
         void Test1Jeu1() throws Exception {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> new Activite(null, "id"));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite(null, "id"));
         }
 
         @Test
         void Test1Jeu2() throws Exception {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> new Activite("", "id"));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("", "id"));
         }
 
         @Test
         void Test2Jeu1() throws Exception {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> new Activite("nom", null));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", null));
         }
 
         @Test
         void Test2Jeu2() throws Exception {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> new Activite("nom", ""));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", ""));
         }
 
         @Test
@@ -51,17 +53,14 @@ class TestActivite {
     @Nested
     class MettreALaCorbeille {
 
-        @AfterAll
-        static void tearDownAfterClass() throws Exception {
-            Corbeille.getInstance().viderLaCorbeille();
-        }
-
         @Test
         void TestMettreALaCorbeille() throws Exception {
+            MockedCorbeille corbeille = new MockedCorbeille();
             Activite activite = new Activite("nom", "id");
+            activite.setCorbeille(corbeille);
             MockedTache tache = new MockedTache(activite);
             Assertions.assertNotNull(activite);
-            Assertions.assertTrue(activite.estActif());
+            Assertions.assertTrue(activite.estEnFonctionnement());
 
             try {
                 activite.ajouterTache(tache);
@@ -70,14 +69,50 @@ class TestActivite {
             }
 
             activite.mettreALaCorbeille();
-            Assertions.assertFalse(activite.estActif());
+            Assertions.assertFalse(activite.estEnFonctionnement());
 
             Assertions.assertEquals(1, tache.mettreALaCorbeilleCalledTimes);
 
             activite.mettreALaCorbeille();
-            Assertions.assertFalse(activite.estActif());
+            Assertions.assertFalse(activite.estEnFonctionnement());
 
-            int size = Corbeille.getInstance().getElementsJetable(Activite.class).size();
+            int size = corbeille.getNbAjout(activite);
+            Assertions.assertEquals(1, size);
+        }
+    }
+
+    @Nested
+    class Restaurer {
+
+        @Test
+        void TestRestaurer() throws Exception {
+            MockedCorbeille corbeille = new MockedCorbeille();
+            Activite activite = new Activite("nom", "id");
+            activite.setCorbeille(corbeille);
+            MockedTache tache = new MockedTache(activite);
+            Assertions.assertNotNull(activite);
+            Assertions.assertTrue(activite.estEnFonctionnement());
+
+            try {
+                activite.ajouterTache(tache);
+            } catch (OperationImpossible e) {
+                Assertions.fail("Test impossible : impossible d'ajouter une tache à une activité");
+            }
+
+            activite.mettreALaCorbeille();
+            Assertions.assertFalse(activite.estEnFonctionnement());
+
+            Assertions.assertEquals(1, tache.mettreALaCorbeilleCalledTimes);
+
+            activite.restaurer();
+            Assertions.assertTrue(activite.estEnFonctionnement());
+
+            Assertions.assertEquals(1, tache.restaurerCalledTimes);
+
+            activite.restaurer();
+            Assertions.assertTrue(activite.estEnFonctionnement());
+
+            int size = corbeille.getNbSuppression(activite);
             Assertions.assertEquals(1, size);
         }
     }
@@ -86,23 +121,26 @@ class TestActivite {
     class AjouterUneTache {
         ITache tache;
         Activite activite;
+        Corbeille corbeille;
 
         @BeforeEach
         void setUp() throws Exception {
             activite = new Activite("nom", "id");
             tache = new MockedTache(activite);
+            corbeille = new Corbeille();
+            activite.setCorbeille(corbeille);
         }
 
         @AfterEach
         void tearDown() throws Exception {
             activite = null;
             tache = null;
-            Corbeille.getInstance().viderLaCorbeille();
+            corbeille = null;
         }
 
         @Test
         void Test1() throws Exception {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> activite.ajouterTache(null));
+            Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterTache(null));
         }
 
         @Test
@@ -128,7 +166,7 @@ class TestActivite {
         @Test
         void Test5() throws Exception {
             activite.mettreALaCorbeille();
-            Assertions.assertFalse(activite.estActif());
+            Assertions.assertFalse(activite.estEnFonctionnement());
             Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterTache(tache));
         }
 
@@ -140,4 +178,59 @@ class TestActivite {
         }
     }
 
+    @Nested
+    class PropertyChange {
+        ITache tache;
+        Activite activite;
+        PropertyChangeEvent tester;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            activite = new Activite("nom", "id");
+            tache = new MockedTache(activite);
+            activite.ajouterTache(tache);
+        }
+
+        @AfterEach
+        void tearDown() throws Exception {
+            activite = null;
+            tache = null;
+            tester = null;
+        }
+
+        @Test
+        void Test1() throws Exception {
+            tester = new PropertyChangeEvent(new Object(), "nom", "nom", "nom2");
+            activite.propertyChange(tester);
+            Assertions.assertTrue(activite.getTaches().contains(tache));
+        }
+
+        @Test
+        void Test2() throws Exception {
+            tester = new PropertyChangeEvent(new Corbeille(), "nom", "nom", "nom2");
+            activite.propertyChange(tester);
+            Assertions.assertTrue(activite.getTaches().contains(tache));
+        }
+
+        @Test
+        void Test3() throws Exception {
+            tester = new PropertyChangeEvent(new Corbeille(), Tache.class.getSimpleName(), "nom", "nom2");
+            activite.propertyChange(tester);
+            Assertions.assertTrue(activite.getTaches().contains(tache));
+        }
+
+        @Test
+        void Test4() throws Exception {
+            tester = new PropertyChangeEvent(new Corbeille(), Tache.class.getSimpleName(), tache, tache);
+            activite.propertyChange(tester);
+            Assertions.assertTrue(activite.getTaches().contains(tache));
+        }
+
+        @Test
+        void Test5() throws Exception {
+            tester = new PropertyChangeEvent(new Corbeille(), Tache.class.getSimpleName(), tache, null);
+            activite.propertyChange(tester);
+            Assertions.assertFalse(activite.getTaches().contains(tache));
+        }
+    }
 }
