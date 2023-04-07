@@ -15,7 +15,7 @@ class TestAjouterUneActivite {
     private String nom;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         suiPro = new SuiPro("projetx");
         identifiant = "activite1";
         nom = "nom1";

@@ -65,7 +65,7 @@ public class TestSprint1 {
     private SuiPro suiPro;
 
     @BeforeAll
-    public void setUp() {
+    public void setUp() throws OperationImpossible {
         suiPro = new SuiPro("Sprint1");
     }
 

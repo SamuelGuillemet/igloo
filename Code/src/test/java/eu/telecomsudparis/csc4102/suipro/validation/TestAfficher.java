@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
@@ -73,7 +72,6 @@ class TestAfficher {
         fin1 = null;
         debut2 = null;
         fin2 = null;
-        Corbeille.getInstance().viderLaCorbeille();
     }
 
     @Test
@@ -109,13 +107,13 @@ class TestAfficher {
 
     @Test
     void TestTacheArgumentJeu1() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.afficherLesTaches(null));
     }
 
     @Test
     void TestTacheArgumentJeu2() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.afficherLesTaches(""));
     }
 
@@ -167,13 +165,13 @@ class TestAfficher {
 
     @Test
     void TestPeriodeDeTravailPourUneTacheArgumentJeu1() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.afficherLesPeriodesDeTravailPourUneTache(null, tacheId));
     }
 
     @Test
     void TestPeriodeDeTravailPourUneTacheArgumentJeu2() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.afficherLesPeriodesDeTravailPourUneTache("", tacheId));
     }
 
@@ -185,13 +183,13 @@ class TestAfficher {
 
     @Test
     void TestPeriodeDeTravailPourUneTacheArgumentJeu4() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.afficherLesPeriodesDeTravailPourUneTache(actId, null));
     }
 
     @Test
     void TestPeriodeDeTravailPourUneTacheArgumentJeu5() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.afficherLesPeriodesDeTravailPourUneTache(actId, ""));
     }
 
