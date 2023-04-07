@@ -1,7 +1,9 @@
 package eu.telecomsudparis.csc4102.suipro;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -29,7 +31,7 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	/**
 	 * les périodes de travail du développeur.
 	 */
-	private ArrayList<IPeriodeDeTravail> periodesDeTravail;
+	private List<IPeriodeDeTravail> periodesDeTravail;
 
 	/**
 	 * construit un développeur.
@@ -37,22 +39,23 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	 * @param alias  l'alias.
 	 * @param nom    le nom.
 	 * @param prenom le prénom.
+	 * @throws OperationImpossible
 	 */
-	public Developpeur(final String alias, final String nom, final String prenom) {
+	public Developpeur(final String alias, final String nom, final String prenom) throws OperationImpossible {
 		super();
 		if (alias == null || alias.isBlank()) {
-			throw new IllegalArgumentException("alias ne peut pas être null ou vide");
+			throw new OperationImpossible("alias ne peut pas être null ou vide");
 		}
 		if (nom == null || nom.isBlank()) {
-			throw new IllegalArgumentException("nom ne peut pas être null ou vide");
+			throw new OperationImpossible("nom ne peut pas être null ou vide");
 		}
 		if (prenom == null || prenom.isBlank()) {
-			throw new IllegalArgumentException("prenom ne peut pas être null ou vide");
+			throw new OperationImpossible("prenom ne peut pas être null ou vide");
 		}
 		this.alias = alias;
 		this.nom = nom;
 		this.prenom = prenom;
-		this.periodesDeTravail = new ArrayList<>();
+		this.periodesDeTravail = new ArrayList<IPeriodeDeTravail>();
 
 		assert invariant();
 	}
@@ -77,9 +80,9 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	 */
 	public void ajouterPeriodeDeTravail(final IPeriodeDeTravail periodeDeTravail) throws OperationImpossible {
 		if (periodeDeTravail == null) {
-			throw new IllegalArgumentException("periodeDeTravail ne peut pas être null");
+			throw new OperationImpossible("periodeDeTravail ne peut pas être null");
 		}
-		if (!periodeDeTravail.estActif()) {
+		if (!periodeDeTravail.estEnFonctionnement()) {
 			throw new OperationImpossible("La période de travail ne peut pas être ajoutée car elle n'est pas active");
 		}
 		if (periodeDeTravail.getDeveloppeur() != this) {
@@ -92,9 +95,9 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 						"La période de travail ne peut pas être ajoutée car elle chevauche une autre période de travail");
 			}
 		}
-		if (!this.estActif()) {
+		if (!this.estEnFonctionnement()) {
 			throw new OperationImpossible(
-					"La période de travail ne peut pas être ajoutée car le développeur n'est pas actif");
+					"La période de travail ne peut pas être ajoutée car le développeur n'est pas en fonctionnement");
 		}
 
 		periodesDeTravail.add(periodeDeTravail);
@@ -142,9 +145,16 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	//#endregion
 
 	@Override
-	protected void specificMettreALaCorbeille() {
+	protected void specificMettreALaCorbeille() throws OperationImpossible {
 		for (IPeriodeDeTravail p : periodesDeTravail) {
 			p.mettreALaCorbeille();
+		}
+	}
+
+	@Override
+	protected void specificRestaurer() throws OperationImpossible {
+		for (IPeriodeDeTravail p : periodesDeTravail) {
+			p.restaurer();
 		}
 	}
 
@@ -170,6 +180,28 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 
 	@Override
 	public String toString() {
-		return "Developpeur [alias=" + alias + ", nom=" + nom + ", prenom=" + prenom + "]";
+		return "Developpeur [alias=" + alias + ", nom=" + nom + ", prenom=" + prenom + "enFonctionnement="
+				+ estEnFonctionnement() + "]";
+	}
+
+	/**
+	 * This method is called when an event is fire by the Corbeille when a PeriodeDeTravail is removed from it.
+	 * 
+	 * @param evt {@code source} must be a {@link Corbeille} and {@code propertyName} must be {@link PeriodeDeTravail} string.
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		if (evt.getSource().getClass() != Corbeille.class) {
+			return;
+		}
+		if (!evt.getPropertyName().equals(PeriodeDeTravail.class.getSimpleName())) {
+			return;
+		}
+		if (evt.getNewValue() != null) {
+			return;
+		}
+		IPeriodeDeTravail periodeDeTravail = (IPeriodeDeTravail) evt.getOldValue();
+		periodesDeTravail.remove(periodeDeTravail);
+		System.out.println("La période de travail " + periodeDeTravail + " a été supprimée de la corbeille");
 	}
 }
