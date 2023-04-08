@@ -21,29 +21,36 @@ class TestActivite {
 
     @Nested
     class Contructeur {
+        Corbeille corbeille;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            corbeille = new Corbeille();
+        }
+
         @Test
         void Test1Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite(null, "id"));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite(null, "id", corbeille));
         }
 
         @Test
         void Test1Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("", "id"));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("", "id", corbeille));
         }
 
         @Test
         void Test2Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", null));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", null, corbeille));
         }
 
         @Test
         void Test2Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", ""));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", "", corbeille));
         }
 
         @Test
         void Test4Jeu1() throws Exception {
-            Activite activite = new Activite("nom", "id");
+            Activite activite = new Activite("nom", "id", corbeille);
             Assertions.assertNotNull(activite);
             Assertions.assertEquals("nom", activite.getNom());
             Assertions.assertEquals("id", activite.getId());
@@ -56,8 +63,7 @@ class TestActivite {
         @Test
         void TestMettreALaCorbeille() throws Exception {
             MockedCorbeille corbeille = new MockedCorbeille();
-            Activite activite = new Activite("nom", "id");
-            activite.setCorbeille(corbeille);
+            Activite activite = new Activite("nom", "id", corbeille);
             MockedTache tache = new MockedTache(activite);
             Assertions.assertNotNull(activite);
             Assertions.assertTrue(activite.estEnFonctionnement());
@@ -87,8 +93,7 @@ class TestActivite {
         @Test
         void TestRestaurer() throws Exception {
             MockedCorbeille corbeille = new MockedCorbeille();
-            Activite activite = new Activite("nom", "id");
-            activite.setCorbeille(corbeille);
+            Activite activite = new Activite("nom", "id", corbeille);
             MockedTache tache = new MockedTache(activite);
             Assertions.assertNotNull(activite);
             Assertions.assertTrue(activite.estEnFonctionnement());
@@ -125,10 +130,9 @@ class TestActivite {
 
         @BeforeEach
         void setUp() throws Exception {
-            activite = new Activite("nom", "id");
-            tache = new MockedTache(activite);
             corbeille = new Corbeille();
-            activite.setCorbeille(corbeille);
+            activite = new Activite("nom", "id", corbeille);
+            tache = new MockedTache(activite);
         }
 
         @AfterEach
@@ -152,7 +156,7 @@ class TestActivite {
 
         @Test
         void Test3() throws Exception {
-            tache = new MockedTache(new Activite("nom2", "id2"));
+            tache = new MockedTache(new Activite("nom2", "id2", corbeille));
 
             Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterTache(tache));
         }
@@ -183,10 +187,12 @@ class TestActivite {
         ITache tache;
         Activite activite;
         PropertyChangeEvent tester;
+        Corbeille corbeille;
 
         @BeforeEach
         void setUp() throws Exception {
-            activite = new Activite("nom", "id");
+            corbeille = new Corbeille();
+            activite = new Activite("nom", "id", corbeille);
             tache = new MockedTache(activite);
             activite.ajouterTache(tache);
         }

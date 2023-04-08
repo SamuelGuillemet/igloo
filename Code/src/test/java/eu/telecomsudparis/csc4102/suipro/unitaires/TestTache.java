@@ -25,9 +25,11 @@ class TestTache {
     class Contructeur {
 
         MockedActivite activite;
+        Corbeille corbeille;
 
         @BeforeEach
         void setUp() throws Exception {
+            corbeille = new Corbeille();
             activite = new MockedActivite(true);
         }
 
@@ -38,45 +40,45 @@ class TestTache {
 
         @Test
         void Test1Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache(null, "id", activite));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache(null, "id", activite, corbeille));
         }
 
         @Test
         void Test1Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("", "id", activite));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("", "id", activite, corbeille));
         }
 
         @Test
         void Test2Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", null, activite));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", null, activite, corbeille));
         }
 
         @Test
         void Test2Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "", activite));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "", activite, corbeille));
         }
 
         @Test
         void Test3() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", null));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", null, corbeille));
         }
 
         @Test
         void Test4() throws Exception {
             activite = new MockedActivite(false);
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite, corbeille));
         }
 
         @Test
         void Test5() throws Exception {
-            Tache tache = new Tache("nom", "id", activite);
+            Tache tache = new Tache("nom", "id", activite, corbeille);
             Assertions.assertNotNull(tache);
             Assertions.assertEquals("nom", tache.getNom());
             Assertions.assertEquals("id", tache.getId());
             Assertions.assertEquals(activite, tache.getActivite());
             Assertions.assertTrue(tache.estEnFonctionnement());
             Assertions.assertEquals(1, activite.ajouterTacheCalledTimes);
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite, corbeille));
         }
     }
 
@@ -87,8 +89,7 @@ class TestTache {
         void Test1() throws Exception {
             MockedCorbeille corbeille = new MockedCorbeille();
             IActivite activite = new MockedActivite(true);
-            Tache tache = new Tache("nom", "id", activite);
-            tache.setCorbeille(corbeille);
+            Tache tache = new Tache("nom", "id", activite, corbeille);
             MockedPeriodeDeTravail periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
 
             Assertions.assertNotNull(tache);
@@ -126,8 +127,7 @@ class TestTache {
             corbeille = new MockedCorbeille();
             activite = new MockedActivite(true);
 
-            tache = new Tache("nom", "id", activite);
-            tache.setCorbeille(corbeille);
+            tache = new Tache("nom", "id", activite, corbeille);
 
             periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
 
@@ -184,11 +184,10 @@ class TestTache {
 
         @BeforeEach
         void setUp() throws Exception {
-            activite = new MockedActivite(true);
-            tache = new Tache("nom", "id", activite);
-            periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
             corbeille = new Corbeille();
-            tache.setCorbeille(corbeille);
+            activite = new MockedActivite(true);
+            tache = new Tache("nom", "id", activite, corbeille);
+            periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
         }
 
         @AfterEach
@@ -213,7 +212,7 @@ class TestTache {
 
         @Test
         void Test3() throws Exception {
-            periodeDeTravail = new MockedPeriodeDeTravail(new Tache("nom2", "id2", activite), true);
+            periodeDeTravail = new MockedPeriodeDeTravail(new Tache("nom2", "id2", activite, corbeille), true);
             Assertions.assertThrows(OperationImpossible.class,
                     () -> tache.ajouterPeriodeDeTravail(periodeDeTravail));
         }
@@ -246,10 +245,12 @@ class TestTache {
         IPeriodeDeTravail periodeDeTravail;
         Tache tache;
         PropertyChangeEvent tester;
+        Corbeille corbeille;
 
         @BeforeEach
-        void setUp() throws OperationImpossible {
-            tache = new Tache("nom", "id", new MockedActivite(true));
+        void setUp() throws Exception {
+            corbeille = new Corbeille();
+            tache = new Tache("nom", "id", new MockedActivite(true), corbeille);
             periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
             tache.ajouterPeriodeDeTravail(periodeDeTravail);
         }

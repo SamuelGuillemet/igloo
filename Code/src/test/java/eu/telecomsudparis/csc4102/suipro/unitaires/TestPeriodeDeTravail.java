@@ -15,6 +15,7 @@ import eu.telecomsudparis.csc4102.suipro.mocks.MockedCorbeille;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedDeveloppeur;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedTache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
+import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
 import eu.telecomsudparis.csc4102.suipro.ITache;
 
@@ -35,9 +36,11 @@ class TestPeriodeDeTravail {
 
 		IDeveloppeur developpeur;
 		ITache tache;
+		Corbeille corbeille;
 
 		@BeforeEach
-		void setUp() {
+		void setUp() throws Exception {
+			corbeille = new Corbeille();
 			developpeur = new MockedDeveloppeur(true, false);
 			tache = new MockedTache(true, false);
 		}
@@ -51,70 +54,70 @@ class TestPeriodeDeTravail {
 		@Test
 		void Test1() throws Exception {
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(null, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(null, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test2() throws Exception {
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, null, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, null, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test3() throws Exception {
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, null, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, null, developpeur, corbeille));
 		}
 
 		@Test
 		void Test4() throws Exception {
 			tache = new MockedTache(false, false);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test5() throws Exception {
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, null));
+					() -> new PeriodeDeTravail(debut, fin, tache, null, corbeille));
 		}
 
 		@Test
 		void Test6() throws Exception {
 			developpeur = new MockedDeveloppeur(false, false);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test7Jeu1() throws Exception {
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, debut, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, debut, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test7Jeu2() throws Exception {
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, mauvaiseFin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, mauvaiseFin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test8() throws Exception {
 			developpeur = new MockedDeveloppeur(true, true);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test9() throws Exception {
 			tache = new MockedTache(true, true);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test10() throws Exception {
-			PeriodeDeTravail PeriodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
+			PeriodeDeTravail PeriodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
 			Assertions.assertEquals(debut, PeriodeDeTravail.getIntervalle().getInstantDebut());
 			Assertions.assertEquals(fin, PeriodeDeTravail.getIntervalle().getInstantFin());
 			Assertions.assertEquals(tache, PeriodeDeTravail.getTache());
@@ -131,8 +134,7 @@ class TestPeriodeDeTravail {
 			ITache tache = new MockedTache(true);
 			IDeveloppeur developpeur = new MockedDeveloppeur(true);
 
-			PeriodeDeTravail periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
-			periodeDeTravail.setCorbeille(corbeille);
+			PeriodeDeTravail periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
 			Assertions.assertNotNull(periodeDeTravail);
 			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());
 
@@ -160,8 +162,7 @@ class TestPeriodeDeTravail {
 			tache = new MockedTache(true);
 			developpeur = new MockedDeveloppeur(true);
 
-			periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
-			periodeDeTravail.setCorbeille(corbeille);
+			periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
 
 			Assertions.assertNotNull(periodeDeTravail);
 			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());

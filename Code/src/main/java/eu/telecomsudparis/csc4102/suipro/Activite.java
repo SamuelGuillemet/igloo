@@ -32,6 +32,7 @@ public final class Activite extends ElementJetable implements IActivite {
      * @param id
      * @throws OperationImpossible
      */
+    @Deprecated
     public Activite(final String nom, final String id) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new OperationImpossible("Le nom ne peut pas être null ou vide.");
@@ -43,7 +44,15 @@ public final class Activite extends ElementJetable implements IActivite {
         this.nom = nom;
         this.id = id;
         this.taches = new LinkedHashMap<>();
+    }
 
+    public Activite(final String nom, final String id, final ICorbeille corbeille)
+            throws OperationImpossible {
+        this(nom, id);
+        if (corbeille == null) {
+            throw new OperationImpossible("La corbeille ne peut pas être null.");
+        }
+        this.setCorbeille(corbeille);
         assert invariant();
     }
 
@@ -53,7 +62,8 @@ public final class Activite extends ElementJetable implements IActivite {
     public boolean invariant() {
         return nom != null && !nom.isBlank()
                 && id != null && !id.isBlank()
-                && taches != null;
+                && taches != null
+                && super.invariant();
     }
 
     //#region Getters

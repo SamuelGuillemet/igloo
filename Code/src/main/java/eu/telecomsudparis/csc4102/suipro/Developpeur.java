@@ -41,6 +41,7 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	 * @param prenom le prénom.
 	 * @throws OperationImpossible
 	 */
+	@Deprecated
 	public Developpeur(final String alias, final String nom, final String prenom) throws OperationImpossible {
 		super();
 		if (alias == null || alias.isBlank()) {
@@ -56,6 +57,15 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.periodesDeTravail = new ArrayList<IPeriodeDeTravail>();
+	}
+
+	public Developpeur(final String alias, final String nom, final String prenom, final ICorbeille corbeille)
+			throws OperationImpossible {
+		this(alias, nom, prenom);
+		if (corbeille == null) {
+			throw new OperationImpossible("corbeille ne peut pas être null");
+		}
+		this.setCorbeille(corbeille);
 
 		assert invariant();
 	}
@@ -69,7 +79,8 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 		return alias != null && !alias.isBlank()
 				&& nom != null && !nom.isBlank()
 				&& prenom != null && !prenom.isBlank()
-				&& periodesDeTravail != null;
+				&& periodesDeTravail != null
+				&& super.invariant();
 	}
 
 	/**

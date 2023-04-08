@@ -20,6 +20,10 @@ public abstract class ElementJetable implements IElementJetable {
      */
     private ICorbeille corbeille;
 
+    boolean invariant() {
+        return corbeille != null;
+    }
+
     /**
      * @return true si l'élément est en fonctionnement, false sinon
      */
@@ -61,7 +65,7 @@ public abstract class ElementJetable implements IElementJetable {
      * 
      * @param corbeille
      */
-    public void setCorbeille(final ICorbeille corbeille) {
+    protected void setCorbeille(final ICorbeille corbeille) {
         this.corbeille = corbeille;
     }
 }

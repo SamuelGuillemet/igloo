@@ -22,39 +22,47 @@ class TestDeveloppeur {
 	@Nested
 	class Constructeur {
 
+		Corbeille corbeille;
+
+		@BeforeEach
+		void setUp() throws Exception {
+			corbeille = new Corbeille();
+		}
+
 		@Test
 		void Test1Jeu1() throws Exception {
-			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur(null, "nom", "prénom"));
+			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur(null, "nom", "prénom", corbeille));
 		}
 
 		@Test
 		void Test1Jeu2() throws Exception {
-			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("", "nom", "prénom"));
+			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("", "nom", "prénom", corbeille));
 		}
 
 		@Test
 		void Test2Jeu1() throws Exception {
-			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("alias", null, "prenom"));
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new Developpeur("alias", null, "prenom", corbeille));
 		}
 
 		@Test
 		void Test2Jeu2() throws Exception {
-			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("alias", "", "prenom"));
+			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("alias", "", "prenom", corbeille));
 		}
 
 		@Test
 		void Test3Jeu1() throws Exception {
-			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("alias", "nom", null));
+			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("alias", "nom", null, corbeille));
 		}
 
 		@Test
 		void Test3Jeu2() throws Exception {
-			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("alias", "nom", ""));
+			Assertions.assertThrows(OperationImpossible.class, () -> new Developpeur("alias", "nom", "", corbeille));
 		}
 
 		@Test
 		void Test4() throws Exception {
-			Developpeur developpeur = new Developpeur("alias", "nom", "prénom");
+			Developpeur developpeur = new Developpeur("alias", "nom", "prénom", corbeille);
 			Assertions.assertNotNull(developpeur);
 			Assertions.assertEquals("alias", developpeur.getAlias());
 		}
@@ -66,8 +74,7 @@ class TestDeveloppeur {
 		@Test
 		void Test1() throws Exception {
 			MockedCorbeille corbeille = new MockedCorbeille();
-			Developpeur developpeur = new Developpeur("alias", "nom", "prénom");
-			developpeur.setCorbeille(corbeille);
+			Developpeur developpeur = new Developpeur("alias", "nom", "prénom", corbeille);
 			MockedPeriodeDeTravail periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 			Assertions.assertNotNull(developpeur);
 			Assertions.assertTrue(developpeur.estEnFonctionnement());
@@ -97,8 +104,7 @@ class TestDeveloppeur {
 		@Test
 		void Test1() throws Exception {
 			MockedCorbeille corbeille = new MockedCorbeille();
-			Developpeur developpeur = new Developpeur("alias", "nom", "prénom");
-			developpeur.setCorbeille(corbeille);
+			Developpeur developpeur = new Developpeur("alias", "nom", "prénom", corbeille);
 			MockedPeriodeDeTravail periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 			Assertions.assertNotNull(developpeur);
 			Assertions.assertTrue(developpeur.estEnFonctionnement());
@@ -133,10 +139,9 @@ class TestDeveloppeur {
 
 		@BeforeEach
 		void setUp() throws OperationImpossible {
-			developpeur = new Developpeur("alias", "nom", "prénom");
-			periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 			corbeille = new Corbeille();
-			developpeur.setCorbeille(corbeille);
+			developpeur = new Developpeur("alias", "nom", "prénom", corbeille);
+			periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 		}
 
 		@AfterEach
@@ -161,7 +166,7 @@ class TestDeveloppeur {
 
 		@Test
 		void Test3() throws Exception {
-			periodeDeTravail = new MockedPeriodeDeTravail(new Developpeur("other", "other", "other"), true);
+			periodeDeTravail = new MockedPeriodeDeTravail(new Developpeur("other", "other", "other", corbeille), true);
 
 			Assertions.assertThrows(OperationImpossible.class,
 					() -> developpeur.ajouterPeriodeDeTravail(periodeDeTravail));
@@ -195,10 +200,12 @@ class TestDeveloppeur {
 		IPeriodeDeTravail periodeDeTravail;
 		Developpeur developpeur;
 		PropertyChangeEvent tester;
+		Corbeille corbeille;
 
 		@BeforeEach
-		void setUp() throws OperationImpossible {
-			developpeur = new Developpeur("alias", "nom", "prénom");
+		void setUp() throws Exception {
+			corbeille = new Corbeille();
+			developpeur = new Developpeur("alias", "nom", "prénom", corbeille);
 			periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 			developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
 		}

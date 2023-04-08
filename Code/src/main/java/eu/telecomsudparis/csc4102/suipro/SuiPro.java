@@ -88,8 +88,7 @@ public final class SuiPro implements PropertyChangeListener {
         if (developpeurs.containsKey(alias)) {
             throw new OperationImpossible("développeur déjà dans le système");
         }
-        Developpeur dev = new Developpeur(alias, nom, prenom);
-        dev.setCorbeille(corbeille);
+        Developpeur dev = new Developpeur(alias, nom, prenom, corbeille);
         corbeille.addPropertyChangeListener(dev);
         developpeurs.put(alias, dev);
         assert invariant();
@@ -114,8 +113,7 @@ public final class SuiPro implements PropertyChangeListener {
         if (activites.containsKey(id)) {
             throw new OperationImpossible("activite déjà dans le système");
         }
-        Activite activite = new Activite(nom, id);
-        activite.setCorbeille(corbeille);
+        Activite activite = new Activite(nom, id, corbeille);
         corbeille.addPropertyChangeListener(activite);
         activites.put(id, activite);
         assert invariant();
@@ -153,8 +151,7 @@ public final class SuiPro implements PropertyChangeListener {
         if (activite.getTache(id) != null) {
             throw new OperationImpossible("tache déjà dans le système");
         }
-        Tache tache = new Tache(nom, id, activite);
-        tache.setCorbeille(corbeille);
+        Tache tache = new Tache(nom, id, activite, corbeille);
         corbeille.addPropertyChangeListener(tache);
         assert invariant();
     }
@@ -215,8 +212,7 @@ public final class SuiPro implements PropertyChangeListener {
             throw new OperationImpossible("developpeur n'est pas en fonctionnement");
         }
 
-        PeriodeDeTravail periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
-        periodeDeTravail.setCorbeille(corbeille);
+        new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
 
         assert invariant();
     }

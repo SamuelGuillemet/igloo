@@ -38,6 +38,7 @@ public final class Tache extends ElementJetable implements ITache {
      * @param activite
      * @throws OperationImpossible
      */
+    @Deprecated
     public Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new OperationImpossible("Le nom ne peut pas être null ou vide.");
@@ -61,6 +62,15 @@ public final class Tache extends ElementJetable implements ITache {
         this.periodesDeTravail = new ArrayList<>();
 
         this.activite.ajouterTache(this);
+    }
+
+    public Tache(final String nom, final String id, final IActivite activite, final ICorbeille corbeille)
+            throws OperationImpossible {
+        this(nom, id, activite);
+        if (corbeille == null) {
+            throw new OperationImpossible("La corbeille ne peut pas être null.");
+        }
+        this.setCorbeille(corbeille);
 
         assert invariant();
     }
@@ -72,7 +82,8 @@ public final class Tache extends ElementJetable implements ITache {
         return nom != null && !nom.isBlank()
                 && id != null && !id.isBlank()
                 && activite != null
-                && periodesDeTravail != null;
+                && periodesDeTravail != null
+                && super.invariant();
     }
 
     //#region Getters
