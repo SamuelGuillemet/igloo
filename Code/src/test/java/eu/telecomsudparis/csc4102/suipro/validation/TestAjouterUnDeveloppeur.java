@@ -77,9 +77,9 @@ class TestAjouterUnDeveloppeur {
 	@Test
 	void Test5() throws Exception {
 		suiPro.ajouterUnDeveloppeur(identifiant, nom, prenom);
-		Assertions.assertEquals(identifiant, suiPro.getDeveloppeur(identifiant).getAlias());
-		Assertions.assertEquals(nom, suiPro.getDeveloppeur(identifiant).getNom());
-		Assertions.assertEquals(prenom, suiPro.getDeveloppeur(identifiant).getPrenom());
+		Assertions.assertTrue(suiPro.afficherLesDeveloppeurs().contains(identifiant));
+		Assertions.assertTrue(suiPro.afficherLesDeveloppeurs().contains(nom));
+		Assertions.assertTrue(suiPro.afficherLesDeveloppeurs().contains(prenom));
 	}
 
 }

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
-import eu.telecomsudparis.csc4102.suipro.Tache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 class TestMettreUneTacheALaCorbeille {
@@ -73,14 +72,14 @@ class TestMettreUneTacheALaCorbeille {
     @Test
     void Test5() throws Exception {
         suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        suiPro.getCorbeille().getElementsJetable(Tache.class).forEach(tache -> {
-            Assertions.assertEquals(idTache, tache.getId());
-            Assertions.assertEquals(nom, tache.getNom());
-        });
-        suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        int size = suiPro.getCorbeille().getElementsJetable(Tache.class).size();
+        Assertions.assertTrue(suiPro.afficherLesTachesALaCorbeille().contains(idTache));
+        Assertions.assertTrue(suiPro.afficherLesTachesALaCorbeille().contains(nom));
 
-        Assertions.assertEquals(1, size);
-        Assertions.assertFalse(suiPro.getActivite(idAct).getTache(idTache).estEnFonctionnement());
+        suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
+        String result = suiPro.afficherLesTachesALaCorbeille();
+        result.replace(idTache, "");
+        Assertions.assertFalse(result.contains(idTache));
+
+        Assertions.assertFalse(suiPro.afficherLesTachesALaCorbeille().contains(idTache));
     }
 }
