@@ -3,6 +3,7 @@ package eu.telecomsudparis.csc4102.suipro;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -28,6 +29,11 @@ public final class Tache extends ElementJetable implements ITache {
     private ArrayList<IPeriodeDeTravail> periodesDeTravail;
 
     /**
+     * liste de labels de la tâche.
+     */
+    private ArrayList<Label> labels;
+
+    /**
      * activité de la tâche.
      */
     private IActivite activite;
@@ -38,8 +44,7 @@ public final class Tache extends ElementJetable implements ITache {
      * @param activite
      * @throws OperationImpossible
      */
-    @Deprecated
-    public Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
+    private Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new OperationImpossible("Le nom ne peut pas être null ou vide.");
         }
@@ -60,10 +65,18 @@ public final class Tache extends ElementJetable implements ITache {
         this.id = id;
         this.activite = activite;
         this.periodesDeTravail = new ArrayList<>();
+        this.labels = new ArrayList<>();
 
         this.activite.ajouterTache(this);
     }
 
+    /**
+     * @param nom
+     * @param id
+     * @param activite
+     * @param corbeille
+     * @throws OperationImpossible
+     */
     public Tache(final String nom, final String id, final IActivite activite, final ICorbeille corbeille)
             throws OperationImpossible {
         this(nom, id, activite);
@@ -83,7 +96,39 @@ public final class Tache extends ElementJetable implements ITache {
                 && id != null && !id.isBlank()
                 && activite != null
                 && periodesDeTravail != null
+                && labels != null
                 && super.invariant();
+    }
+
+    /**
+     * Renvoie le temps de travail de la tâche.
+     * 
+     * @return le temps de travail de la tâche
+     */
+    public double calculerTempsDeTravail() {
+        return periodesDeTravail.stream().mapToDouble(IPeriodeDeTravail::calculerTempsDeTravail).sum();
+    }
+
+    /**
+     * Ajoute un label à la tâche.
+     * 
+     * @param label
+     * @throws OperationImpossible
+     */
+    public void ajouterLabel(final Label label) throws OperationImpossible {
+        if (label == null) {
+            throw new OperationImpossible("Le label ne peut pas être null.");
+        }
+        if (labels.contains(label)) {
+            throw new OperationImpossible("Le label est déjà associé à cette tâche.");
+        }
+        if (!this.estEnFonctionnement()) {
+            throw new OperationImpossible("La tâche doit être active.");
+        }
+
+        this.labels.add(label);
+
+        assert invariant();
     }
 
     //#region Getters
@@ -114,6 +159,13 @@ public final class Tache extends ElementJetable implements ITache {
      */
     public IActivite getActivite() {
         return activite;
+    }
+
+    /**
+     * @return les labels de la tâche
+     */
+    public List<Label> getLabels() {
+        return labels.stream().toList();
     }
 
     //#endregion
