@@ -41,8 +41,7 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	 * @param prenom le prénom.
 	 * @throws OperationImpossible
 	 */
-	@Deprecated
-	public Developpeur(final String alias, final String nom, final String prenom) throws OperationImpossible {
+	private Developpeur(final String alias, final String nom, final String prenom) throws OperationImpossible {
 		super();
 		if (alias == null || alias.isBlank()) {
 			throw new OperationImpossible("alias ne peut pas être null ou vide");
@@ -59,6 +58,13 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 		this.periodesDeTravail = new ArrayList<IPeriodeDeTravail>();
 	}
 
+	/**
+	 * @param alias
+	 * @param nom
+	 * @param prenom
+	 * @param corbeille
+	 * @throws OperationImpossible
+	 */
 	public Developpeur(final String alias, final String nom, final String prenom, final ICorbeille corbeille)
 			throws OperationImpossible {
 		this(alias, nom, prenom);
@@ -114,6 +120,15 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 		periodesDeTravail.add(periodeDeTravail);
 
 		assert invariant();
+	}
+
+	/**
+	 * renvoie le temps de travail du développeur.
+	 * 
+	 * @return le temps de travail du développeur.
+	 */
+	public double calculerTempsDeTravail() {
+		return periodesDeTravail.stream().mapToDouble(IPeriodeDeTravail::calculerTempsDeTravail).sum();
 	}
 
 	//#region getters
@@ -191,7 +206,7 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 
 	@Override
 	public String toString() {
-		return "Developpeur [alias=" + alias + ", nom=" + nom + ", prenom=" + prenom + "enFonctionnement="
+		return "Developpeur [alias=" + alias + ", nom=" + nom + ", prenom=" + prenom + ", enFonctionnement="
 				+ estEnFonctionnement() + "]";
 	}
 

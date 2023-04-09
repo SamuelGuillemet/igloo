@@ -15,4 +15,6 @@ public interface IDeveloppeur extends IElementJetable {
     String getAlias();
 
     Collection<IPeriodeDeTravail> getPeriodesDeTravail();
+
+    double calculerTempsDeTravail();
 }

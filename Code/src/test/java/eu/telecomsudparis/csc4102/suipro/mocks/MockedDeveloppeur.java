@@ -61,4 +61,10 @@ public class MockedDeveloppeur implements IDeveloppeur {
     public String getAlias() {
         throw new UnsupportedOperationException("Unimplemented method 'getAlias'");
     }
+
+    @Override
+    public double calculerTempsDeTravail() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'calculerTempsDeTravail'");
+    }
 }
