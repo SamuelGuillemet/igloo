@@ -31,7 +31,7 @@ class TestAfficherUnDeveloppeur {
     @BeforeEach
     void setUp() throws OperationImpossible {
         suiPro = new SuiPro("projetx");
-        devId = "devId";
+        devId = "devId1";
         devNom = "devNom";
         devPrenom = "devPrenom";
         devId2 = "devId2";
