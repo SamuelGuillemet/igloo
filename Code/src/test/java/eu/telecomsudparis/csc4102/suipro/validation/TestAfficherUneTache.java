@@ -31,16 +31,16 @@ class TestAfficherUneTache {
     @BeforeEach
     void setUp() throws OperationImpossible {
         suiPro = new SuiPro("projetx");
-        devId = "dev1";
-        devNom = "nom";
-        devPrenom = "prenom";
-        devId2 = "dev2";
-        actId = "atc1";
-        atcNom = "nom";
-        actId2 = "atc2";
-        tacheId = "tache1";
-        tacheId2 = "tache2";
-        tacheNom = "nom";
+        devId = "devId";
+        devNom = "devNom";
+        devPrenom = "devPrenom";
+        devId2 = "devId2";
+        actId = "atcId1";
+        atcNom = "actNom";
+        actId2 = "atcId2";
+        tacheId = "tacheId1";
+        tacheId2 = "tacheId2";
+        tacheNom = "tacheNom";
         debut1 = Instant.parse("2019-01-01T00:00:00Z");
         fin1 = Instant.parse("2019-01-02T00:00:00Z");
         debut2 = Instant.parse("2019-01-03T00:00:00Z");
