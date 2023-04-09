@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -72,7 +71,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test4() throws Exception {
 			tache = new MockedTache(false, false);
 			Assertions.assertThrows(OperationImpossible.class,
@@ -86,7 +84,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test6() throws Exception {
 			developpeur = new MockedDeveloppeur(false, false);
 			Assertions.assertThrows(OperationImpossible.class,
@@ -106,7 +103,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test8() throws Exception {
 			developpeur = new MockedDeveloppeur(true, true);
 			Assertions.assertThrows(OperationImpossible.class,
@@ -114,7 +110,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test9() throws Exception {
 			tache = new MockedTache(true, true);
 			Assertions.assertThrows(OperationImpossible.class,
@@ -122,14 +117,12 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test10() throws Exception {
 			Assertions.assertThrows(OperationImpossible.class,
 					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, null));
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test11() throws Exception {
 			PeriodeDeTravail PeriodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
 			Assertions.assertEquals(debut, PeriodeDeTravail.getIntervalle().getInstantDebut());
@@ -143,7 +136,6 @@ class TestPeriodeDeTravail {
 	@Nested
 	class MettreALaCorbeille {
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test1() throws Exception {
 			MockedCorbeille corbeille = new MockedCorbeille();
 			ITache tache = new MockedTache(true);
@@ -195,7 +187,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test1() throws Exception {
 			tache.setEnFonctionnement(false);
 			periodeDeTravail.restaurer();
@@ -203,7 +194,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test2() throws Exception {
 			developpeur.setEnFonctionnement(false);
 			periodeDeTravail.restaurer();
@@ -211,7 +201,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test3() throws Exception {
 			periodeDeTravail.restaurer();
 			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());
@@ -253,7 +242,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test1() throws Exception {
 			periodeDeTravail.mettreALaCorbeille();
 			Assertions.assertFalse(periodeDeTravail.estEnFonctionnement());
@@ -263,7 +251,6 @@ class TestPeriodeDeTravail {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test2() throws Exception {
 			double duree = periodeDeTravail.calculerTempsDeTravail();
 			Assertions.assertEquals(1.0, duree);
