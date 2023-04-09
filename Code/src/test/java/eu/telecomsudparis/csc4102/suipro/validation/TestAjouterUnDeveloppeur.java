@@ -16,7 +16,7 @@ class TestAjouterUnDeveloppeur {
 	private String prenom;
 
 	@BeforeEach
-	void setUp() {
+	void setUp() throws Exception {
 		suiPro = new SuiPro("projetx");
 		identifiant = "developpeur1";
 		nom = "nom1";

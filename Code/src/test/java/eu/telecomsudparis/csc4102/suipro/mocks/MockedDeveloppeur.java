@@ -1,5 +1,7 @@
+// CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.mocks;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
 import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
@@ -7,41 +9,26 @@ import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 public class MockedDeveloppeur implements IDeveloppeur {
-    private boolean estActif;
+    private boolean enFonctionnement;
     private boolean throwError;
 
-    public MockedDeveloppeur(boolean estActif, boolean throwError) {
-        this.estActif = estActif;
+    public MockedDeveloppeur(boolean enFonctionnement, boolean throwError) {
+        this.enFonctionnement = enFonctionnement;
         this.throwError = throwError;
     }
 
-    public MockedDeveloppeur(boolean estActif) {
-        this(estActif, false);
+    public MockedDeveloppeur(boolean enFonctionnement) {
+        this(enFonctionnement, false);
     }
 
     @Override
-    public boolean estActif() {
-        return estActif;
+    public boolean estEnFonctionnement() {
+        return enFonctionnement;
     }
 
     @Override
     public void mettreALaCorbeille() {
         throw new UnsupportedOperationException("Unimplemented method 'mettreALaCorbeille'");
-    }
-
-    @Override
-    public String getAlias() {
-        throw new UnsupportedOperationException("Unimplemented method 'getAlias'");
-    }
-
-    @Override
-    public String getNom() {
-        throw new UnsupportedOperationException("Unimplemented method 'getNom'");
-    }
-
-    @Override
-    public String getPrenom() {
-        throw new UnsupportedOperationException("Unimplemented method 'getPrenom'");
     }
 
     @Override
@@ -54,5 +41,24 @@ public class MockedDeveloppeur implements IDeveloppeur {
         if (throwError) {
             throw new OperationImpossible("MockedDeveloppeur: ajouterPeriodeDeTravail");
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'propertyChange'");
+    }
+
+    @Override
+    public void restaurer() {
+        throw new UnsupportedOperationException("Unimplemented method 'restaurer'");
+    }
+
+    public void setEnFonctionnement(boolean enFonctionnement) {
+        this.enFonctionnement = enFonctionnement;
+    }
+
+    @Override
+    public String getAlias() {
+        throw new UnsupportedOperationException("Unimplemented method 'getAlias'");
     }
 }

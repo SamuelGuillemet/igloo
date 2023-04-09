@@ -1,5 +1,6 @@
 package eu.telecomsudparis.csc4102.suipro;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -37,21 +38,22 @@ public final class Tache extends ElementJetable implements ITache {
      * @param activite
      * @throws OperationImpossible
      */
+    @Deprecated
     public Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
-            throw new IllegalArgumentException("Le nom ne peut pas être null ou vide.");
+            throw new OperationImpossible("Le nom ne peut pas être null ou vide.");
         }
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("L'id ne peut pas être null ou vide.");
+            throw new OperationImpossible("L'id ne peut pas être null ou vide.");
         }
         if (activite == null) {
-            throw new IllegalArgumentException("L'activité ne peut pas être null.");
+            throw new OperationImpossible("L'activité ne peut pas être null.");
         }
-        if (!activite.estActif()) {
-            throw new IllegalArgumentException("L'activité doit être active.");
+        if (!activite.estEnFonctionnement()) {
+            throw new OperationImpossible("L'activité doit être active.");
         }
         if (activite.getTache(id) != null) {
-            throw new IllegalArgumentException("L'id de la tâche doit être unique.");
+            throw new OperationImpossible("L'id de la tâche doit être unique.");
         }
 
         this.nom = nom;
@@ -60,6 +62,15 @@ public final class Tache extends ElementJetable implements ITache {
         this.periodesDeTravail = new ArrayList<>();
 
         this.activite.ajouterTache(this);
+    }
+
+    public Tache(final String nom, final String id, final IActivite activite, final ICorbeille corbeille)
+            throws OperationImpossible {
+        this(nom, id, activite);
+        if (corbeille == null) {
+            throw new OperationImpossible("La corbeille ne peut pas être null.");
+        }
+        this.setCorbeille(corbeille);
 
         assert invariant();
     }
@@ -71,7 +82,8 @@ public final class Tache extends ElementJetable implements ITache {
         return nom != null && !nom.isBlank()
                 && id != null && !id.isBlank()
                 && activite != null
-                && periodesDeTravail != null;
+                && periodesDeTravail != null
+                && super.invariant();
     }
 
     //#region Getters
@@ -112,18 +124,18 @@ public final class Tache extends ElementJetable implements ITache {
      */
     public void ajouterPeriodeDeTravail(final IPeriodeDeTravail periodeDeTravail) throws OperationImpossible {
         if (periodeDeTravail == null) {
-            throw new IllegalArgumentException("La période de travail ne peut pas être null.");
+            throw new OperationImpossible("La période de travail ne peut pas être null.");
         }
         if (periodesDeTravail.contains(periodeDeTravail)) {
             throw new OperationImpossible("La période de travail est déjà associée à cette tâche.");
         }
-        if (!periodeDeTravail.estActif()) {
+        if (!periodeDeTravail.estEnFonctionnement()) {
             throw new OperationImpossible("La période de travail doit être active.");
         }
         if (periodeDeTravail.getTache() != this) {
             throw new OperationImpossible("La période de travail doit être associée à cette tâche.");
         }
-        if (!this.estActif()) {
+        if (!this.estEnFonctionnement()) {
             throw new OperationImpossible("La tâche doit être active.");
         }
 
@@ -135,9 +147,19 @@ public final class Tache extends ElementJetable implements ITache {
     //#region ElementJetable
 
     @Override
-    protected void specificMettreALaCorbeille() {
+    protected void specificMettreALaCorbeille() throws OperationImpossible {
         for (IPeriodeDeTravail periodeDeTravail : periodesDeTravail) {
             periodeDeTravail.mettreALaCorbeille();
+        }
+    }
+
+    @Override
+    protected void specificRestaurer() throws OperationImpossible {
+        if (!activite.estEnFonctionnement()) {
+            throw new IllegalStateException("l'activité de la tâche doit être en fonctionnement");
+        }
+        for (IPeriodeDeTravail periodeDeTravail : periodesDeTravail) {
+            periodeDeTravail.restaurer();
         }
     }
 
@@ -146,7 +168,7 @@ public final class Tache extends ElementJetable implements ITache {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Tache [nom=" + nom + ", id=" + id + ", actif=" + estActif() + "]");
+        builder.append("Tache [nom=" + nom + ", id=" + id + ", enFonctionnement=" + estEnFonctionnement() + "]");
         builder.append("\n\t↳ ");
         builder.append(activite.toString());
         return builder.toString();
@@ -170,5 +192,24 @@ public final class Tache extends ElementJetable implements ITache {
         }
         Tache tache = (Tache) obj;
         return tache.id.equals(this.id);
+    }
+
+    /**
+    * This method is called when an event is fire by the Corbeille when a PeriodeDeTravail is removed from it.
+    * 
+    * @param evt {@code source} must be a {@link Corbeille} and {@code propertyName} must be {@link PeriodeDeTravail} string.
+    */
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt) {
+        if (evt.getSource().getClass() != Corbeille.class) {
+            return;
+        }
+        if (!evt.getPropertyName().equals(PeriodeDeTravail.class.getSimpleName())) {
+            return;
+        }
+        if (evt.getNewValue() != null) {
+            return;
+        }
+        periodesDeTravail.remove(evt.getOldValue());
     }
 }

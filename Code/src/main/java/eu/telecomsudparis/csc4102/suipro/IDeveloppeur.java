@@ -14,9 +14,5 @@ public interface IDeveloppeur extends IElementJetable {
 
     String getAlias();
 
-    String getNom();
-
-    String getPrenom();
-
     Collection<IPeriodeDeTravail> getPeriodesDeTravail();
 }

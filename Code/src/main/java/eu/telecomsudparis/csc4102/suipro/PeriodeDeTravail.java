@@ -1,5 +1,6 @@
 package eu.telecomsudparis.csc4102.suipro;
 
+import java.beans.PropertyChangeEvent;
 import java.time.Instant;
 
 import eu.telecomsudparis.csc4102.util.IntervalleInstants;
@@ -33,40 +34,58 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	 * @param developpeur
 	 * @throws OperationImpossible
 	 */
+	@Deprecated
 	public PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur)
 			throws OperationImpossible {
 		super();
 		if (debut == null) {
-			throw new IllegalArgumentException("debut ne peut pas être null");
+			throw new OperationImpossible("debut ne peut pas être null");
 		}
 		if (fin == null) {
-			throw new IllegalArgumentException("fin ne peut pas être null");
+			throw new OperationImpossible("fin ne peut pas être null");
 		}
 		if (tache == null) {
-			throw new IllegalArgumentException("tache ne peut pas être null");
+			throw new OperationImpossible("tache ne peut pas être null");
 		}
 		if (developpeur == null) {
-			throw new IllegalArgumentException("developpeur ne peut pas être null");
+			throw new OperationImpossible("developpeur ne peut pas être null");
 		}
 
 		//! Because of a bug inside the IntervalleInstants class,
 		//! we need to check if `debut` is before `fin` manually.
 		if (debut.isAfter(fin) || debut.equals(fin)) {
-			throw new IllegalArgumentException("debut ne peut pas être après fin");
+			throw new OperationImpossible("debut ne peut pas être après fin");
 		}
 		this.intervalle = new IntervalleInstants(debut, fin);
 
-		if (!developpeur.estActif()) {
-			throw new OperationImpossible("le développeur n'est pas actif");
+		if (!developpeur.estEnFonctionnement()) {
+			throw new OperationImpossible("le développeur n'est pas en fonctionnement");
 		}
 		this.developpeur = developpeur;
 		this.developpeur.ajouterPeriodeDeTravail(this);
 
-		if (!tache.estActif()) {
-			throw new OperationImpossible("la tâche n'est pas actif");
+		if (!tache.estEnFonctionnement()) {
+			throw new OperationImpossible("la tâche n'est pas en fonctionnement");
 		}
 		this.tache = tache;
 		this.tache.ajouterPeriodeDeTravail(this);
+	}
+
+	/**
+	 * @param debut
+	 * @param fin
+	 * @param tache
+	 * @param developpeur
+	 * @param corbeille
+	 * @throws OperationImpossible
+	 */
+	public PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur,
+			final ICorbeille corbeille) throws OperationImpossible {
+		this(debut, fin, tache, developpeur);
+		if (corbeille == null) {
+			throw new OperationImpossible("corbeille ne peut pas être null");
+		}
+		this.setCorbeille(corbeille);
 
 		assert invariant();
 	}
@@ -77,7 +96,8 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	public boolean invariant() {
 		return intervalle != null
 				&& developpeur != null
-				&& tache != null;
+				&& tache != null
+				&& super.invariant();
 	}
 
 	//#region Getters
@@ -106,6 +126,16 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 
 	@Override
 	protected void specificMettreALaCorbeille() {
+	}
+
+	@Override
+	protected void specificRestaurer() {
+		if (!developpeur.estEnFonctionnement()) {
+			throw new IllegalStateException("le développeur n'est pas en fonctionnement");
+		}
+		if (!tache.estEnFonctionnement()) {
+			throw new IllegalStateException("la tâche n'est pas en fonctionnement");
+		}
 	}
 
 	@Override
@@ -150,5 +180,10 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		return;
 	}
 }

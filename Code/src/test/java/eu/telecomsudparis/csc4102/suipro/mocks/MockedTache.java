@@ -1,5 +1,7 @@
+// CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.mocks;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
 import eu.telecomsudparis.csc4102.suipro.IActivite;
@@ -9,19 +11,20 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 public class MockedTache implements ITache {
     private IActivite activite;
-    private boolean estActif;
+    private boolean enFonctionnement;
     private boolean throwError;
 
     public int mettreALaCorbeilleCalledTimes;
+    public int restaurerCalledTimes;
 
-    public MockedTache(boolean estActif, boolean throwError) {
-        this.estActif = estActif;
+    public MockedTache(boolean enFonctionnement, boolean throwError) {
+        this.enFonctionnement = enFonctionnement;
         this.throwError = throwError;
     }
 
-    public MockedTache(IActivite activite, boolean estActif) {
+    public MockedTache(IActivite activite, boolean enFonctionnement) {
         this.activite = activite;
-        this.estActif = estActif;
+        this.enFonctionnement = enFonctionnement;
         this.mettreALaCorbeilleCalledTimes = 0;
     }
 
@@ -29,24 +32,19 @@ public class MockedTache implements ITache {
         this(activite, true);
     }
 
-    public MockedTache(boolean estActif) {
-        this(estActif, false);
+    public MockedTache(boolean enFonctionnement) {
+        this(enFonctionnement, false);
     }
 
     @Override
-    public boolean estActif() {
-        return estActif;
+    public boolean estEnFonctionnement() {
+        return enFonctionnement;
     }
 
     @Override
     public void mettreALaCorbeille() {
-        estActif = false;
+        enFonctionnement = false;
         mettreALaCorbeilleCalledTimes++;
-    }
-
-    @Override
-    public String getNom() {
-        throw new UnsupportedOperationException("Unimplemented method 'getNom'");
     }
 
     @Override
@@ -69,5 +67,20 @@ public class MockedTache implements ITache {
         if (throwError) {
             throw new OperationImpossible("MockedTache: ajouterPeriodeDeTravail");
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'propertyChange'");
+    }
+
+    @Override
+    public void restaurer() {
+        enFonctionnement = true;
+        restaurerCalledTimes++;
+    }
+
+    public void setEnFonctionnement(boolean enFonctionnement) {
+        this.enFonctionnement = enFonctionnement;
     }
 }

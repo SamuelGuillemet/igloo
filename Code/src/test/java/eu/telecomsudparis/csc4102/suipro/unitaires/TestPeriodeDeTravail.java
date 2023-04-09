@@ -3,7 +3,6 @@ package eu.telecomsudparis.csc4102.suipro.unitaires;
 
 import java.time.Instant;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,12 +11,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import eu.telecomsudparis.csc4102.suipro.PeriodeDeTravail;
+import eu.telecomsudparis.csc4102.suipro.mocks.MockedCorbeille;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedDeveloppeur;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedTache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
+import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
 import eu.telecomsudparis.csc4102.suipro.ITache;
-import eu.telecomsudparis.csc4102.suipro.Corbeille;
 
 class TestPeriodeDeTravail {
 	static Instant debut;
@@ -36,9 +36,11 @@ class TestPeriodeDeTravail {
 
 		IDeveloppeur developpeur;
 		ITache tache;
+		Corbeille corbeille;
 
 		@BeforeEach
-		void setUp() {
+		void setUp() throws Exception {
+			corbeille = new Corbeille();
 			developpeur = new MockedDeveloppeur(true, false);
 			tache = new MockedTache(true, false);
 		}
@@ -51,107 +53,155 @@ class TestPeriodeDeTravail {
 
 		@Test
 		void Test1() throws Exception {
-			Assertions.assertThrows(IllegalArgumentException.class,
-					() -> new PeriodeDeTravail(null, fin, tache, developpeur));
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(null, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test2() throws Exception {
-			Assertions.assertThrows(IllegalArgumentException.class,
-					() -> new PeriodeDeTravail(debut, null, tache, developpeur));
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(debut, null, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test3() throws Exception {
-			Assertions.assertThrows(IllegalArgumentException.class,
-					() -> new PeriodeDeTravail(debut, fin, null, developpeur));
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(debut, fin, null, developpeur, corbeille));
 		}
 
 		@Test
 		void Test4() throws Exception {
 			tache = new MockedTache(false, false);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test5() throws Exception {
-			Assertions.assertThrows(IllegalArgumentException.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, null));
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(debut, fin, tache, null, corbeille));
 		}
 
 		@Test
 		void Test6() throws Exception {
 			developpeur = new MockedDeveloppeur(false, false);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test7Jeu1() throws Exception {
-			Assertions.assertThrows(IllegalArgumentException.class,
-					() -> new PeriodeDeTravail(debut, debut, tache, developpeur));
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(debut, debut, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test7Jeu2() throws Exception {
-			Assertions.assertThrows(IllegalArgumentException.class,
-					() -> new PeriodeDeTravail(debut, mauvaiseFin, tache, developpeur));
+			Assertions.assertThrows(OperationImpossible.class,
+					() -> new PeriodeDeTravail(debut, mauvaiseFin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test8() throws Exception {
 			developpeur = new MockedDeveloppeur(true, true);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test9() throws Exception {
 			tache = new MockedTache(true, true);
 			Assertions.assertThrows(OperationImpossible.class,
-					() -> new PeriodeDeTravail(debut, fin, tache, developpeur));
+					() -> new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille));
 		}
 
 		@Test
 		void Test10() throws Exception {
-			PeriodeDeTravail PeriodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
+			PeriodeDeTravail PeriodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
 			Assertions.assertEquals(debut, PeriodeDeTravail.getIntervalle().getInstantDebut());
 			Assertions.assertEquals(fin, PeriodeDeTravail.getIntervalle().getInstantFin());
 			Assertions.assertEquals(tache, PeriodeDeTravail.getTache());
 			Assertions.assertEquals(developpeur, PeriodeDeTravail.getDeveloppeur());
-			Assertions.assertTrue(PeriodeDeTravail.estActif());
+			Assertions.assertTrue(PeriodeDeTravail.estEnFonctionnement());
 		}
 	}
 
 	@Nested
 	class MettreALaCorbeille {
+		@Test
+		void Test1() throws Exception {
+			MockedCorbeille corbeille = new MockedCorbeille();
+			ITache tache = new MockedTache(true);
+			IDeveloppeur developpeur = new MockedDeveloppeur(true);
+
+			PeriodeDeTravail periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
+			Assertions.assertNotNull(periodeDeTravail);
+			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());
+
+			periodeDeTravail.mettreALaCorbeille();
+			Assertions.assertFalse(periodeDeTravail.estEnFonctionnement());
+
+			periodeDeTravail.mettreALaCorbeille();
+			Assertions.assertFalse(periodeDeTravail.estEnFonctionnement());
+
+			int size = corbeille.getNbAjout(periodeDeTravail);
+			Assertions.assertEquals(1, size);
+		}
+	}
+
+	@Nested
+	class Restaurer {
+		MockedCorbeille corbeille;
+		MockedTache tache;
+		MockedDeveloppeur developpeur;
+		PeriodeDeTravail periodeDeTravail;
+
 		@BeforeEach
-		void setUp() {
-			Corbeille.getInstance().viderLaCorbeille();
+		void setUp() throws Exception {
+			corbeille = new MockedCorbeille();
+			tache = new MockedTache(true);
+			developpeur = new MockedDeveloppeur(true);
+
+			periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
+
+			Assertions.assertNotNull(periodeDeTravail);
+			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());
+
+			periodeDeTravail.mettreALaCorbeille();
+			Assertions.assertFalse(periodeDeTravail.estEnFonctionnement());
 		}
 
-		@AfterAll
-		static void tearDownAfterClass() throws Exception {
-			Corbeille.getInstance().viderLaCorbeille();
+		@AfterEach
+		void tearDown() {
+			corbeille = null;
+			tache = null;
+			developpeur = null;
+			periodeDeTravail = null;
 		}
 
 		@Test
 		void Test1() throws Exception {
-			ITache tache = new MockedTache(true, false);
-			IDeveloppeur developpeur = new MockedDeveloppeur(true, false);
+			tache.setEnFonctionnement(false);
+			periodeDeTravail.restaurer();
+			Assertions.assertFalse(periodeDeTravail.estEnFonctionnement());
+		}
 
-			PeriodeDeTravail periodeDeTravail = new PeriodeDeTravail(debut, fin, tache, developpeur);
-			Assertions.assertNotNull(periodeDeTravail);
-			Assertions.assertTrue(periodeDeTravail.estActif());
+		@Test
+		void Test2() throws Exception {
+			developpeur.setEnFonctionnement(false);
+			periodeDeTravail.restaurer();
+			Assertions.assertFalse(periodeDeTravail.estEnFonctionnement());
+		}
 
-			periodeDeTravail.mettreALaCorbeille();
-			Assertions.assertFalse(periodeDeTravail.estActif());
+		@Test
+		void Test3() throws Exception {
+			periodeDeTravail.restaurer();
+			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());
 
-			periodeDeTravail.mettreALaCorbeille();
-			Assertions.assertFalse(periodeDeTravail.estActif());
+			periodeDeTravail.restaurer();
+			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());
 
-			int size = Corbeille.getInstance().getElementsJetable(PeriodeDeTravail.class).size();
+			int size = corbeille.getNbSuppression(periodeDeTravail);
 			Assertions.assertEquals(1, size);
 		}
 	}

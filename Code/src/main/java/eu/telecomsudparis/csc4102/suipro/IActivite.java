@@ -13,8 +13,6 @@ public interface IActivite extends IElementJetable {
 
     void ajouterTache(ITache tache) throws OperationImpossible;
 
-    String getNom();
-
     String getId();
 
     Collection<ITache> getTaches();

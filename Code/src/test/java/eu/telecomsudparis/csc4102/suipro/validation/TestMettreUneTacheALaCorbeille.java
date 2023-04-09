@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.suipro.Tache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -33,30 +32,29 @@ class TestMettreUneTacheALaCorbeille {
         idAct = null;
         idTache = null;
         nom = null;
-        Corbeille.getInstance().viderLaCorbeille();
     }
 
     @Test
     void Test1Jeu1() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.mettreUneTacheALaCorbeille(idAct, null));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.mettreUneTacheALaCorbeille(idAct, ""));
     }
 
     @Test
     void Test2Jeu1() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.mettreUneTacheALaCorbeille(null, idTache));
     }
 
     @Test
     void Test2Jeu2() throws Exception {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.mettreUneTacheALaCorbeille("", idTache));
     }
 
@@ -75,14 +73,14 @@ class TestMettreUneTacheALaCorbeille {
     @Test
     void Test5() throws Exception {
         suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        Corbeille.getInstance().getElementsJetable(Tache.class).forEach(tache -> {
+        suiPro.getCorbeille().getElementsJetable(Tache.class).forEach(tache -> {
             Assertions.assertEquals(idTache, tache.getId());
             Assertions.assertEquals(nom, tache.getNom());
         });
         suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        int size = Corbeille.getInstance().getElementsJetable(Tache.class).size();
+        int size = suiPro.getCorbeille().getElementsJetable(Tache.class).size();
 
         Assertions.assertEquals(1, size);
-        Assertions.assertFalse(suiPro.getActivite(idAct).getTache(idTache).estActif());
+        Assertions.assertFalse(suiPro.getActivite(idAct).getTache(idTache).estEnFonctionnement());
     }
 }

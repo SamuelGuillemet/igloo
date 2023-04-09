@@ -1,5 +1,7 @@
+// CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.mocks;
 
+import java.beans.PropertyChangeEvent;
 import java.time.Instant;
 
 import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
@@ -11,33 +13,34 @@ public class MockedPeriodeDeTravail implements IPeriodeDeTravail {
 
     private IDeveloppeur developpeur;
     private ITache tache;
-    private boolean estActif;
+    private boolean enFonctionnement;
 
     public int mettreALaCorbeilleCalledTimes;
+    public int restaurerCalledTimes;
 
-    public MockedPeriodeDeTravail(IDeveloppeur developpeur, boolean estActif) {
-        this(estActif);
+    public MockedPeriodeDeTravail(IDeveloppeur developpeur, boolean enFonctionnement) {
+        this(enFonctionnement);
         this.developpeur = developpeur;
     }
 
-    public MockedPeriodeDeTravail(ITache tache, boolean estActif) {
-        this(estActif);
+    public MockedPeriodeDeTravail(ITache tache, boolean enFonctionnement) {
+        this(enFonctionnement);
         this.tache = tache;
     }
 
-    public MockedPeriodeDeTravail(boolean estActif) {
-        this.estActif = estActif;
+    public MockedPeriodeDeTravail(boolean enFonctionnement) {
+        this.enFonctionnement = enFonctionnement;
         this.mettreALaCorbeilleCalledTimes = 0;
     }
 
     @Override
-    public boolean estActif() {
-        return estActif;
+    public boolean estEnFonctionnement() {
+        return enFonctionnement;
     }
 
     @Override
     public void mettreALaCorbeille() {
-        estActif = false;
+        enFonctionnement = false;
         mettreALaCorbeilleCalledTimes++;
     }
 
@@ -54,5 +57,16 @@ public class MockedPeriodeDeTravail implements IPeriodeDeTravail {
     @Override
     public ITache getTache() {
         return tache;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'propertyChange'");
+    }
+
+    @Override
+    public void restaurer() {
+        enFonctionnement = true;
+        restaurerCalledTimes++;
     }
 }
