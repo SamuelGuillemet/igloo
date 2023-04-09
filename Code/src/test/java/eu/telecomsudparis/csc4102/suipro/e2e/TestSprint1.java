@@ -10,7 +10,6 @@ import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -77,7 +76,6 @@ public class TestSprint1 {
     }
 
     @Test
-    @Disabled("Bug inside IntervalleInstants::Constructeur")
     void sprint1() {
 
         // (1) ✓ ajouter le développeur Emmanuel Pastoret avec l’alias pastoret

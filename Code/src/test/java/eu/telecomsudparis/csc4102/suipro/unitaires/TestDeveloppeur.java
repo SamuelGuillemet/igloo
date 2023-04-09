@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
-
 import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.Developpeur;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
@@ -179,7 +177,6 @@ class TestDeveloppeur {
 		}
 
 		@Test
-		@Disabled("Bug inside IntervalleInstants::Constructeur")
 		void Test4() throws Exception {
 			developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
 			Assertions.assertThrows(OperationImpossible.class,

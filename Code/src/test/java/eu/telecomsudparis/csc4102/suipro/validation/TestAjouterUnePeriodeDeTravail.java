@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
@@ -148,7 +147,6 @@ class TestAjouterUnePeriodeDeTravail {
     }
 
     @Test
-    @Disabled("Bug inside IntervalleInstants::Constructeur")
     void Test14Puis13() throws Exception {
         suiPro.ajouterUnePeriodeDeTravail(idTache, idActivite, idDev, debut, fin);
         Assertions.assertThrows(OperationImpossible.class,
