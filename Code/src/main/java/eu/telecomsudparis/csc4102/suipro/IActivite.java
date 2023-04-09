@@ -9,7 +9,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * Cette interface définit le concept d'activité. Une activité est un élément jetable
  * référençant une collection de tâches.
  */
-public interface IActivite extends IElementJetable {
+public interface IActivite extends IElementJetable, Labelisable {
 
     void ajouterTache(ITache tache) throws OperationImpossible;
 
@@ -18,4 +18,6 @@ public interface IActivite extends IElementJetable {
     Collection<ITache> getTaches();
 
     ITache getTache(String id);
+
+    double calculerTempsDeTravail();
 }
