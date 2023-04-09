@@ -1,6 +1,7 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.validation;
 
+import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,9 +56,8 @@ class TestMettreUneActiviteALaCorbeille {
         suiPro.mettreUneActiviteALaCorbeille(id);
         // test idempotence
         String result = suiPro.afficherLesActivitesALaCorbeille();
-        result.replace(id, "");
-        Assertions.assertFalse(result.contains(id));
+        Assertions.assertEquals(StringUtils.countMatches(result, id), 1);
 
-        Assertions.assertFalse(suiPro.afficherLesActivitesALaCorbeille().contains(id));
+        Assertions.assertFalse(suiPro.afficherLesActivites().contains(id));
     }
 }

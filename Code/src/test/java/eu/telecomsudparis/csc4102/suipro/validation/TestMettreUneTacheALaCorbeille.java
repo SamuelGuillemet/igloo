@@ -1,6 +1,7 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.validation;
 
+import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,9 +78,8 @@ class TestMettreUneTacheALaCorbeille {
 
         suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
         String result = suiPro.afficherLesTachesALaCorbeille();
-        result.replace(idTache, "");
-        Assertions.assertFalse(result.contains(idTache));
+        Assertions.assertEquals(StringUtils.countMatches(result, idTache), 1);
 
-        Assertions.assertFalse(suiPro.afficherLesTachesALaCorbeille().contains(idTache));
+        Assertions.assertFalse(suiPro.afficherLesTaches(idAct).contains(idTache));
     }
 }

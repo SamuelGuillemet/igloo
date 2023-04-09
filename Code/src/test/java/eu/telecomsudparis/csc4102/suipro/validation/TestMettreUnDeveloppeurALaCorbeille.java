@@ -1,6 +1,7 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.validation;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,11 +58,8 @@ class TestMettreUnDeveloppeurALaCorbeille {
         Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(nom));
         Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(prenom));
         suiPro.mettreUnDeveloppeurALaCorbeille(alias);
-        // test idempotence
-        String result = suiPro.afficherLesDeveloppeurALaCorebille();
-        result.replace(alias, "");
-        Assertions.assertFalse(result.contains(alias));
 
-        Assertions.assertFalse(suiPro.afficherLesDeveloppeurALaCorebille().contains(alias));
+        String result = suiPro.afficherLesDeveloppeurALaCorebille();
+        Assertions.assertEquals(StringUtils.countMatches(result, alias), 1);
     }
 }
