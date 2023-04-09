@@ -18,6 +18,8 @@ public class MockedPeriodeDeTravail implements IPeriodeDeTravail {
     public int mettreALaCorbeilleCalledTimes;
     public int restaurerCalledTimes;
 
+    public int calculerTempsDeTravailCalledTimes;
+
     public MockedPeriodeDeTravail(IDeveloppeur developpeur, boolean enFonctionnement) {
         this(enFonctionnement);
         this.developpeur = developpeur;
@@ -31,6 +33,8 @@ public class MockedPeriodeDeTravail implements IPeriodeDeTravail {
     public MockedPeriodeDeTravail(boolean enFonctionnement) {
         this.enFonctionnement = enFonctionnement;
         this.mettreALaCorbeilleCalledTimes = 0;
+        this.restaurerCalledTimes = 0;
+        this.calculerTempsDeTravailCalledTimes = 0;
     }
 
     @Override
@@ -68,5 +72,11 @@ public class MockedPeriodeDeTravail implements IPeriodeDeTravail {
     public void restaurer() {
         enFonctionnement = true;
         restaurerCalledTimes++;
+    }
+
+    @Override
+    public double calculerTempsDeTravail() {
+        calculerTempsDeTravailCalledTimes++;
+        return 0;
     }
 }

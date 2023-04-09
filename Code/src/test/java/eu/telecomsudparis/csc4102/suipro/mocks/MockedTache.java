@@ -3,10 +3,12 @@ package eu.telecomsudparis.csc4102.suipro.mocks;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import eu.telecomsudparis.csc4102.suipro.IActivite;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.suipro.ITache;
+import eu.telecomsudparis.csc4102.suipro.Label;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 public class MockedTache implements ITache {
@@ -17,6 +19,8 @@ public class MockedTache implements ITache {
     public int mettreALaCorbeilleCalledTimes;
     public int restaurerCalledTimes;
 
+    public int calculerTempsDeTravailCalledTimes;
+
     public MockedTache(boolean enFonctionnement, boolean throwError) {
         this.enFonctionnement = enFonctionnement;
         this.throwError = throwError;
@@ -26,6 +30,8 @@ public class MockedTache implements ITache {
         this.activite = activite;
         this.enFonctionnement = enFonctionnement;
         this.mettreALaCorbeilleCalledTimes = 0;
+        this.restaurerCalledTimes = 0;
+        this.calculerTempsDeTravailCalledTimes = 0;
     }
 
     public MockedTache(IActivite activite) {
@@ -82,5 +88,23 @@ public class MockedTache implements ITache {
 
     public void setEnFonctionnement(boolean enFonctionnement) {
         this.enFonctionnement = enFonctionnement;
+    }
+
+    @Override
+    public double calculerTempsDeTravail() {
+        calculerTempsDeTravailCalledTimes++;
+        return 0;
+    }
+
+    @Override
+    public void ajouterLabel(Label label) throws OperationImpossible {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ajouterLabel'");
+    }
+
+    @Override
+    public List<Label> getLabels() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLabels'");
     }
 }

@@ -15,4 +15,6 @@ public interface IPeriodeDeTravail extends IElementJetable {
     IDeveloppeur getDeveloppeur();
 
     ITache getTache();
+
+    double calculerTempsDeTravail();
 }

@@ -3,8 +3,11 @@ package eu.telecomsudparis.csc4102.suipro;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
@@ -30,6 +33,11 @@ public final class SuiPro implements PropertyChangeListener {
     private LinkedHashMap<String, Activite> activites;
 
     /**
+     * la collection de labels. La clef est l'identifiant du label.
+     */
+    private LinkedHashMap<String, Label> labels;
+
+    /**
      * la corbeille.
      */
     private Corbeille corbeille;
@@ -46,6 +54,7 @@ public final class SuiPro implements PropertyChangeListener {
         this.nomDeProjet = nomDeProjet;
         developpeurs = new LinkedHashMap<>();
         activites = new LinkedHashMap<>();
+        labels = new LinkedHashMap<>();
         corbeille = new Corbeille();
 
         corbeille.addPropertyChangeListener(this);
@@ -60,6 +69,7 @@ public final class SuiPro implements PropertyChangeListener {
         return nomDeProjet != null && !nomDeProjet.isBlank()
                 && developpeurs != null
                 && activites != null
+                && labels != null
                 && corbeille != null;
     }
 
@@ -250,7 +260,7 @@ public final class SuiPro implements PropertyChangeListener {
      * @return la chaîne de caractères représentant la liste des développeurs.
      * @throws OperationImpossible
      */
-    public String afficherLesDeveloppeurs(final PrintType printType) throws OperationImpossible {
+    private String afficherLesDeveloppeurs(final PrintType printType) throws OperationImpossible {
         List<Developpeur> developpeursList = Utils.filterPrintType(developpeurs.values(), printType);
 
         return Utils.printCollection(developpeursList);
@@ -273,7 +283,7 @@ public final class SuiPro implements PropertyChangeListener {
      * @return la chaîne de caractères représentant la liste des activités.
      * @throws OperationImpossible
      */
-    public String afficherLesActivites(final PrintType printType) throws OperationImpossible {
+    private String afficherLesActivites(final PrintType printType) throws OperationImpossible {
         List<Activite> activitesList = Utils.filterPrintType(activites.values(), printType);
 
         return Utils.printCollection(activitesList);
@@ -298,7 +308,7 @@ public final class SuiPro implements PropertyChangeListener {
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
-    public String afficherLesTaches(final String activiteId, final PrintType printType) throws OperationImpossible {
+    private String afficherLesTaches(final String activiteId, final PrintType printType) throws OperationImpossible {
         if (activiteId == null || activiteId.isBlank()) {
             throw new OperationImpossible("activiteId ne peut pas être null ou vide");
         }
@@ -335,7 +345,7 @@ public final class SuiPro implements PropertyChangeListener {
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
-    public String afficherLesPeriodesDeTravailPourUneTache(final String activiteId, final String tacheId,
+    private String afficherLesPeriodesDeTravailPourUneTache(final String activiteId, final String tacheId,
             final PrintType printType) throws OperationImpossible {
         if (activiteId == null || activiteId.isBlank()) {
             throw new OperationImpossible("activiteId ne peut pas être null ou vide");
@@ -382,7 +392,7 @@ public final class SuiPro implements PropertyChangeListener {
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
-    public String afficherLesPeriodesDeTravailPourUnDeveloppeur(final String developpeurId, final PrintType printType)
+    private String afficherLesPeriodesDeTravailPourUnDeveloppeur(final String developpeurId, final PrintType printType)
             throws OperationImpossible {
         if (developpeurId == null || developpeurId.isBlank()) {
             throw new OperationImpossible("developpeurId ne peut pas être null ou vide");
@@ -612,6 +622,243 @@ public final class SuiPro implements PropertyChangeListener {
 
     //#endregion
 
+    //#region Calculs
+
+    /**
+     * Calcul le temps de travail d'un développeur.
+     * 
+     * @param id l'identifiant du développeur.
+     * @return le temps de travail d'un développeur.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public double calculerTempsDeTravailDeveloppeur(final String id) throws OperationImpossible {
+        if (id == null || id.isBlank()) {
+            throw new OperationImpossible("id ne peut pas être nul ou vide");
+        }
+        if (!developpeurs.containsKey(id)) {
+            throw new OperationImpossible("Le developpeur n'existe pas");
+        }
+
+        Developpeur dev = developpeurs.get(id);
+        return dev.calculerTempsDeTravail();
+    }
+
+    /**
+     * Calcul le temps de travail d'une activité.
+     * 
+     * @param id l'identifiant de l'activité.
+     * @return le temps de travail d'une activité.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public double calculerTempsDeTravailActivite(final String id) throws OperationImpossible {
+        if (id == null || id.isBlank()) {
+            throw new OperationImpossible("id ne peut pas être nul ou vide");
+        }
+        if (!activites.containsKey(id)) {
+            throw new OperationImpossible("L'activite n'existe pas");
+        }
+
+        Activite activite = activites.get(id);
+        return activite.calculerTempsDeTravail();
+    }
+
+    /**
+     * Calcul le temps de travail d'une tâche.
+     * 
+     * @param activiteId l'identifiant de l'activité.
+     * @param tacheId l'identifiant de la tâche.
+     * @return le temps de travail d'une tâche.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public double calculerTempsDeTravailTache(final String activiteId, final String tacheId)
+            throws OperationImpossible {
+        if (activiteId == null || activiteId.isBlank()) {
+            throw new OperationImpossible("activiteId ne peut pas être nul ou vide");
+        }
+        if (tacheId == null || tacheId.isBlank()) {
+            throw new OperationImpossible("tacheId ne peut pas être nul ou vide");
+        }
+        if (!activites.containsKey(activiteId)) {
+            throw new OperationImpossible("L'activite n'existe pas");
+        }
+
+        Activite activite = activites.get(activiteId);
+
+        if (!activite.estEnFonctionnement()) {
+            throw new OperationImpossible("L'activite n'est pas en fonctionnement");
+        }
+
+        Tache tache = (Tache) activite.getTache(tacheId);
+
+        if (tache == null) {
+            throw new OperationImpossible("La tache n'existe pas");
+        }
+
+        return tache.calculerTempsDeTravail();
+    }
+
+    /** 
+     * Calcul le temps de travail du projet.
+     * 
+     * @return le temps de travail du projet.
+     */
+    public double calculerTempsDeTravailProjet() {
+        return activites.values().stream().mapToDouble(Activite::calculerTempsDeTravail).sum();
+    }
+
+    /**
+     * Calcul le temps de travail du projet hors d'un label.
+     * 
+     * @param label le label.
+     * @return le temps de travail du projet hors d'un label.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public double calculerTempsDeTravailProjetHorsLabel(final String label) throws OperationImpossible {
+        return calculerTempsDeTravailProjetHorsLabels(List.of(label));
+    }
+
+    /**
+     * Calcul le temps de travail du projet hors de plusieurs labels.
+     * 
+     * @param labels les labels.
+     * @return le temps de travail du projet hors de plusieurs labels.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public double calculerTempsDeTravailProjetHorsLabels(final List<String> labels) throws OperationImpossible {
+        if (labels == null || labels.isEmpty()) {
+            throw new OperationImpossible("labels ne peut pas être nul ou vide");
+        }
+        for (String label : labels) {
+            if (!this.labels.containsKey(label)) {
+                throw new OperationImpossible("Le label n'existe pas");
+            }
+        }
+
+        List<Label> labelsList = labels.stream().map(this.labels::get).toList();
+
+        // Non Intersection between Labelisable and labels
+        Predicate<Labelisable> predicate = l -> l.getLabels().stream().noneMatch(labelsList::contains);
+
+        Stream<Activite> activitesStream = activites.values().stream()
+                .filter(predicate);
+        Stream<ITache> tachesStream = activitesStream
+                .map(Activite::getTaches)
+                .flatMap(Collection::stream)
+                .filter(predicate);
+
+        return tachesStream.mapToDouble(ITache::calculerTempsDeTravail).sum();
+    }
+
+    //#endregion
+
+    //#region Labels
+
+    /**
+     * Crée un label.
+     * 
+     * @param labelName le nom du label.
+     * @param labelId l'identifiant du label.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public void creerLabel(final String labelName, final String labelId) throws OperationImpossible {
+        if (labelName == null || labelName.isBlank()) {
+            throw new OperationImpossible("labelName ne peut pas être nul ou vide");
+        }
+        if (labelId == null || labelId.isBlank()) {
+            throw new OperationImpossible("labelId ne peut pas être nul ou vide");
+        }
+        if (labels.containsKey(labelId)) {
+            throw new OperationImpossible("Le label existe déjà");
+        }
+
+        Label label = new Label(labelName, labelId);
+        labels.put(labelId, label);
+    }
+
+    /**
+     * Ajoute un label à une activité.
+     * 
+     * @param labelId l'identifiant du label.
+     * @param activiteId l'identifiant de l'activité.
+     * 
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public void ajouterLabelAActivite(final String labelId, final String activiteId)
+            throws OperationImpossible {
+        if (labelId == null || labelId.isBlank()) {
+            throw new OperationImpossible("labelId ne peut pas être nul ou vide");
+        }
+        if (activiteId == null || activiteId.isBlank()) {
+            throw new OperationImpossible("activiteId ne peut pas être nul ou vide");
+        }
+        if (!labels.containsKey(labelId)) {
+            throw new OperationImpossible("Le label n'existe pas");
+        }
+        if (!activites.containsKey(activiteId)) {
+            throw new OperationImpossible("L'activite n'existe pas");
+        }
+
+        Activite activite = activites.get(activiteId);
+
+        if (!activite.estEnFonctionnement()) {
+            throw new OperationImpossible("L'activite n'est pas en fonctionnement");
+        }
+
+        Label label = labels.get(labelId);
+
+        activite.ajouterLabel(label);
+    }
+
+    /**
+     * Ajoute un label à une tâche.
+     * 
+     * @param labelId l'identifiant du label.
+     * @param activiteId l'identifiant de l'activité.
+     * @param tacheId l'identifiant de la tâche.
+     * 
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     */
+    public void ajouterLabelATache(final String labelId, final String activiteId, final String tacheId)
+            throws OperationImpossible {
+        if (labelId == null || labelId.isBlank()) {
+            throw new OperationImpossible("labelId ne peut pas être nul ou vide");
+        }
+        if (activiteId == null || activiteId.isBlank()) {
+            throw new OperationImpossible("activiteId ne peut pas être nul ou vide");
+        }
+        if (tacheId == null || tacheId.isBlank()) {
+            throw new OperationImpossible("tacheId ne peut pas être nul ou vide");
+        }
+        if (!labels.containsKey(labelId)) {
+            throw new OperationImpossible("Le label n'existe pas");
+        }
+        if (!activites.containsKey(activiteId)) {
+            throw new OperationImpossible("L'activite n'existe pas");
+        }
+
+        Activite activite = activites.get(activiteId);
+
+        if (!activite.estEnFonctionnement()) {
+            throw new OperationImpossible("L'activite n'est pas en fonctionnement");
+        }
+
+        Tache tache = (Tache) activite.getTache(tacheId);
+
+        if (tache == null) {
+            throw new OperationImpossible("La tache n'existe pas");
+        }
+
+        if (!tache.estEnFonctionnement()) {
+            throw new OperationImpossible("La tache n'est pas en fonctionnement");
+        }
+
+        Label label = labels.get(labelId);
+
+        tache.ajouterLabel(label);
+    }
+
+    //#endregion
+
     //#region Getters
 
     /**
@@ -627,6 +874,7 @@ public final class SuiPro implements PropertyChangeListener {
      * obtient la liste des identifiants des développeurs.
      * @return la liste des identifiants des développeurs.
      */
+    @Deprecated(forRemoval = true)
     public List<String> getDeveloppeursIds() {
         return developpeurs.keySet().stream().toList();
     }

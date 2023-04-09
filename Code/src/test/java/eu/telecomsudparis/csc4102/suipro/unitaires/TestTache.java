@@ -17,6 +17,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
 import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.IActivite;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
+import eu.telecomsudparis.csc4102.suipro.Label;
 import eu.telecomsudparis.csc4102.suipro.PeriodeDeTravail;
 
 class TestTache {
@@ -71,6 +72,11 @@ class TestTache {
 
         @Test
         void Test5() throws Exception {
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite, null));
+        }
+
+        @Test
+        void Test6() throws Exception {
             Tache tache = new Tache("nom", "id", activite, corbeille);
             Assertions.assertNotNull(tache);
             Assertions.assertEquals("nom", tache.getNom());
@@ -297,6 +303,75 @@ class TestTache {
                     null);
             tache.propertyChange(tester);
             Assertions.assertFalse(tache.getPeriodesDeTravail().contains(periodeDeTravail));
+        }
+    }
+
+    @Nested
+    class CalculerTempsDeTravail {
+        MockedPeriodeDeTravail periodeDeTravail;
+        Tache tache;
+        Corbeille corbeille;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            corbeille = new Corbeille();
+            tache = new Tache("nom", "id", new MockedActivite(true), corbeille);
+            periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
+        }
+
+        @AfterEach
+        void tearDown() {
+            periodeDeTravail = null;
+            tache = null;
+        }
+
+        @Test
+        void Test1() throws Exception {
+            Assertions.assertEquals(0, tache.calculerTempsDeTravail());
+        }
+
+        @Test
+        void Test2() throws Exception {
+            tache.ajouterPeriodeDeTravail(periodeDeTravail);
+            tache.calculerTempsDeTravail();
+            Assertions.assertEquals(1, periodeDeTravail.calculerTempsDeTravailCalledTimes);
+        }
+    }
+
+    @Nested
+    class AjouterLabel {
+        Tache tache;
+        Corbeille corbeille;
+        Label label;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            corbeille = new Corbeille();
+            tache = new Tache("nom", "id", new MockedActivite(true), corbeille);
+            label = new Label("label", "labelName");
+        }
+
+        @AfterEach
+        void tearDown() throws Exception {
+            tache = null;
+        }
+
+        @Test
+        void Test1() throws Exception {
+            Assertions.assertThrows(OperationImpossible.class, () -> tache.ajouterLabel(null));
+        }
+
+        @Test
+        void Test5puis4() throws Exception {
+            tache.mettreALaCorbeille();
+            Assertions.assertThrows(OperationImpossible.class, () -> tache.ajouterLabel(label));
+        }
+
+        @Test
+        void Test3() throws Exception {
+            tache.ajouterLabel(label);
+            Assertions.assertTrue(tache.getLabels().contains(label));
+            Assertions.assertThrows(OperationImpossible.class, () -> tache.ajouterLabel(label));
         }
     }
 }

@@ -4,9 +4,11 @@ package eu.telecomsudparis.csc4102.suipro.mocks;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import eu.telecomsudparis.csc4102.suipro.IActivite;
 import eu.telecomsudparis.csc4102.suipro.ITache;
+import eu.telecomsudparis.csc4102.suipro.Label;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 public class MockedActivite implements IActivite {
@@ -64,5 +66,23 @@ public class MockedActivite implements IActivite {
 
     public void setEnFonctionnement(boolean enFonctionnement) {
         this.enFonctionnement = enFonctionnement;
+    }
+
+    @Override
+    public double calculerTempsDeTravail() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'calculerTempsDeTravail'");
+    }
+
+    @Override
+    public void ajouterLabel(Label label) throws OperationImpossible {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ajouterLabel'");
+    }
+
+    @Override
+    public List<Label> getLabels() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLabels'");
     }
 }

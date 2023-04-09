@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.Activite;
 import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.ITache;
+import eu.telecomsudparis.csc4102.suipro.Label;
 import eu.telecomsudparis.csc4102.suipro.Tache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedCorbeille;
@@ -46,6 +47,11 @@ class TestActivite {
         @Test
         void Test2Jeu2() throws Exception {
             Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", "", corbeille));
+        }
+
+        @Test
+        void Test3Jeu1() throws Exception {
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", "id", null));
         }
 
         @Test
@@ -237,6 +243,77 @@ class TestActivite {
             tester = new PropertyChangeEvent(new Corbeille(), Tache.class.getSimpleName(), tache, null);
             activite.propertyChange(tester);
             Assertions.assertFalse(activite.getTaches().contains(tache));
+        }
+    }
+
+    @Nested
+    class CalculerTempsDeTravail {
+        MockedTache tache;
+        Activite activite;
+        Corbeille corbeille;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            corbeille = new Corbeille();
+            activite = new Activite("nom", "id", corbeille);
+            tache = new MockedTache(activite);
+        }
+
+        @AfterEach
+        void tearDown() throws Exception {
+            activite = null;
+            tache = null;
+        }
+
+        @Test
+        void Test1() throws Exception {
+            double time = activite.calculerTempsDeTravail();
+            Assertions.assertEquals(0, time);
+
+        }
+
+        @Test
+        void Test2() throws Exception {
+            activite.ajouterTache(tache);
+            activite.calculerTempsDeTravail();
+            Assertions.assertEquals(1, tache.calculerTempsDeTravailCalledTimes);
+        }
+    }
+
+    @Nested
+    class AjouterLabel {
+        Activite activite;
+        Corbeille corbeille;
+        Label label;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            corbeille = new Corbeille();
+            activite = new Activite("nom", "id", corbeille);
+            label = new Label("label", "labelName");
+        }
+
+        @AfterEach
+        void tearDown() throws Exception {
+            activite = null;
+        }
+
+        @Test
+        void Test1() throws Exception {
+            Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterLabel(null));
+        }
+
+        @Test
+        void Test5puis4() throws Exception {
+            activite.mettreALaCorbeille();
+            Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterLabel(label));
+        }
+
+        @Test
+        void Test3() throws Exception {
+            activite.ajouterLabel(label);
+            Assertions.assertTrue(activite.getLabels().contains(label));
+            Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterLabel(label));
         }
     }
 }
