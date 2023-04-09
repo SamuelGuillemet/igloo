@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-class TestAfficher {
+class TestAfficherPeriodeDeTravail {
     private SuiPro suiPro;
     private String devId;
     private String devId2;
@@ -72,55 +72,6 @@ class TestAfficher {
         fin1 = null;
         debut2 = null;
         fin2 = null;
-    }
-
-    @Test
-    void TestDeveloppeur() throws Exception {
-        String affichage = suiPro.afficherLesDeveloppeurs();
-        Assertions.assertTrue(affichage.contains(devId));
-        Assertions.assertTrue(affichage.contains(devNom));
-        Assertions.assertTrue(affichage.contains(devPrenom));
-        Assertions.assertTrue(affichage.contains(devId2));
-    }
-
-    @Test
-    void TestActivite() throws Exception {
-        String affichage = suiPro.afficherLesActivites();
-        Assertions.assertTrue(affichage.contains(actId));
-        Assertions.assertTrue(affichage.contains(atcNom));
-        Assertions.assertTrue(affichage.contains(actId2));
-    }
-
-    @Test
-    void TestTacheJeu1() throws Exception {
-        String affichage = suiPro.afficherLesTaches(actId);
-        Assertions.assertTrue(affichage.contains(tacheId));
-        Assertions.assertTrue(affichage.contains(tacheNom));
-        Assertions.assertTrue(affichage.contains(actId));
-    }
-
-    @Test
-    void TestTacheJeu2() throws Exception {
-        String affichage = suiPro.afficherLesTaches(actId);
-        Assertions.assertFalse(affichage.contains(tacheId2));
-    }
-
-    @Test
-    void TestTacheArgumentJeu1() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.afficherLesTaches(null));
-    }
-
-    @Test
-    void TestTacheArgumentJeu2() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.afficherLesTaches(""));
-    }
-
-    @Test
-    void TestTacheArgumentJeu3() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.afficherLesTaches("wrongID"));
     }
 
     @Test
