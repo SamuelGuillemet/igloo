@@ -34,8 +34,7 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	 * @param developpeur
 	 * @throws OperationImpossible
 	 */
-	@Deprecated
-	public PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur)
+	private PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur)
 			throws OperationImpossible {
 		super();
 		if (debut == null) {
@@ -100,6 +99,18 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 				&& super.invariant();
 	}
 
+	/**
+	 * Retourne le temps de travail en heures.
+	 * 
+	 * @return le temps de travail en heures.
+	 */
+	public double calculerTempsDeTravail() {
+		if (!this.estEnFonctionnement()) {
+			return 0;
+		}
+		return intervalle.calculerDuree().toHours();
+	}
+
 	//#region Getters
 
 	/**
@@ -142,7 +153,7 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PeriodeDeTravail [" + intervalle.getInstantDebut() + "->" + intervalle.getInstantFin()
-				+ " | Durée:" + intervalle.calculerDuree() + "]");
+				+ " | Durée:" + intervalle.calculerDuree() + ", enFonctionnement=" + estEnFonctionnement() + "]");
 		builder.append("\n\t↳ ");
 		builder.append(developpeur.toString());
 		builder.append("\n\t↳ ");
