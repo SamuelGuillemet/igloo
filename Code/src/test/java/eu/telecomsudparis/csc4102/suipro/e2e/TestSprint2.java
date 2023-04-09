@@ -10,7 +10,6 @@ import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -113,7 +112,6 @@ public class TestSprint2 {
     }
 
     @Test
-    @Disabled("Bug inside IntervalleInstants::Constructeur")
     void sprint2() {
 
         // (1) ✓ ajouter la développeuse Madeleine Braun avec l’alias braun
