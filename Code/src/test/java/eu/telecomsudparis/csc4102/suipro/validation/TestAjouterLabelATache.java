@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-class TestLabel {
+class TestAjouterLabelATache {
     private SuiPro suiPro;
     private String alias;
     private String nom;
