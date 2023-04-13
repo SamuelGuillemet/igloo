@@ -1,9 +1,6 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.unitaires;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -110,29 +107,19 @@ public class TestCorbeille {
 
     @Nested
     class ViderLaCorbeille {
-        PropertyChangeListener listener;
-        PropertyChangeEvent evt;
-
-        @BeforeEach
-        void setUp() throws Exception {
-            listener = (evt) -> {
-                this.evt = evt;
-            };
-            corbeille.addPropertyChangeListener(listener);
-        }
 
         @Test
         void Test1() throws Exception {
             MockedElementJetable elem = new MockedElementJetable();
+            corbeille.subscribe(elem);
             corbeille.ajouterALaCorbeille(elem);
             Assertions.assertEquals(1, corbeille.getElementsJetable(MockedElementJetable.class).size());
             corbeille.viderLaCorbeille();
             Assertions.assertEquals(0, corbeille.getElementsJetable(MockedElementJetable.class).size());
 
-            Assertions.assertEquals(corbeille, evt.getSource());
-            Assertions.assertEquals(elem.getClass().getSimpleName(), evt.getPropertyName());
-            Assertions.assertNull(evt.getNewValue());
-            Assertions.assertEquals(elem, evt.getOldValue());
+            Thread.sleep(100);
+
+            Assertions.assertEquals(elem, elem.onNextElement);
         }
     }
 }

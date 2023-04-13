@@ -1,8 +1,6 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.unitaires;
 
-import java.beans.PropertyChangeEvent;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +11,8 @@ import eu.telecomsudparis.csc4102.suipro.Activite;
 import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.ITache;
 import eu.telecomsudparis.csc4102.suipro.Label;
-import eu.telecomsudparis.csc4102.suipro.Tache;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
+import eu.telecomsudparis.csc4102.suipro.mocks.MockedActivite;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedCorbeille;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedTache;
 
@@ -188,16 +186,16 @@ class TestActivite {
     }
 
     @Nested
-    class PropertyChange {
+    class OnNext {
         ITache tache;
         Activite activite;
-        PropertyChangeEvent tester;
         Corbeille corbeille;
 
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
             activite = new Activite("nom", "id");
+            corbeille.subscribe(activite);
             tache = new MockedTache(activite);
             activite.ajouterTache(tache);
         }
@@ -206,41 +204,24 @@ class TestActivite {
         void tearDown() throws Exception {
             activite = null;
             tache = null;
-            tester = null;
         }
 
         @Test
         void Test1() throws Exception {
-            tester = new PropertyChangeEvent(new Object(), "nom", "nom", "nom2");
-            activite.propertyChange(tester);
+            activite.onNext(null);
             Assertions.assertTrue(activite.getTaches().contains(tache));
         }
 
         @Test
         void Test2() throws Exception {
-            tester = new PropertyChangeEvent(new Corbeille(), "nom", "nom", "nom2");
-            activite.propertyChange(tester);
+            activite.onNext(new MockedActivite(true));
             Assertions.assertTrue(activite.getTaches().contains(tache));
         }
 
         @Test
         void Test3() throws Exception {
-            tester = new PropertyChangeEvent(new Corbeille(), Tache.class.getSimpleName(), "nom", "nom2");
-            activite.propertyChange(tester);
-            Assertions.assertTrue(activite.getTaches().contains(tache));
-        }
+            activite.onNext(tache);
 
-        @Test
-        void Test4() throws Exception {
-            tester = new PropertyChangeEvent(new Corbeille(), Tache.class.getSimpleName(), tache, tache);
-            activite.propertyChange(tester);
-            Assertions.assertTrue(activite.getTaches().contains(tache));
-        }
-
-        @Test
-        void Test5() throws Exception {
-            tester = new PropertyChangeEvent(new Corbeille(), Tache.class.getSimpleName(), tache, null);
-            activite.propertyChange(tester);
             Assertions.assertFalse(activite.getTaches().contains(tache));
         }
     }
