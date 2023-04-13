@@ -1,11 +1,11 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.Flow.Subscriber;
+import java.util.concurrent.Flow.Subscription;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -16,7 +16,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * 
  * @author Denis Conan
  */
-public final class SuiPro implements PropertyChangeListener {
+public final class SuiPro implements Subscriber<IElementJetable> {
     /**
      * le nom du projet.
      */
@@ -38,6 +38,11 @@ public final class SuiPro implements PropertyChangeListener {
     private LinkedHashMap<String, Label> labels;
 
     /**
+     *
+     */
+    private Subscription subscription;
+
+    /**
      * la corbeille.
      */
     private Corbeille corbeille;
@@ -57,7 +62,7 @@ public final class SuiPro implements PropertyChangeListener {
         labels = new LinkedHashMap<>();
         corbeille = new Corbeille();
 
-        corbeille.addPropertyChangeListener(this);
+        corbeille.subscribe(this);
     }
 
     /**
@@ -99,7 +104,7 @@ public final class SuiPro implements PropertyChangeListener {
             throw new OperationImpossible("développeur déjà dans le système");
         }
         Developpeur dev = new Developpeur(alias, nom, prenom);
-        corbeille.addPropertyChangeListener(dev);
+        corbeille.subscribe(dev);
         developpeurs.put(alias, dev);
         assert invariant();
     }
@@ -124,7 +129,7 @@ public final class SuiPro implements PropertyChangeListener {
             throw new OperationImpossible("activite déjà dans le système");
         }
         Activite activite = new Activite(nom, id);
-        corbeille.addPropertyChangeListener(activite);
+        corbeille.subscribe(activite);
         activites.put(id, activite);
         assert invariant();
     }
@@ -162,7 +167,7 @@ public final class SuiPro implements PropertyChangeListener {
             throw new OperationImpossible("tache déjà dans le système");
         }
         Tache tache = new Tache(nom, id, activite);
-        corbeille.addPropertyChangeListener(tache);
+        corbeille.subscribe(tache);
         assert invariant();
     }
 
@@ -906,28 +911,38 @@ public final class SuiPro implements PropertyChangeListener {
         return "SuiPro [nomDeProjet=" + nomDeProjet + "]";
     }
 
-    /**
-     * This method is called when an event is fire by the Corbeille when a
-     * {@link Developpeur} or an {@link Activite} is removed from it.
-     * 
-     * @param evt {@code source} must be a {@link Corbeille} and
-     *            {@code propertyName} must be {@link Developpeur} or
-     *            {@link Activite} string.
-     */
     @Override
-    public void propertyChange(final PropertyChangeEvent evt) {
-        if (evt.getSource().getClass() != Corbeille.class) {
+    public void onSubscribe(final Subscription souscription) {
+        this.subscription = souscription;
+        this.subscription.request(1);
+    }
+
+    @Override
+    public void onComplete() {
+    }
+
+    @Override
+    public void onError(final Throwable arg0) {
+    }
+
+    /**
+    * This method is called when an event is fire by the Corbeille when a {@link Developpeur} or an {@link Activite} is removed from it.
+    * 
+    * @param elementJetable the element that is removed from the Corbeille.
+    */
+    @Override
+    public void onNext(final IElementJetable elementJetable) {
+        if (elementJetable == null) {
             return;
         }
-        if (evt.getNewValue() != null) {
-            return;
-        }
-        if (evt.getPropertyName().equals(Developpeur.class.getSimpleName())) {
-            Developpeur dev = (Developpeur) evt.getOldValue();
+        if (elementJetable instanceof IDeveloppeur) {
+            Developpeur dev = (Developpeur) elementJetable;
             developpeurs.remove(dev.getAlias());
-        } else if (evt.getPropertyName().equals(Activite.class.getSimpleName())) {
-            Activite activite = (Activite) evt.getOldValue();
+        } else if (elementJetable instanceof Activite) {
+            Activite activite = (Activite) elementJetable;
             activites.remove(activite.getId());
         }
+
+        this.subscription.request(1);
     }
 }
