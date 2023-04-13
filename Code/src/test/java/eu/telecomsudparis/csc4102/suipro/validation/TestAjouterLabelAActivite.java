@@ -67,12 +67,36 @@ class TestLabel {
     @Test
     void Test1Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.creerLabel(labNom, labId));
+                () -> suiPro.ajouterLabelAActivite(null, actId));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.creerLabel("Nom3", labId));
+                () -> suiPro.ajouterLabelAActivite("", actId));
+    }
+
+    @Test
+    void Test1Jeu3() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelAActivite("idInexistant", actId));
+    }
+
+    @Test
+    void Test2Jeu1() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelAActivite(labId, null));
+    }
+
+    @Test
+    void Test2Jeu2() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelAActivite(labId, ""));
+    }
+
+    @Test
+    void Test2Jeu3() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelAActivite(labId, "idInexistant"));
     }
 }

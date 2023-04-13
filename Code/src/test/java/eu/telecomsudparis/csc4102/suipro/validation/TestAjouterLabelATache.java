@@ -67,12 +67,54 @@ class TestLabel {
     @Test
     void Test1Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.creerLabel(labNom, labId));
+                () -> suiPro.ajouterLabelATache(null, actId, tacheId));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.creerLabel("Nom3", labId));
+                () -> suiPro.ajouterLabelATache("", actId, tacheId));
+    }
+
+    @Test
+    void Test1Jeu3() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelATache("idInexistant", actId, tacheId));
+    }
+
+    @Test
+    void Test2Jeu1() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelATache(labId, null, tacheId));
+    }
+
+    @Test
+    void Test2Jeu2() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelATache(labId, "", tacheId));
+    }
+
+    @Test
+    void Test2Jeu3() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelATache(labId, "idInexistant", tacheId));
+    }
+
+    @Test
+    void Test3Jeu1() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelATache(labId, actId, null));
+    }
+
+    @Test
+    void Test3Jeu2() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelATache(labId, actId, ""));
+    }
+
+    @Test
+    void Test3Jeu3() throws Exception {
+        Assertions.assertThrows(OperationImpossible.class,
+                () -> suiPro.ajouterLabelATache(labId, actId, "idInexistant"));
     }
 }
