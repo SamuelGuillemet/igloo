@@ -1,11 +1,12 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.mocks;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.concurrent.Flow.Subscription;
 
 import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
+import eu.telecomsudparis.csc4102.suipro.IElementJetable;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
@@ -45,11 +46,6 @@ public class MockedDeveloppeur implements IDeveloppeur {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent arg0) {
-        throw new UnsupportedOperationException("Unimplemented method 'propertyChange'");
-    }
-
-    @Override
     public void restaurer(ICorbeille corbeille) {
         throw new UnsupportedOperationException("Unimplemented method 'restaurer'");
     }
@@ -66,5 +62,25 @@ public class MockedDeveloppeur implements IDeveloppeur {
     @Override
     public double calculerTempsDeTravail() {
         throw new UnsupportedOperationException("Unimplemented method 'calculerTempsDeTravail'");
+    }
+
+    @Override
+    public void onComplete() {
+        throw new UnsupportedOperationException("Unimplemented method 'onComplete'");
+    }
+
+    @Override
+    public void onError(Throwable arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'onError'");
+    }
+
+    @Override
+    public void onNext(IElementJetable arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'onNext'");
+    }
+
+    @Override
+    public void onSubscribe(Subscription arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'onSubscribe'");
     }
 }

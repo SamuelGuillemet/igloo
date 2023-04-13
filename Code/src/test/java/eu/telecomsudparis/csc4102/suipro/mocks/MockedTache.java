@@ -1,11 +1,12 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.mocks;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Flow.Subscription;
 
 import eu.telecomsudparis.csc4102.suipro.IActivite;
+import eu.telecomsudparis.csc4102.suipro.IElementJetable;
 import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.suipro.ITache;
@@ -77,11 +78,6 @@ public class MockedTache implements ITache {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent arg0) {
-        throw new UnsupportedOperationException("Unimplemented method 'propertyChange'");
-    }
-
-    @Override
     public void restaurer(ICorbeille corbeille) {
         enFonctionnement = true;
         restaurerCalledTimes++;
@@ -105,5 +101,25 @@ public class MockedTache implements ITache {
     @Override
     public List<Label> getLabels() {
         throw new UnsupportedOperationException("Unimplemented method 'getLabels'");
+    }
+
+    @Override
+    public void onComplete() {
+        throw new UnsupportedOperationException("Unimplemented method 'onComplete'");
+    }
+
+    @Override
+    public void onError(Throwable arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'onError'");
+    }
+
+    @Override
+    public void onNext(IElementJetable arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'onNext'");
+    }
+
+    @Override
+    public void onSubscribe(Subscription arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'onSubscribe'");
     }
 }
