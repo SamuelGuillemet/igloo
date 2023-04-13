@@ -45,9 +45,6 @@ class TestMettreUnDeveloppeurALaCorbeille {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        alias = null;
-        nom = null;
-        prenom = null;
     }
 
     @Test

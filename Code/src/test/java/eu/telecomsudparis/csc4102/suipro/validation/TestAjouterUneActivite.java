@@ -24,8 +24,6 @@ class TestAjouterUneActivite {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        identifiant = null;
-        nom = null;
     }
 
     @Test

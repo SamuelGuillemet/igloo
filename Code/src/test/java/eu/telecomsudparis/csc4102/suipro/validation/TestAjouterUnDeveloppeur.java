@@ -26,9 +26,6 @@ class TestAjouterUnDeveloppeur {
 	@AfterEach
 	void tearDown() {
 		suiPro = null;
-		identifiant = null;
-		nom = null;
-		prenom = null;
 	}
 
 	@Test

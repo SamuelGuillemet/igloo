@@ -58,20 +58,6 @@ class TestAfficherPeriodeDeTravail {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        devId = null;
-        devNom = null;
-        devPrenom = null;
-        devId2 = null;
-        actId = null;
-        atcNom = null;
-        actId2 = null;
-        tacheId = null;
-        tacheNom = null;
-        tacheId2 = null;
-        debut1 = null;
-        fin1 = null;
-        debut2 = null;
-        fin2 = null;
     }
 
     @Test

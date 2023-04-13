@@ -45,9 +45,6 @@ class TestMettreUneTacheALaCorbeille {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        idAct = null;
-        idTache = null;
-        nom = null;
     }
 
     @Test

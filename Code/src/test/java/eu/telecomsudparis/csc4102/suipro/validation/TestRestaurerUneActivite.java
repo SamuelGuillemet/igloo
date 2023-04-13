@@ -48,8 +48,6 @@ class TestRestaurerUneActivite {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        id = null;
-        nom = null;
     }
 
     @Test

@@ -46,8 +46,6 @@ class TestMettreUneActiviteALaCorbeille {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        id = null;
-        nom = null;
     }
 
     @Test
