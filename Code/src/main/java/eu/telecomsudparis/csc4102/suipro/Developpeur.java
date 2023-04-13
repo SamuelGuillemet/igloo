@@ -1,6 +1,5 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -193,23 +192,39 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 				+ estEnFonctionnement() + "]";
 	}
 
+	// @Override
+	// public void propertyChange(final PropertyChangeEvent evt) {
+	// 	if (evt.getSource().getClass() != Corbeille.class) {
+	// 		return;
+	// 	}
+	// 	if (!evt.getPropertyName().equals(PeriodeDeTravail.class.getSimpleName())) {
+	// 		return;
+	// 	}
+	// 	if (evt.getNewValue() != null) {
+	// 		return;
+	// 	}
+	// 	IPeriodeDeTravail periodeDeTravail = (IPeriodeDeTravail) evt.getOldValue();
+	// 	periodesDeTravail.remove(periodeDeTravail);
+	// }
+
 	/**
 	 * This method is called when an event is fire by the Corbeille when a PeriodeDeTravail is removed from it.
 	 * 
-	 * @param evt {@code source} must be a {@link Corbeille} and {@code propertyName} must be {@link PeriodeDeTravail} string.
+	 * @param elementJetable the element jetable.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if (evt.getSource().getClass() != Corbeille.class) {
+	public void onNext(final IElementJetable elementJetable) {
+		if (elementJetable == null) {
 			return;
 		}
-		if (!evt.getPropertyName().equals(PeriodeDeTravail.class.getSimpleName())) {
+		if (!(elementJetable instanceof IPeriodeDeTravail)) {
 			return;
 		}
-		if (evt.getNewValue() != null) {
-			return;
-		}
-		IPeriodeDeTravail periodeDeTravail = (IPeriodeDeTravail) evt.getOldValue();
+		IPeriodeDeTravail periodeDeTravail = (IPeriodeDeTravail) elementJetable;
 		periodesDeTravail.remove(periodeDeTravail);
+
+		request();
+
+		assert invariant();
 	}
 }
