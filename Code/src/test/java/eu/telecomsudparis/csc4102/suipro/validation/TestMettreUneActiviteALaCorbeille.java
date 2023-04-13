@@ -1,6 +1,8 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.validation;
 
+import java.time.Instant;
+
 import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +16,13 @@ class TestMettreUneActiviteALaCorbeille {
     private SuiPro suiPro;
     private String id;
     private String nom;
+    private String devAlias;
+    private String devNom;
+    private String devPrenom;
+    private String tacheId;
+    private String tacheNom;
+    private Instant debut1;
+    private Instant fin1;
 
     @BeforeEach
     void setUp() throws OperationImpossible {
@@ -21,6 +30,17 @@ class TestMettreUneActiviteALaCorbeille {
         id = "act1";
         nom = "nom";
         suiPro.ajouterUneActivite(id, nom);
+
+        devAlias = "dev1";
+        devNom = "nom";
+        devPrenom = "prenom";
+        suiPro.ajouterUnDeveloppeur(devAlias, devNom, devPrenom);
+        tacheId = "tacheId1";
+        tacheNom = "tacheNom";
+        debut1 = Instant.parse("2019-01-01T00:00:00Z");
+        fin1 = Instant.parse("2019-01-02T00:00:00Z");
+        suiPro.ajouterUneTache(tacheId, tacheNom, id);
+        suiPro.ajouterUnePeriodeDeTravail(tacheId, id, devAlias, debut1, fin1);
     }
 
     @AfterEach
@@ -59,5 +79,12 @@ class TestMettreUneActiviteALaCorbeille {
         Assertions.assertEquals(StringUtils.countMatches(result, id), 1);
 
         Assertions.assertFalse(suiPro.afficherLesActivites().contains(id));
+    }
+
+    @Test
+    void Test4() throws Exception {
+        suiPro.mettreUneActiviteALaCorbeille(id);
+        Assertions.assertTrue(suiPro.afficherLesTachesALaCorbeille().contains(tacheId));
+        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(debut1.toString()));
     }
 }

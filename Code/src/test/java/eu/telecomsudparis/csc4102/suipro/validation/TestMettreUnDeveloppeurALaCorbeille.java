@@ -1,6 +1,8 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.validation;
 
+import java.time.Instant;
+
 import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +17,12 @@ class TestMettreUnDeveloppeurALaCorbeille {
     private String alias;
     private String nom;
     private String prenom;
+    private String actId;
+    private String atcNom;
+    private String tacheId;
+    private String tacheNom;
+    private Instant debut1;
+    private Instant fin1;
 
     @BeforeEach
     void setUp() throws OperationImpossible {
@@ -23,6 +31,15 @@ class TestMettreUnDeveloppeurALaCorbeille {
         nom = "nom";
         prenom = "prenom";
         suiPro.ajouterUnDeveloppeur(alias, nom, prenom);
+
+        actId = "atcId1";
+        atcNom = "actNom";
+        tacheId = "tacheId1";
+        tacheNom = "tacheNom";
+        debut1 = Instant.parse("2019-01-01T00:00:00Z");
+        fin1 = Instant.parse("2019-01-02T00:00:00Z");
+        suiPro.ajouterUneActivite(actId, atcNom);
+        suiPro.ajouterUneTache(tacheId, tacheNom, actId);
     }
 
     @AfterEach
@@ -61,5 +78,12 @@ class TestMettreUnDeveloppeurALaCorbeille {
 
         String result = suiPro.afficherLesDeveloppeurALaCorebille();
         Assertions.assertEquals(StringUtils.countMatches(result, alias), 1);
+    }
+
+    @Test
+    void Test4() throws Exception {
+        suiPro.ajouterUnePeriodeDeTravail(tacheId, actId, alias, debut1, fin1);
+        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
+        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(debut1.toString()));
     }
 }
