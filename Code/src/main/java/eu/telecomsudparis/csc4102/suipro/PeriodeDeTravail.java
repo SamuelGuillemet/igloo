@@ -1,6 +1,5 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.beans.PropertyChangeEvent;
 import java.time.Instant;
 
 import eu.telecomsudparis.csc4102.util.IntervalleInstants;
@@ -176,7 +175,7 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	}
 
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		return;
+	public void onNext(final IElementJetable elementJetable) {
+
 	}
 }
