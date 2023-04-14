@@ -34,7 +34,7 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	 * @param developpeur
 	 * @throws OperationImpossible
 	 */
-	private PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur)
+	public PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur)
 			throws OperationImpossible {
 		super();
 		if (debut == null) {
@@ -68,23 +68,6 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 		}
 		this.tache = tache;
 		this.tache.ajouterPeriodeDeTravail(this);
-	}
-
-	/**
-	 * @param debut
-	 * @param fin
-	 * @param tache
-	 * @param developpeur
-	 * @param corbeille
-	 * @throws OperationImpossible
-	 */
-	public PeriodeDeTravail(final Instant debut, final Instant fin, final ITache tache, final IDeveloppeur developpeur,
-			final ICorbeille corbeille) throws OperationImpossible {
-		this(debut, fin, tache, developpeur);
-		if (corbeille == null) {
-			throw new OperationImpossible("corbeille ne peut pas être null");
-		}
-		this.setCorbeille(corbeille);
 
 		assert invariant();
 	}
@@ -95,8 +78,7 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	public boolean invariant() {
 		return intervalle != null
 				&& developpeur != null
-				&& tache != null
-				&& super.invariant();
+				&& tache != null;
 	}
 
 	/**
@@ -136,11 +118,11 @@ public final class PeriodeDeTravail extends ElementJetable implements IPeriodeDe
 	//#endregion
 
 	@Override
-	protected void specificMettreALaCorbeille() {
+	protected void specificMettreALaCorbeille(final ICorbeille corbeille) {
 	}
 
 	@Override
-	protected void specificRestaurer() {
+	protected void specificRestaurer(final ICorbeille corbeille) {
 		if (!developpeur.estEnFonctionnement()) {
 			throw new IllegalStateException("le développeur n'est pas en fonctionnement");
 		}
