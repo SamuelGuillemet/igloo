@@ -1,12 +1,15 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.mocks;
 
-import java.beans.PropertyChangeEvent;
+import java.util.concurrent.Flow.Subscription;
 
 import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IElementJetable;
 
 public class MockedElementJetable implements IElementJetable {
+    private Subscription subscription;
+
+    public IElementJetable onNextElement;
 
     public MockedElementJetable() {
     }
@@ -22,12 +25,29 @@ public class MockedElementJetable implements IElementJetable {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent arg0) {
-        throw new UnsupportedOperationException("Unimplemented method 'propertyChange'");
+    public void restaurer(ICorbeille corbeille) {
+        throw new UnsupportedOperationException("Unimplemented method 'restaurer'");
     }
 
     @Override
-    public void restaurer(ICorbeille corbeille) {
-        throw new UnsupportedOperationException("Unimplemented method 'restaurer'");
+    public void onComplete() {
+        throw new UnsupportedOperationException("Unimplemented method 'onComplete'");
+    }
+
+    @Override
+    public void onError(Throwable arg0) {
+        throw new UnsupportedOperationException("Unimplemented method 'onError'");
+    }
+
+    @Override
+    public void onNext(IElementJetable arg0) {
+        this.onNextElement = arg0;
+        this.subscription.request(1);
+    }
+
+    @Override
+    public void onSubscribe(Subscription arg0) {
+        this.subscription = arg0;
+        this.subscription.request(1);
     }
 }

@@ -1,8 +1,6 @@
 // CHECKSTYLE:OFF
 package eu.telecomsudparis.csc4102.suipro.unitaires;
 
-import java.beans.PropertyChangeEvent;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.Corbeille;
 import eu.telecomsudparis.csc4102.suipro.Developpeur;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
-import eu.telecomsudparis.csc4102.suipro.PeriodeDeTravail;
+import eu.telecomsudparis.csc4102.suipro.mocks.MockedActivite;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedCorbeille;
 import eu.telecomsudparis.csc4102.suipro.mocks.MockedPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -199,61 +197,44 @@ class TestDeveloppeur {
 	}
 
 	@Nested
-	class PropertyChange {
+	class OnNext {
 		IPeriodeDeTravail periodeDeTravail;
 		Developpeur developpeur;
-		PropertyChangeEvent tester;
 		Corbeille corbeille;
 
 		@BeforeEach
 		void setUp() throws Exception {
 			corbeille = new Corbeille();
 			developpeur = new Developpeur("alias", "nom", "prénom");
+			corbeille.subscribe(developpeur);
 			periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 			developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
+
+			Thread.sleep(50);
 		}
 
 		@AfterEach
 		void tearDown() {
 			periodeDeTravail = null;
 			developpeur = null;
-			tester = null;
+			corbeille = null;
 		}
 
 		@Test
 		void Test1() throws Exception {
-			tester = new PropertyChangeEvent(new Object(), "nom", "nom", "nom2");
-			developpeur.propertyChange(tester);
+			developpeur.onNext(null);
 			Assertions.assertTrue(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
 		}
 
 		@Test
 		void Test2() throws Exception {
-			tester = new PropertyChangeEvent(new Corbeille(), "nom", "nom", "nom2");
-			developpeur.propertyChange(tester);
+			developpeur.onNext(new MockedActivite(true));
 			Assertions.assertTrue(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
 		}
 
 		@Test
 		void Test3() throws Exception {
-			tester = new PropertyChangeEvent(new Corbeille(), PeriodeDeTravail.class.getSimpleName(), "nom", "nom2");
-			developpeur.propertyChange(tester);
-			Assertions.assertTrue(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
-		}
-
-		@Test
-		void Test4() throws Exception {
-			tester = new PropertyChangeEvent(new Corbeille(), PeriodeDeTravail.class.getSimpleName(), periodeDeTravail,
-					periodeDeTravail);
-			developpeur.propertyChange(tester);
-			Assertions.assertTrue(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
-		}
-
-		@Test
-		void Test5() throws Exception {
-			tester = new PropertyChangeEvent(new Corbeille(), PeriodeDeTravail.class.getSimpleName(), periodeDeTravail,
-					null);
-			developpeur.propertyChange(tester);
+			developpeur.onNext(periodeDeTravail);
 			Assertions.assertFalse(developpeur.getPeriodesDeTravail().contains(periodeDeTravail));
 		}
 	}

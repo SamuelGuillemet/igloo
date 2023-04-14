@@ -1,5 +1,7 @@
 package eu.telecomsudparis.csc4102.suipro;
 
+import java.util.concurrent.Flow.Subscription;
+
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 /**
@@ -14,6 +16,11 @@ public abstract class ElementJetable implements IElementJetable {
      * indique si l'élément est en fonctionnement ou non.
      */
     private boolean enFonctionnement = true;
+
+    /**
+     *
+     */
+    private Subscription subscription;
 
     /**
      * @return true si l'élément est en fonctionnement, false sinon
@@ -60,4 +67,22 @@ public abstract class ElementJetable implements IElementJetable {
     }
 
     protected abstract void specificRestaurer(ICorbeille corbeille) throws IllegalStateException, OperationImpossible;
+
+    @Override
+    public void onSubscribe(final Subscription souscription) {
+        this.subscription = souscription;
+        this.subscription.request(1);
+    }
+
+    protected void request() {
+        this.subscription.request(1);
+    }
+
+    @Override
+    public void onComplete() {
+    }
+
+    @Override
+    public void onError(final Throwable arg0) {
+    }
 }

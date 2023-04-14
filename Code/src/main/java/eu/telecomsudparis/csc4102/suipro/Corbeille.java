@@ -1,9 +1,9 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.concurrent.SubmissionPublisher;
+import java.util.concurrent.Flow.Subscriber;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
@@ -20,14 +20,14 @@ public final class Corbeille implements ICorbeille {
     /**
      * support de gestion des écouteurs de propriétés.
      */
-    private final PropertyChangeSupport support;
+    private final SubmissionPublisher<IElementJetable> producteur;
 
     /**
      * Constructeur.
      */
     public Corbeille() {
         this.elementsJetable = new LinkedHashSet<>();
-        this.support = new PropertyChangeSupport(this);
+        this.producteur = new SubmissionPublisher<>();
         assert invariant();
     }
 
@@ -35,7 +35,7 @@ public final class Corbeille implements ICorbeille {
      * @return true si l'invariant est respecté, false sinon
      */
     private boolean invariant() {
-        return this.elementsJetable != null && this.support != null;
+        return this.elementsJetable != null && this.producteur != null;
     }
 
     /**
@@ -84,19 +84,17 @@ public final class Corbeille implements ICorbeille {
      */
     public void viderLaCorbeille() {
         for (final IElementJetable elementJetable : this.elementsJetable) {
-            String nom = elementJetable.getClass().getSimpleName();
-            this.support.firePropertyChange(nom, elementJetable, null);
-            this.support.removePropertyChangeListener(elementJetable);
+            this.producteur.submit(elementJetable);
         }
         this.elementsJetable.clear();
         assert invariant();
     }
 
     /**
-     * @param listener
+     * @param subscriber
      */
-    public void addPropertyChangeListener(final PropertyChangeListener listener) {
-        this.support.addPropertyChangeListener(listener);
+    public void subscribe(final Subscriber<IElementJetable> subscriber) {
+        this.producteur.subscribe(subscriber);
         assert invariant();
     }
 }

@@ -1,6 +1,5 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -205,21 +204,21 @@ public final class Activite extends ElementJetable implements IActivite {
     /**
      * This method is called when an event is fire by the Corbeille when a Tache is removed from it.
      * 
-     * @param evt {@code source} must be a {@link Corbeille} and {@code propertyName} must be {@link Tache} string.
+     * @param elementJetable
      */
     @Override
-    public void propertyChange(final PropertyChangeEvent evt) {
-        if (evt.getSource().getClass() != Corbeille.class) {
+    public void onNext(final IElementJetable elementJetable) {
+        if (elementJetable == null) {
             return;
         }
-        if (!evt.getPropertyName().equals(Tache.class.getSimpleName())) {
+
+        if (!(elementJetable instanceof ITache)) {
             return;
         }
-        if (evt.getNewValue() != null) {
-            return;
-        }
-        ITache tache = (ITache) evt.getOldValue();
+        ITache tache = (ITache) elementJetable;
         taches.remove(tache.getId());
+
+        request();
 
         assert invariant();
     }
