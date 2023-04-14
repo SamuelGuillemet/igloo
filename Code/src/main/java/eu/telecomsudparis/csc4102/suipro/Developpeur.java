@@ -41,7 +41,7 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	 * @param prenom le prénom.
 	 * @throws OperationImpossible
 	 */
-	private Developpeur(final String alias, final String nom, final String prenom) throws OperationImpossible {
+	public Developpeur(final String alias, final String nom, final String prenom) throws OperationImpossible {
 		super();
 		if (alias == null || alias.isBlank()) {
 			throw new OperationImpossible("alias ne peut pas être null ou vide");
@@ -56,22 +56,6 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.periodesDeTravail = new ArrayList<IPeriodeDeTravail>();
-	}
-
-	/**
-	 * @param alias
-	 * @param nom
-	 * @param prenom
-	 * @param corbeille
-	 * @throws OperationImpossible
-	 */
-	public Developpeur(final String alias, final String nom, final String prenom, final ICorbeille corbeille)
-			throws OperationImpossible {
-		this(alias, nom, prenom);
-		if (corbeille == null) {
-			throw new OperationImpossible("corbeille ne peut pas être null");
-		}
-		this.setCorbeille(corbeille);
 
 		assert invariant();
 	}
@@ -85,8 +69,7 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 		return alias != null && !alias.isBlank()
 				&& nom != null && !nom.isBlank()
 				&& prenom != null && !prenom.isBlank()
-				&& periodesDeTravail != null
-				&& super.invariant();
+				&& periodesDeTravail != null;
 	}
 
 	/**
@@ -171,16 +154,16 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	//#endregion
 
 	@Override
-	protected void specificMettreALaCorbeille() throws OperationImpossible {
+	protected void specificMettreALaCorbeille(final ICorbeille corbeille) throws OperationImpossible {
 		for (IPeriodeDeTravail p : periodesDeTravail) {
-			p.mettreALaCorbeille();
+			p.mettreALaCorbeille(corbeille);
 		}
 	}
 
 	@Override
-	protected void specificRestaurer() throws OperationImpossible {
+	protected void specificRestaurer(final ICorbeille corbeille) throws OperationImpossible {
 		for (IPeriodeDeTravail p : periodesDeTravail) {
-			p.restaurer();
+			p.restaurer(corbeille);
 		}
 	}
 
