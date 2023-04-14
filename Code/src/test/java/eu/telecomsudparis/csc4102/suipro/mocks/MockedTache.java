@@ -7,10 +7,10 @@ import java.util.concurrent.Flow.Subscription;
 
 import eu.telecomsudparis.csc4102.suipro.IActivite;
 import eu.telecomsudparis.csc4102.suipro.IElementJetable;
+import eu.telecomsudparis.csc4102.suipro.ILabel;
 import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.suipro.ITache;
-import eu.telecomsudparis.csc4102.suipro.Label;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
 public class MockedTache implements ITache {
@@ -94,12 +94,12 @@ public class MockedTache implements ITache {
     }
 
     @Override
-    public void ajouterLabel(Label label) throws OperationImpossible {
+    public void ajouterLabel(ILabel label) throws OperationImpossible {
         throw new UnsupportedOperationException("Unimplemented method 'ajouterLabel'");
     }
 
     @Override
-    public List<Label> getLabels() {
+    public List<ILabel> getLabels() {
         throw new UnsupportedOperationException("Unimplemented method 'getLabels'");
     }
 
