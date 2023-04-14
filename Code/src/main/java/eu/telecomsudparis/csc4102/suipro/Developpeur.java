@@ -192,21 +192,6 @@ public final class Developpeur extends ElementJetable implements IDeveloppeur {
 				+ estEnFonctionnement() + "]";
 	}
 
-	// @Override
-	// public void propertyChange(final PropertyChangeEvent evt) {
-	// 	if (evt.getSource().getClass() != Corbeille.class) {
-	// 		return;
-	// 	}
-	// 	if (!evt.getPropertyName().equals(PeriodeDeTravail.class.getSimpleName())) {
-	// 		return;
-	// 	}
-	// 	if (evt.getNewValue() != null) {
-	// 		return;
-	// 	}
-	// 	IPeriodeDeTravail periodeDeTravail = (IPeriodeDeTravail) evt.getOldValue();
-	// 	periodesDeTravail.remove(periodeDeTravail);
-	// }
-
 	/**
 	 * This method is called when an event is fire by the Corbeille when a PeriodeDeTravail is removed from it.
 	 * 

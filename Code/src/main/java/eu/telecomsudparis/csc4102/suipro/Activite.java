@@ -31,7 +31,7 @@ public final class Activite extends ElementJetable implements IActivite {
     /**
      * liste de labels de l'activité.
      */
-    private ArrayList<Label> labels;
+    private ArrayList<ILabel> labels;
 
     /**
      * @param nom
@@ -77,7 +77,7 @@ public final class Activite extends ElementJetable implements IActivite {
      * Ajoute un label à l'activité.
      * @param label
      */
-    public void ajouterLabel(final Label label) throws OperationImpossible {
+    public void ajouterLabel(final ILabel label) throws OperationImpossible {
         if (label == null) {
             throw new OperationImpossible("Le label ne peut pas être null.");
         }
@@ -127,7 +127,7 @@ public final class Activite extends ElementJetable implements IActivite {
     /**
      * @return la liste des labels de l'activité
      */
-    public List<Label> getLabels() {
+    public List<ILabel> getLabels() {
         return labels.stream().toList();
     }
 
