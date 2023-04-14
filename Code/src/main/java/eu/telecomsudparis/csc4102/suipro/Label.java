@@ -49,7 +49,9 @@ public class Label implements ILabel {
         return labelId;
     }
 
-    @Override
+    /**
+     * @return name
+     */
     public String getNom() {
         return labelName;
     }

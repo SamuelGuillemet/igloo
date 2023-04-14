@@ -71,7 +71,7 @@ public abstract class ElementJetable implements IElementJetable {
     @Override
     public void onSubscribe(final Subscription souscription) {
         this.subscription = souscription;
-        this.subscription.request(1);
+        request();
     }
 
     protected void request() {

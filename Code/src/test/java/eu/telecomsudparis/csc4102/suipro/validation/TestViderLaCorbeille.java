@@ -51,6 +51,7 @@ class TestViderLaCorbeille {
     void Test1Jeu1() throws Exception {
         suiPro.mettreUnDeveloppeurALaCorbeille(alias);
         suiPro.viderLaCorbeille();
+        Thread.sleep(50);
         Assertions.assertFalse(suiPro.afficherLesDeveloppeurs().contains(alias));
         Assertions.assertFalse(suiPro.afficherLesDeveloppeurALaCorebille().contains(alias));
         Assertions.assertThrows(OperationImpossible.class,
@@ -61,6 +62,7 @@ class TestViderLaCorbeille {
     void Test1Jeu2() throws Exception {
         suiPro.mettreUnDeveloppeurALaCorbeille(alias);
         suiPro.viderLaCorbeille();
+        Thread.sleep(50);
         Assertions.assertFalse(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(alias));
         Assertions.assertFalse(suiPro.afficherLesPeriodesDeTravailPourUneTache(actId, tacheId).contains(alias));
     }
@@ -69,6 +71,7 @@ class TestViderLaCorbeille {
     void Test2Jeu1() throws Exception {
         suiPro.mettreUneActiviteALaCorbeille(actId);
         suiPro.viderLaCorbeille();
+        Thread.sleep(50);
         Assertions.assertFalse(suiPro.afficherLesActivites().contains(actId));
         Assertions.assertFalse(suiPro.afficherLesActivitesALaCorbeille().contains(actId));
         Assertions.assertThrows(OperationImpossible.class,
@@ -79,6 +82,7 @@ class TestViderLaCorbeille {
     void Test2Jeu2() throws Exception {
         suiPro.mettreUneActiviteALaCorbeille(actId);
         suiPro.viderLaCorbeille();
+        Thread.sleep(50);
         Assertions.assertFalse(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(tacheId));
         Assertions.assertFalse(suiPro.afficherLesPeriodesDeTravailPourUnDeveloppeur(alias).contains(alias));
     }
@@ -87,6 +91,7 @@ class TestViderLaCorbeille {
     void Test3Jeu1() throws Exception {
         suiPro.mettreUneTacheALaCorbeille(actId, tacheId);
         suiPro.viderLaCorbeille();
+        Thread.sleep(50);
         Assertions.assertFalse(suiPro.afficherLesTaches(actId).contains(tacheId));
         Assertions.assertFalse(suiPro.afficherLesTachesALaCorbeille().contains(tacheId));
         Assertions.assertThrows(OperationImpossible.class,
@@ -97,6 +102,7 @@ class TestViderLaCorbeille {
     void Test3Jeu2() throws Exception {
         suiPro.mettreUneTacheALaCorbeille(actId, tacheId);
         suiPro.viderLaCorbeille();
+        Thread.sleep(50);
         Assertions.assertFalse(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(tacheId));
         Assertions.assertFalse(suiPro.afficherLesPeriodesDeTravailPourUnDeveloppeur(alias).contains(alias));
     }

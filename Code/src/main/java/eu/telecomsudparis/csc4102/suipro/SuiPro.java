@@ -488,20 +488,20 @@ public final class SuiPro implements Subscriber<IElementJetable> {
     /**
      * Met un developpeur à la corbeille.
      * 
-     * @param id l'identifiant du developpeur.
+     * @param alias l'alias du developpeur.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
-    public void mettreUnDeveloppeurALaCorbeille(final String id)
+    public void mettreUnDeveloppeurALaCorbeille(final String alias)
             throws OperationImpossible {
-        if (id == null || id.isBlank()) {
+        if (alias == null || alias.isBlank()) {
             throw new OperationImpossible("id ne peut pas être nul ou vide");
         }
-        if (!developpeurs.containsKey(id)) {
+        if (!developpeurs.containsKey(alias)) {
             throw new OperationImpossible("Le developpeur n'existe pas");
         }
 
-        Developpeur dev = developpeurs.get(id);
+        Developpeur dev = developpeurs.get(alias);
         dev.mettreALaCorbeille(corbeille);
     }
 

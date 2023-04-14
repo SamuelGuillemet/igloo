@@ -25,12 +25,12 @@ public final class Tache extends ElementJetable implements ITache {
     /**
      * périodes de travail de la tâche.
      */
-    private ArrayList<IPeriodeDeTravail> periodesDeTravail;
+    private List<IPeriodeDeTravail> periodesDeTravail;
 
     /**
      * liste de labels de la tâche.
      */
-    private ArrayList<Label> labels;
+    private List<ILabel> labels;
 
     /**
      * activité de la tâche.
@@ -97,7 +97,7 @@ public final class Tache extends ElementJetable implements ITache {
      * @param label
      * @throws OperationImpossible
      */
-    public void ajouterLabel(final Label label) throws OperationImpossible {
+    public void ajouterLabel(final ILabel label) throws OperationImpossible {
         if (label == null) {
             throw new OperationImpossible("Le label ne peut pas être null.");
         }
@@ -146,7 +146,7 @@ public final class Tache extends ElementJetable implements ITache {
     /**
      * @return les labels de la tâche
      */
-    public List<Label> getLabels() {
+    public List<ILabel> getLabels() {
         return labels.stream().toList();
     }
 
