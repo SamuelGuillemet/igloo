@@ -120,3 +120,223 @@ Vous avez bien avancé. Keep up the good work.
 Olivier Berger
 
 - [x] Problème de continuité de l'historique Git : je me retrouve à devoir, pour la deuxième fois, repositionner ma branche sprint1 sur la nouvelle branche sprint1 que vous avez créée, sans qu'il y ait de continuité entre les deux... c'est loin d'être optimal. Je ne sais pas exactement comment vous vous y prenez, mais, normalement, les branches devraient rester sur un même chemin avec des merges vers la branche, mais sans la transplanter (abus de rebase ?) ailleurs :-/ Il faudrait peut-être tirer cela au clair... Néanmoins, je m'adapte et ferai le suivi sur la nouvelle branche sprint1.
+
+---
+
+lun. 03 avril 2023 16:15:38
+Denis Conan
+Voici le résultat de l'évaluation très détaillée de votre travail
+durant le sprint 1, faite par le coordinateur du module. Vous verrez
+qu'il y a quelques faiblesses, notamment sur le découplage entre
+objets dans la programmation des méthodes des cas d'utilisation,
+visant à améliorer la qualité de votre code. Vous êtes bien partis
+pour entreprendre le sprint 2. Bon courage pour la suite.
+
+---
+
+Pour rappel, vous trouverez les explications sur les messages à l'adresse suivante :
+https://gitlabens.imtbs-tsp.eu/enseignants.csc4102/csc4102-exemples/-/blob/main/Suivi/messages_pour_le_suivi.md
+
+# Évaluation du logiciel livré à la fin du Sprint 1
+
+- Vous n'utilisez pas Modelio. Avez-vous valider avec vos encadrants ?
+  Vous prenez le risque d'erreur de notation : par exemple, les
+  visibilités dans le diagramme de classes
+
+## Modélisation du logiciel
+
+### Spécification et préparation des tests de validation
+
+#### Diagrammes de cas d'utilisation = a
+
+- Sprint 2 non regardé
+
+#### Préconditions et postconditions = a
+
+Cas d'utilisation « ajouter une tâche » : ok
+
+- [x] PREPOSTCOND-02-Compréhension-étude-de-cas : qu'est-ce que « nom
+      fourni non null et non vide » ?
+
+- attention au vocabulaire : activité active
+
+> Prise en compte de la remarque : passage du terme actif en `enFonctionnement`, en place dans le code mais pas dans la modélisation.
+
+Cas d'utilisation « mettre à la corbeille une tâche » :
+
+Cas d'utilisation « mettre à la corbeille un développeur » : ok
+
+#### Tables de décision des tests de validation = a-
+
+Cas d'utilisation « ajouter une tâche » : ok
+
+Cas d'utilisation « mettre à la corbeille une tâche » :
+
+- [x] TABLEDECTV-06-Erreur-nombre-de-tests : test 5, avec ou sans période
+
+Cas d'utilisation « mettre à la corbeille un développeur » :
+
+- [x] TABLEDECTV-06-Erreur-nombre-de-tests : test 3, avec ou sans période
+
+### Conception préliminaire
+
+#### Diagramme de classes = b+
+
+- [x] DIAGCLAS-02-Compréhension-étude-de-cas : le cahier des charges
+  n'utilise pas l'adjectif « actif »
+
+- [x] DIAGCLAS-19-Erreur-notation-navigabilité : par exemple entre
+  Activité et Tâche
+
+- [x] DIAGCLAS-10-Erreur-multiplicité : min 1 de ElementJetable vers Corbeille
+
+- [x] DIAGCLAS-10-Erreur-multiplicité : max \* de PériodeDeTravail vers
+  Tâche et vers Développeur
+
+- qu'est-ce que la figure 10 ? quelle est son rôle ?
+
+#### Diagrammes de séquence (2 parmi) = b
+
+Cas d'utilisation « ajouter une tâche » :
+
+- [x] DIAGSEQ-36-Pb-syntaxe-message-appel-opération : revoir le cours
+
+- vous faites tout à partir de la façade et vous dégradez votre modèle
+  en des structures de données avec du procédural
+
+- [x] la façade n'ayant pas d'association vers Tâche, la création à
+      partir de la façade est maladroite
+  > Vu avec Denis Conan : la création de Tâche est faite par la façade
+  > afin de gérer le système d'event.
+  > Diagramme de séquences à revoir.
+
+Cas d'utilisation « mettre à la corbeille une tâche » : à faire
+
+Cas d'utilisation « mettre à la corbeille un développeur » : ou à faire
+
+### Conception détaillée et préparation des tests unitaires
+
+#### Raffinement du diagramme de classes = a
+
+- [x] RAFDIAGCLAS-10-Visibilité-attribut-dans-diagramme-de-classes
+- [x] RAFDIAGCLAS-12-Visibilité-méthode-dans-diagramme-de-classes
+
+- [x] RAFDIAGCLAS-04-Pas-d-attributs-d-association-dans-diagramme-de-classes
+
+#### Diagramme de machine à états et invariant = a-
+
+- [x] DIAGMACHETATS-02-Compréhension-étude-de-cas : la terminologie
+      « objet actif » ne correspond pas à l'étude de cas et peut signifier
+      autre chose (actif = avec un thread)
+  - sous prétexte de ne pas vouloir de Modelio, vous ré-écrivez le
+    cahier des charges... quand vous arrêterez-vous ?
+
+#### Tables de décision de tests unitaires = a-
+
+- [x] Tâche::constructeur : comment pouvez-vous vérifier« activité
+      active » dans le constructeur de Tâche ?
+
+## Programmation
+
+### Utilisation des outils de programmation
+
+#### Module Maven et tests avec JUnit = a
+
+### Programmation de la solution
+
+#### Classes du diagramme de classes avec leurs attributs = a
+
+- Une interface se justifie soit lorsque l'on peut avoir plusieurs
+  réalisation soit pour des s'interfacer avec un autre système ; en
+  l'état, je ne vois ni l'une ni l'autre des raisons
+  - c'est cher payé pour avoir des mocked objects ;-)
+
+> Vu avec Denis Conan, principe de Clean Code.
+
+- [x] JAVA-03-Cohérence-avec-diagramme-de-classes : avec
+      Corbeille::public static Corbeille getInstance(), Corbeille est un
+      singleton accessible de partout (de toutes les instances) ; ce n'est
+      pas ce que dit le diagramme de classes et cela vous gênera pour les
+      tests
+
+> Correction en utilisant un système d'event et de référence dirrect vers la corbeille.
+
+- [x] Developpeur, ArrayList<IPeriodeDeTravail> : préférable de mettre
+      l'interface List
+
+- ElementJetable::mettreALaCorbeille : ne correspond pas à ce qui serait
+  fait dans les diag. de séquence de mise à la corbeille
+
+  > Diagramme de séquence à faire.
+
+- PeriodeDeTravail :
+  //! Because of a bug inside the IntervalleInstants class,
+  //! we need to check if `debut` is before `fin` manually.
+  - où ? merci de remonter le pb
+  - ce que vous écrivez réalise-t-il la vérification de non-intersection ?
+
+> Mail envoyé
+
+- [x] JAVA-25-Pb-accès-objet-intérieur : pb sur getDeveloppeur, etc.
+
+> Ajout d'un decorateur pour signifier le `@Deprecated` de ces méthodes.
+
+- [x] Utils::printCollection : cf. cours sur les Stream pour faire cela
+      plus élégamment
+
+#### Méthodes des cas d'utilisation de base = a
+
+Cas d'utilisation « ajouter une tâche » :
+
+- [x] JAVA-04-Cohérence-avec-diagrammes-de-séquence :
+      Activite::ajouterTache, à quoi correspond if (!tache.estActif())
+      alors que c'est le cas d'utilisation d'ajout d'une tâche, donc par
+      construction « pas dans la corbeille »
+
+- [x] dans Activite::ajouterTache, if (tache.getActivite() != this) :
+      voilà typiquement pourquoi tout faire dans la façade amène à écrire
+      du drôle de code
+  - il est préférable de laisser l'activité créer la tâche elle-même
+
+> Vu avec Denis Conan, on préfère laisser la création de la tâche à la façade pour peremttre la mise en place
+> d'un système d'event.
+
+Cas d'utilisation « mettre à la corbeille une tâche » :
+
+- [x] JAVA-19-Pb-utilisation-exception : dans la façade, lorsque l'on
+      vérifie les précondition, lever des exceptions sous contrôle
+
+- utilisation du singleton...
+
+Cas d'utilisation « mettre à la corbeille un développeur » :
+
+- [x] idem
+
+### Cohérence entre le code et le modèle
+
+#### Cohérences du code avec le diagramme de classes = a-
+
+#### Cohérences du code avec les diagrammes de séquence de base = a-
+
+### Programmation et exécution des tests de validation et unitaires
+
+#### Tests de validation des cas d'utilisation = b+
+
+Cas d'utilisation « ajouter une tâche » :
+
+- [x] JAVATEST-05-Pb-nommage-méthode-de-test : Test6 doit être nommé Test7Puis6
+
+Cas d'utilisation « mettre à la corbeille une tâche » :
+
+- [x] JAVATEST-08-Test-validation-sans-accès-à-l-intérieur : pb sur
+      Corbeille.getInstance()
+
+  - ce n'est plus un test de validation avec cet appel
+
+- [x] JAVATEST-05-Test-manquant : avec période de travail
+
+Cas d'utilisation « mettre à la corbeille un développeur » :
+
+- [x] JAVATEST-05-Test-manquant : avec période de travail
+
+#### Tests unitaires de méthodes d'une classe = a
