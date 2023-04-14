@@ -3,6 +3,7 @@ package eu.telecomsudparis.csc4102.suipro.e2e;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.maven.shared.utils.StringUtils;
@@ -65,7 +66,7 @@ public class TestSprint1 {
     private SuiPro suiPro;
 
     @BeforeAll
-    public void setUp() {
+    public void setUp() throws OperationImpossible {
         suiPro = new SuiPro("Sprint1");
     }
 
@@ -130,7 +131,8 @@ public class TestSprint1 {
         try {
             Instant debut = Instant.now();
             Instant fin = debut.plus(Duration.ofHours(1));
-            suiPro.ajouterUnePeriodeDeTravail("dc", "cd", suiPro.getDeveloppeursIds(), debut, fin);
+            suiPro.ajouterUnePeriodeDeTravail("dc", "cd",
+                    Arrays.asList("pastoret", "ducastel", "vergniaud", "viénot-vaublanc"), debut, fin);
         } catch (OperationImpossible e) {
             Assertions.fail(e.getMessage());
         }
@@ -285,11 +287,10 @@ public class TestSprint1 {
         try {
             Instant debut = Instant.now().plus(Duration.ofDays(2));
             Instant fin = debut.plus(Duration.ofHours(1));
-            List<String> devs = List.of("pastoret");
-            suiPro.ajouterUnePeriodeDeTravail("dc", "cd", devs, debut, fin);
+            suiPro.ajouterUnePeriodeDeTravail("dc", "cd", "pastoret", debut, fin);
             Assertions.fail("L'exception OperationImpossible aurait du être levée");
         } catch (OperationImpossible e) {
-            // ok
+            //! OK
         }
 
         // (23) ✓ mettre à la corbeille le développeur pastoret

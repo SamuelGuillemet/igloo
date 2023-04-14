@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-class TestMettreUnDeveloppeurALaCorbeille {
+class TestRestaurerUnDeveloppeur {
     private SuiPro suiPro;
     private String alias;
     private String nom;
@@ -40,6 +40,9 @@ class TestMettreUnDeveloppeurALaCorbeille {
         fin1 = Instant.parse("2019-01-02T00:00:00Z");
         suiPro.ajouterUneActivite(actId, atcNom);
         suiPro.ajouterUneTache(tacheId, tacheNom, actId);
+        suiPro.ajouterUnePeriodeDeTravail(tacheId, actId, alias, debut1, fin1);
+
+        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
     }
 
     @AfterEach
@@ -50,37 +53,36 @@ class TestMettreUnDeveloppeurALaCorbeille {
     @Test
     void Test1Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUnDeveloppeurALaCorbeille(null));
+                () -> suiPro.restaurerUnDeveloppeur(null));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUnDeveloppeurALaCorbeille(""));
+                () -> suiPro.restaurerUnDeveloppeur(""));
     }
 
     @Test
     void Test2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUnDeveloppeurALaCorbeille("dev2"));
+                () -> suiPro.restaurerUnDeveloppeur("dev2"));
     }
 
     @Test
     void Test3() throws Exception {
-        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
-        Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(alias));
-        Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(nom));
-        Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(prenom));
-        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
+        suiPro.restaurerUnDeveloppeur(alias);
+        Assertions.assertTrue(suiPro.afficherLesDeveloppeurs().contains(alias));
+        Assertions.assertTrue(suiPro.afficherLesDeveloppeurs().contains(nom));
+        Assertions.assertTrue(suiPro.afficherLesDeveloppeurs().contains(prenom));
 
-        String result = suiPro.afficherLesDeveloppeurALaCorebille();
+        suiPro.restaurerUnDeveloppeur(alias);
+        String result = suiPro.afficherLesDeveloppeurs();
         Assertions.assertEquals(StringUtils.countMatches(result, alias), 1);
     }
 
     @Test
     void Test4() throws Exception {
-        suiPro.ajouterUnePeriodeDeTravail(tacheId, actId, alias, debut1, fin1);
-        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
-        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(debut1.toString()));
+        suiPro.restaurerUnDeveloppeur(alias);
+        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailPourUnDeveloppeur(alias).contains(debut1.toString()));
     }
 }

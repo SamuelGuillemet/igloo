@@ -1,6 +1,8 @@
 package eu.telecomsudparis.csc4102.suipro;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -11,7 +13,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * 
  * @author Denis Conan
  */
-public class Developpeur extends ElementJetable implements IDeveloppeur {
+public final class Developpeur extends ElementJetable implements IDeveloppeur {
 	/**
 	 * l'alias du développeur.
 	 */
@@ -25,7 +27,10 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	 */
 	private final String prenom;
 
-	private ArrayList<IPeriodeDeTravail> periodesDeTravail;
+	/**
+	 * les périodes de travail du développeur.
+	 */
+	private List<IPeriodeDeTravail> periodesDeTravail;
 
 	/**
 	 * construit un développeur.
@@ -33,22 +38,23 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	 * @param alias  l'alias.
 	 * @param nom    le nom.
 	 * @param prenom le prénom.
+	 * @throws OperationImpossible
 	 */
-	public Developpeur(final String alias, final String nom, final String prenom) {
+	public Developpeur(final String alias, final String nom, final String prenom) throws OperationImpossible {
 		super();
 		if (alias == null || alias.isBlank()) {
-			throw new IllegalArgumentException("alias ne peut pas être null ou vide");
+			throw new OperationImpossible("alias ne peut pas être null ou vide");
 		}
 		if (nom == null || nom.isBlank()) {
-			throw new IllegalArgumentException("nom ne peut pas être null ou vide");
+			throw new OperationImpossible("nom ne peut pas être null ou vide");
 		}
 		if (prenom == null || prenom.isBlank()) {
-			throw new IllegalArgumentException("prenom ne peut pas être null ou vide");
+			throw new OperationImpossible("prenom ne peut pas être null ou vide");
 		}
 		this.alias = alias;
 		this.nom = nom;
 		this.prenom = prenom;
-		this.periodesDeTravail = new ArrayList<>();
+		this.periodesDeTravail = new ArrayList<IPeriodeDeTravail>();
 
 		assert invariant();
 	}
@@ -73,9 +79,9 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	 */
 	public void ajouterPeriodeDeTravail(final IPeriodeDeTravail periodeDeTravail) throws OperationImpossible {
 		if (periodeDeTravail == null) {
-			throw new IllegalArgumentException("periodeDeTravail ne peut pas être null");
+			throw new OperationImpossible("periodeDeTravail ne peut pas être null");
 		}
-		if (!periodeDeTravail.estActif()) {
+		if (!periodeDeTravail.estEnFonctionnement()) {
 			throw new OperationImpossible("La période de travail ne peut pas être ajoutée car elle n'est pas active");
 		}
 		if (periodeDeTravail.getDeveloppeur() != this) {
@@ -88,14 +94,23 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 						"La période de travail ne peut pas être ajoutée car elle chevauche une autre période de travail");
 			}
 		}
-		if (!this.estActif()) {
+		if (!this.estEnFonctionnement()) {
 			throw new OperationImpossible(
-					"La période de travail ne peut pas être ajoutée car le développeur n'est pas actif");
+					"La période de travail ne peut pas être ajoutée car le développeur n'est pas en fonctionnement");
 		}
 
 		periodesDeTravail.add(periodeDeTravail);
 
 		assert invariant();
+	}
+
+	/**
+	 * renvoie le temps de travail du développeur.
+	 * 
+	 * @return le temps de travail du développeur.
+	 */
+	public double calculerTempsDeTravail() {
+		return periodesDeTravail.stream().mapToDouble(IPeriodeDeTravail::calculerTempsDeTravail).sum();
 	}
 
 	//#region getters
@@ -118,7 +133,7 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	}
 
 	/**
-	 * obtient le prenom
+	 * obtient le prenom.
 	 * 
 	 * @return le prenom.
 	 */
@@ -131,17 +146,23 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 	 * 
 	 * @return la liste des périodes de travail.
 	 */
-	public ArrayList<IPeriodeDeTravail> getPeriodesDeTravail() {
-		return periodesDeTravail;
+	public Collection<IPeriodeDeTravail> getPeriodesDeTravail() {
+		return periodesDeTravail.stream().toList();
 	}
 
 	//#endregion
 
 	@Override
-	public void mettreALaCorbeille() {
-		super.mettreALaCorbeille();
+	protected void specificMettreALaCorbeille(final ICorbeille corbeille) throws OperationImpossible {
 		for (IPeriodeDeTravail p : periodesDeTravail) {
-			p.mettreALaCorbeille();
+			p.mettreALaCorbeille(corbeille);
+		}
+	}
+
+	@Override
+	protected void specificRestaurer(final ICorbeille corbeille) throws OperationImpossible {
+		for (IPeriodeDeTravail p : periodesDeTravail) {
+			p.restaurer(corbeille);
 		}
 	}
 
@@ -167,6 +188,28 @@ public class Developpeur extends ElementJetable implements IDeveloppeur {
 
 	@Override
 	public String toString() {
-		return "Developpeur [alias=" + alias + ", nom=" + nom + ", prenom=" + prenom + "]";
+		return "Developpeur [alias=" + alias + ", nom=" + nom + ", prenom=" + prenom + ", enFonctionnement="
+				+ estEnFonctionnement() + "]";
+	}
+
+	/**
+	 * This method is called when an event is fire by the Corbeille when a PeriodeDeTravail is removed from it.
+	 * 
+	 * @param elementJetable the element jetable.
+	 */
+	@Override
+	public void onNext(final IElementJetable elementJetable) {
+		if (elementJetable == null) {
+			return;
+		}
+		if (!(elementJetable instanceof IPeriodeDeTravail)) {
+			return;
+		}
+		IPeriodeDeTravail periodeDeTravail = (IPeriodeDeTravail) elementJetable;
+		periodesDeTravail.remove(periodeDeTravail);
+
+		request();
+
+		assert invariant();
 	}
 }

@@ -1,56 +1,100 @@
 package eu.telecomsudparis.csc4102.suipro;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.concurrent.SubmissionPublisher;
+import java.util.concurrent.Flow.Subscriber;
 
-public final class Corbeille {
-    private static Corbeille instance;
+import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-    private LinkedHashSet<IElementJetable> elementsJetable;
+/**
+ * Cette classe réalise le concept de corbeille. Une corbeille est un ensemble
+ * d'éléments jetables.
+ */
+public final class Corbeille implements ICorbeille {
+    /**
+     * éléments jetables de la corbeille.
+     */
+    private final LinkedHashSet<IElementJetable> elementsJetable;
 
-    private Corbeille() {
+    /**
+     * support de gestion des écouteurs de propriétés.
+     */
+    private final SubmissionPublisher<IElementJetable> producteur;
+
+    /**
+     * Constructeur.
+     */
+    public Corbeille() {
         this.elementsJetable = new LinkedHashSet<>();
+        this.producteur = new SubmissionPublisher<>();
         assert invariant();
     }
 
-    public static Corbeille getInstance() {
-        if (instance == null) {
-            instance = new Corbeille();
-        }
-        return instance;
-    }
-
+    /**
+     * @return true si l'invariant est respecté, false sinon
+     */
     private boolean invariant() {
-        return this.elementsJetable != null;
+        return this.elementsJetable != null && this.producteur != null;
     }
 
-    public void ajouterALaCorbeille(final IElementJetable elementJetable) throws IllegalArgumentException {
+    /**
+     * @param elementJetable
+     * @throws OperationImpossible si l'élément jetable est null
+     */
+    public void ajouterALaCorbeille(final IElementJetable elementJetable) throws OperationImpossible {
         if (elementJetable == null) {
-            throw new IllegalArgumentException("L'élément jetable ne peut pas être null.");
+            throw new OperationImpossible("L'élément jetable ne peut pas être null.");
         }
         this.elementsJetable.add(elementJetable);
+        assert invariant();
     }
 
-    public void supprimerDeLaCorbeille(final IElementJetable elementJetable) throws IllegalArgumentException {
+    /**
+     * @param elementJetable
+     * @throws OperationImpossible si l'élément jetable est null
+     */
+    public void supprimerDeLaCorbeille(final IElementJetable elementJetable) throws OperationImpossible {
         if (elementJetable == null) {
-            throw new IllegalArgumentException("L'élément jetable ne peut pas être null.");
+            throw new OperationImpossible("L'élément jetable ne peut pas être null.");
         }
         this.elementsJetable.remove(elementJetable);
+        assert invariant();
     }
 
-    public <T extends IElementJetable> ArrayList<T> getElementsJetable(final Class<T> type) {
+    /**
+     * @param type le type des éléments jetables à récupérer
+     * @param <T> le type des éléments jetables à récupérer
+     * @return la liste des éléments jetables de la corbeille du type spécifié
+     * @throws OperationImpossible si le type est null
+     */
+    public <T extends IElementJetable> List<T> getElementsJetable(final Class<T> type) throws OperationImpossible {
         if (type == null) {
-            throw new IllegalArgumentException("Le type ne peut pas être null.");
+            throw new OperationImpossible("Le type ne peut pas être null.");
         }
 
         return this.elementsJetable.stream()
                 .filter(elementJetable -> type.isInstance(elementJetable))
                 .map(elementJetable -> type.cast(elementJetable))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .toList();
     }
 
+    /**
+     * Vide la corbeille.
+     */
     public void viderLaCorbeille() {
+        for (final IElementJetable elementJetable : this.elementsJetable) {
+            this.producteur.submit(elementJetable);
+        }
         this.elementsJetable.clear();
+        assert invariant();
+    }
+
+    /**
+     * @param subscriber
+     */
+    public void subscribe(final Subscriber<IElementJetable> subscriber) {
+        this.producteur.subscribe(subscriber);
+        assert invariant();
     }
 }

@@ -15,7 +15,7 @@ class TestAjouterUneActivite {
     private String nom;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         suiPro = new SuiPro("projetx");
         identifiant = "activite1";
         nom = "nom1";
@@ -24,8 +24,6 @@ class TestAjouterUneActivite {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        identifiant = null;
-        nom = null;
     }
 
     @Test
@@ -62,8 +60,8 @@ class TestAjouterUneActivite {
     @Test
     void Test4() throws Exception {
         suiPro.ajouterUneActivite(identifiant, nom);
-        Assertions.assertEquals(suiPro.getActivite(identifiant).getId(), identifiant);
-        Assertions.assertEquals(suiPro.getActivite(identifiant).getNom(), nom);
+        Assertions.assertTrue(suiPro.afficherLesActivites().contains(identifiant));
+        Assertions.assertTrue(suiPro.afficherLesActivites().contains(nom));
     }
 
 }

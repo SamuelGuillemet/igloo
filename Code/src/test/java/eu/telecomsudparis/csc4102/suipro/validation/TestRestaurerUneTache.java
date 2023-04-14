@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-class TestMettreUneTacheALaCorbeille {
+class TestRestaurerUneTache {
     private SuiPro suiPro;
     private String idAct;
     private String idTache;
     private String nom;
+    private Instant debut1;
+    private Instant fin1;
     private String devAlias;
     private String devNom;
     private String devPrenom;
-    private Instant debut1;
-    private Instant fin1;
 
     @BeforeEach
     void setUp() throws OperationImpossible {
@@ -40,6 +40,8 @@ class TestMettreUneTacheALaCorbeille {
         debut1 = Instant.parse("2019-01-01T00:00:00Z");
         fin1 = Instant.parse("2019-01-02T00:00:00Z");
         suiPro.ajouterUnePeriodeDeTravail(idTache, idAct, devAlias, debut1, fin1);
+
+        suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
     }
 
     @AfterEach
@@ -50,55 +52,58 @@ class TestMettreUneTacheALaCorbeille {
     @Test
     void Test1Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille(idAct, null));
+                () -> suiPro.restaurerUneTache(idAct, null));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille(idAct, ""));
+                () -> suiPro.restaurerUneTache(idAct, ""));
     }
 
     @Test
     void Test2Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille(null, idTache));
+                () -> suiPro.restaurerUneTache(null, idTache));
     }
 
     @Test
     void Test2Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille("", idTache));
+                () -> suiPro.restaurerUneTache("", idTache));
     }
 
     @Test
     void Test3() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille("act2", idTache));
+                () -> suiPro.restaurerUneTache("act2", idTache));
     }
 
     @Test
     void Test4() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneTacheALaCorbeille(idAct, "tache2"));
+                () -> suiPro.restaurerUneTache(idAct, "tache2"));
     }
 
     @Test
     void Test5() throws Exception {
-        suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        Assertions.assertTrue(suiPro.afficherLesTachesALaCorbeille().contains(idTache));
-        Assertions.assertTrue(suiPro.afficherLesTachesALaCorbeille().contains(nom));
+        suiPro.restaurerUneTache(idAct, idTache);
+        Assertions.assertFalse(suiPro.afficherLesTachesALaCorbeille().contains(idTache));
+        Assertions.assertTrue(suiPro.afficherLesTaches(idAct).contains(idTache));
 
-        suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        String result = suiPro.afficherLesTachesALaCorbeille();
-        Assertions.assertEquals(StringUtils.countMatches(result, idTache), 1);
-
-        Assertions.assertFalse(suiPro.afficherLesTaches(idAct).contains(idTache));
     }
 
     @Test
     void Test6() throws Exception {
-        suiPro.mettreUneTacheALaCorbeille(idAct, idTache);
-        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(debut1.toString()));
+        suiPro.restaurerUneTache(idAct, idTache);
+        suiPro.restaurerUneTache(idAct, idTache);
+        Assertions.assertTrue(StringUtils.countMatches(suiPro.afficherLesTaches(idAct), idTache) == 1);
+    }
+
+    @Test
+    void Test7() throws Exception {
+        suiPro.restaurerUneTache(idAct, idTache);
+        Assertions.assertTrue(
+                suiPro.afficherLesPeriodesDeTravailPourUneTache(idAct, idTache).contains(debut1.toString()));
     }
 }
