@@ -4,6 +4,7 @@ package eu.telecomsudparis.csc4102.suipro.mocks;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
+import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -27,7 +28,7 @@ public class MockedDeveloppeur implements IDeveloppeur {
     }
 
     @Override
-    public void mettreALaCorbeille() {
+    public void mettreALaCorbeille(ICorbeille corbeille) {
         throw new UnsupportedOperationException("Unimplemented method 'mettreALaCorbeille'");
     }
 
@@ -49,7 +50,7 @@ public class MockedDeveloppeur implements IDeveloppeur {
     }
 
     @Override
-    public void restaurer() {
+    public void restaurer(ICorbeille corbeille) {
         throw new UnsupportedOperationException("Unimplemented method 'restaurer'");
     }
 
@@ -64,7 +65,6 @@ public class MockedDeveloppeur implements IDeveloppeur {
 
     @Override
     public double calculerTempsDeTravail() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'calculerTempsDeTravail'");
     }
 }

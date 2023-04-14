@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.telecomsudparis.csc4102.suipro.IActivite;
+import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.suipro.ITache;
 import eu.telecomsudparis.csc4102.suipro.Label;
@@ -48,7 +49,7 @@ public class MockedTache implements ITache {
     }
 
     @Override
-    public void mettreALaCorbeille() {
+    public void mettreALaCorbeille(ICorbeille corbeille) {
         enFonctionnement = false;
         mettreALaCorbeilleCalledTimes++;
     }
@@ -81,7 +82,7 @@ public class MockedTache implements ITache {
     }
 
     @Override
-    public void restaurer() {
+    public void restaurer(ICorbeille corbeille) {
         enFonctionnement = true;
         restaurerCalledTimes++;
     }
@@ -98,13 +99,11 @@ public class MockedTache implements ITache {
 
     @Override
     public void ajouterLabel(Label label) throws OperationImpossible {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'ajouterLabel'");
     }
 
     @Override
     public List<Label> getLabels() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getLabels'");
     }
 }

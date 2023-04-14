@@ -4,6 +4,7 @@ package eu.telecomsudparis.csc4102.suipro.mocks;
 import java.beans.PropertyChangeEvent;
 import java.time.Instant;
 
+import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IDeveloppeur;
 import eu.telecomsudparis.csc4102.suipro.IPeriodeDeTravail;
 import eu.telecomsudparis.csc4102.suipro.ITache;
@@ -43,7 +44,7 @@ public class MockedPeriodeDeTravail implements IPeriodeDeTravail {
     }
 
     @Override
-    public void mettreALaCorbeille() {
+    public void mettreALaCorbeille(ICorbeille corbeille) {
         enFonctionnement = false;
         mettreALaCorbeilleCalledTimes++;
     }
@@ -69,7 +70,7 @@ public class MockedPeriodeDeTravail implements IPeriodeDeTravail {
     }
 
     @Override
-    public void restaurer() {
+    public void restaurer(ICorbeille corbeille) {
         enFonctionnement = true;
         restaurerCalledTimes++;
     }
