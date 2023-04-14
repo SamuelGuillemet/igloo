@@ -44,7 +44,7 @@ public final class Tache extends ElementJetable implements ITache {
      * @param activite
      * @throws OperationImpossible
      */
-    private Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
+    public Tache(final String nom, final String id, final IActivite activite) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new OperationImpossible("Le nom ne peut pas être null ou vide.");
         }
@@ -68,22 +68,6 @@ public final class Tache extends ElementJetable implements ITache {
         this.labels = new ArrayList<>();
 
         this.activite.ajouterTache(this);
-    }
-
-    /**
-     * @param nom
-     * @param id
-     * @param activite
-     * @param corbeille
-     * @throws OperationImpossible
-     */
-    public Tache(final String nom, final String id, final IActivite activite, final ICorbeille corbeille)
-            throws OperationImpossible {
-        this(nom, id, activite);
-        if (corbeille == null) {
-            throw new OperationImpossible("La corbeille ne peut pas être null.");
-        }
-        this.setCorbeille(corbeille);
 
         assert invariant();
     }
@@ -96,8 +80,7 @@ public final class Tache extends ElementJetable implements ITache {
                 && id != null && !id.isBlank()
                 && activite != null
                 && periodesDeTravail != null
-                && labels != null
-                && super.invariant();
+                && labels != null;
     }
 
     /**
@@ -199,19 +182,19 @@ public final class Tache extends ElementJetable implements ITache {
     //#region ElementJetable
 
     @Override
-    protected void specificMettreALaCorbeille() throws OperationImpossible {
+    protected void specificMettreALaCorbeille(final ICorbeille corbeille) throws OperationImpossible {
         for (IPeriodeDeTravail periodeDeTravail : periodesDeTravail) {
-            periodeDeTravail.mettreALaCorbeille();
+            periodeDeTravail.mettreALaCorbeille(corbeille);
         }
     }
 
     @Override
-    protected void specificRestaurer() throws OperationImpossible {
+    protected void specificRestaurer(final ICorbeille corbeille) throws OperationImpossible {
         if (!activite.estEnFonctionnement()) {
             throw new IllegalStateException("l'activité de la tâche doit être en fonctionnement");
         }
         for (IPeriodeDeTravail periodeDeTravail : periodesDeTravail) {
-            periodeDeTravail.restaurer();
+            periodeDeTravail.restaurer(corbeille);
         }
     }
 
