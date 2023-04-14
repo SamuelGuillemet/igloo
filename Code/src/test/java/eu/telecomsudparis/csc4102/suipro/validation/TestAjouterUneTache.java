@@ -79,7 +79,7 @@ class TestAjouterUneTache {
     }
 
     @Test
-    void Test6() throws Exception {
+    void Test7Puis6() throws Exception {
         suiPro.ajouterUneTache(idTache, nomTache, idActivite);
         Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.ajouterUneTache(idTache, nomTache, idActivite));
