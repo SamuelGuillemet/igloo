@@ -16,15 +16,6 @@ public abstract class ElementJetable implements IElementJetable {
     private boolean enFonctionnement = true;
 
     /**
-     * corbeille de l'élément.
-     */
-    private ICorbeille corbeille;
-
-    boolean invariant() {
-        return corbeille != null;
-    }
-
-    /**
      * @return true si l'élément est en fonctionnement, false sinon
      */
     public final boolean estEnFonctionnement() {
@@ -33,24 +24,28 @@ public abstract class ElementJetable implements IElementJetable {
 
     /**
      * met l'élément à la corbeille.
+     * 
+     * @param corbeille
      */
-    public final void mettreALaCorbeille() throws OperationImpossible {
+    public final void mettreALaCorbeille(final ICorbeille corbeille) throws OperationImpossible {
         this.enFonctionnement = false;
         corbeille.ajouterALaCorbeille(this);
-        this.specificMettreALaCorbeille();
+        this.specificMettreALaCorbeille(corbeille);
     }
 
-    protected abstract void specificMettreALaCorbeille() throws OperationImpossible;
+    protected abstract void specificMettreALaCorbeille(ICorbeille corbeille) throws OperationImpossible;
 
     /**
      * restaure l'élément.
      * We are using the IllegalStateException to indicate that the element cannot be restored,
      * for example if one of its "parent" is still in the trash.
+     * 
+     * @param corbeille
      */
-    public final void restaurer() throws OperationImpossible {
+    public final void restaurer(final ICorbeille corbeille) throws OperationImpossible {
         this.enFonctionnement = true;
         try {
-            this.specificRestaurer();
+            this.specificRestaurer(corbeille);
             corbeille.supprimerDeLaCorbeille(this);
         } catch (IllegalStateException e) {
             this.enFonctionnement = false;
@@ -58,14 +53,5 @@ public abstract class ElementJetable implements IElementJetable {
         }
     }
 
-    protected abstract void specificRestaurer() throws IllegalStateException, OperationImpossible;
-
-    /**
-     * ajoute la corbeille à l'élément.
-     * 
-     * @param corbeille
-     */
-    protected void setCorbeille(final ICorbeille corbeille) {
-        this.corbeille = corbeille;
-    }
+    protected abstract void specificRestaurer(ICorbeille corbeille) throws IllegalStateException, OperationImpossible;
 }
