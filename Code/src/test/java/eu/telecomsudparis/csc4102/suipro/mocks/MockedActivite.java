@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import eu.telecomsudparis.csc4102.suipro.IActivite;
+import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.ITache;
 import eu.telecomsudparis.csc4102.suipro.Label;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
@@ -29,7 +30,7 @@ public class MockedActivite implements IActivite {
     }
 
     @Override
-    public void mettreALaCorbeille() {
+    public void mettreALaCorbeille(ICorbeille corbeille) {
         throw new UnsupportedOperationException("Unimplemented method 'mettreALaCorbeille'");
     }
 
@@ -60,7 +61,7 @@ public class MockedActivite implements IActivite {
     }
 
     @Override
-    public void restaurer() {
+    public void restaurer(ICorbeille corbeille) {
         throw new UnsupportedOperationException("Unimplemented method 'restaurer'");
     }
 
@@ -70,19 +71,16 @@ public class MockedActivite implements IActivite {
 
     @Override
     public double calculerTempsDeTravail() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'calculerTempsDeTravail'");
     }
 
     @Override
     public void ajouterLabel(Label label) throws OperationImpossible {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'ajouterLabel'");
     }
 
     @Override
     public List<Label> getLabels() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getLabels'");
     }
 }

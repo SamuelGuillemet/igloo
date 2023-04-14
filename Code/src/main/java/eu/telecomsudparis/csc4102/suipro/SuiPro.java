@@ -98,7 +98,7 @@ public final class SuiPro implements PropertyChangeListener {
         if (developpeurs.containsKey(alias)) {
             throw new OperationImpossible("développeur déjà dans le système");
         }
-        Developpeur dev = new Developpeur(alias, nom, prenom, corbeille);
+        Developpeur dev = new Developpeur(alias, nom, prenom);
         corbeille.addPropertyChangeListener(dev);
         developpeurs.put(alias, dev);
         assert invariant();
@@ -123,7 +123,7 @@ public final class SuiPro implements PropertyChangeListener {
         if (activites.containsKey(id)) {
             throw new OperationImpossible("activite déjà dans le système");
         }
-        Activite activite = new Activite(nom, id, corbeille);
+        Activite activite = new Activite(nom, id);
         corbeille.addPropertyChangeListener(activite);
         activites.put(id, activite);
         assert invariant();
@@ -161,7 +161,7 @@ public final class SuiPro implements PropertyChangeListener {
         if (activite.getTache(id) != null) {
             throw new OperationImpossible("tache déjà dans le système");
         }
-        Tache tache = new Tache(nom, id, activite, corbeille);
+        Tache tache = new Tache(nom, id, activite);
         corbeille.addPropertyChangeListener(tache);
         assert invariant();
     }
@@ -222,7 +222,7 @@ public final class SuiPro implements PropertyChangeListener {
             throw new OperationImpossible("developpeur n'est pas en fonctionnement");
         }
 
-        new PeriodeDeTravail(debut, fin, tache, developpeur, corbeille);
+        new PeriodeDeTravail(debut, fin, tache, developpeur);
 
         assert invariant();
     }
@@ -497,7 +497,7 @@ public final class SuiPro implements PropertyChangeListener {
         }
 
         Developpeur dev = developpeurs.get(id);
-        dev.mettreALaCorbeille();
+        dev.mettreALaCorbeille(corbeille);
     }
 
     /**
@@ -517,7 +517,7 @@ public final class SuiPro implements PropertyChangeListener {
         }
 
         Activite activite = activites.get(id);
-        activite.mettreALaCorbeille();
+        activite.mettreALaCorbeille(corbeille);
     }
 
     /**
@@ -547,7 +547,7 @@ public final class SuiPro implements PropertyChangeListener {
             throw new OperationImpossible("La tache n'existe pas");
         }
 
-        tache.mettreALaCorbeille();
+        tache.mettreALaCorbeille(corbeille);
     }
 
     // #endregion
@@ -571,7 +571,7 @@ public final class SuiPro implements PropertyChangeListener {
         }
 
         Developpeur dev = developpeurs.get(id);
-        dev.restaurer();
+        dev.restaurer(corbeille);
     }
 
     /**
@@ -591,7 +591,7 @@ public final class SuiPro implements PropertyChangeListener {
         }
 
         Activite activite = activites.get(id);
-        activite.restaurer();
+        activite.restaurer(corbeille);
     }
 
     /**
@@ -627,7 +627,7 @@ public final class SuiPro implements PropertyChangeListener {
             throw new OperationImpossible("La tache n'existe pas");
         }
 
-        tache.restaurer();
+        tache.restaurer(corbeille);
     }
 
     // #endregion
@@ -745,22 +745,22 @@ public final class SuiPro implements PropertyChangeListener {
     /**
      * Calcul le temps de travail du projet hors de plusieurs labels.
      * 
-     * @param labels les labels.
+     * @param labelsId les labels.
      * @return le temps de travail du projet hors de plusieurs labels.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
-    public double calculerTempsDeTravailProjetHorsLabels(final List<String> labels) throws OperationImpossible {
-        if (labels == null || labels.isEmpty()) {
+    public double calculerTempsDeTravailProjetHorsLabels(final List<String> labelsId) throws OperationImpossible {
+        if (labelsId == null || labelsId.isEmpty()) {
             throw new OperationImpossible("labels ne peut pas être nul ou vide");
         }
-        for (String label : labels) {
+        for (String label : labelsId) {
             if (!this.labels.containsKey(label)) {
                 throw new OperationImpossible("Le label n'existe pas");
             }
         }
 
-        List<Label> labelsList = labels.stream().map(this.labels::get).toList();
+        List<Label> labelsList = labelsId.stream().map(this.labels::get).toList();
 
         // Non Intersection between Labelisable and labels
         Predicate<Labelisable> predicate = l -> l.getLabels().stream().noneMatch(labelsList::contains);

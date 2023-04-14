@@ -2,6 +2,8 @@
 package eu.telecomsudparis.csc4102.suipro.mocks;
 
 import java.beans.PropertyChangeEvent;
+
+import eu.telecomsudparis.csc4102.suipro.ICorbeille;
 import eu.telecomsudparis.csc4102.suipro.IElementJetable;
 
 public class MockedElementJetable implements IElementJetable {
@@ -15,7 +17,7 @@ public class MockedElementJetable implements IElementJetable {
     }
 
     @Override
-    public void mettreALaCorbeille() {
+    public void mettreALaCorbeille(ICorbeille corbeille) {
         throw new UnsupportedOperationException("Unimplemented method 'mettreALaCorbeille'");
     }
 
@@ -25,7 +27,7 @@ public class MockedElementJetable implements IElementJetable {
     }
 
     @Override
-    public void restaurer() {
+    public void restaurer(ICorbeille corbeille) {
         throw new UnsupportedOperationException("Unimplemented method 'restaurer'");
     }
 }

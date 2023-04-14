@@ -41,50 +41,45 @@ class TestTache {
 
         @Test
         void Test1Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache(null, "id", activite, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache(null, "id", activite));
         }
 
         @Test
         void Test1Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("", "id", activite, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("", "id", activite));
         }
 
         @Test
         void Test2Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", null, activite, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", null, activite));
         }
 
         @Test
         void Test2Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "", activite, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "", activite));
         }
 
         @Test
         void Test3() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", null, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", null));
         }
 
         @Test
         void Test4() throws Exception {
             activite = new MockedActivite(false);
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite));
         }
 
         @Test
         void Test5() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite, null));
-        }
-
-        @Test
-        void Test6() throws Exception {
-            Tache tache = new Tache("nom", "id", activite, corbeille);
+            Tache tache = new Tache("nom", "id", activite);
             Assertions.assertNotNull(tache);
             Assertions.assertEquals("nom", tache.getNom());
             Assertions.assertEquals("id", tache.getId());
             Assertions.assertEquals(activite, tache.getActivite());
             Assertions.assertTrue(tache.estEnFonctionnement());
             Assertions.assertEquals(1, activite.ajouterTacheCalledTimes);
-            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Tache("nom", "id", activite));
         }
     }
 
@@ -95,7 +90,7 @@ class TestTache {
         void Test1() throws Exception {
             MockedCorbeille corbeille = new MockedCorbeille();
             IActivite activite = new MockedActivite(true);
-            Tache tache = new Tache("nom", "id", activite, corbeille);
+            Tache tache = new Tache("nom", "id", activite);
             MockedPeriodeDeTravail periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
 
             Assertions.assertNotNull(tache);
@@ -104,16 +99,17 @@ class TestTache {
             try {
                 tache.ajouterPeriodeDeTravail(periodeDeTravail);
             } catch (Exception e) {
-                Assertions.fail(e);
                 Assertions.fail("Test impossible : impossible d'ajouter une période de travail à la tâche");
             }
 
-            tache.mettreALaCorbeille();
+            Assertions.assertThrows(OperationImpossible.class, () -> tache.mettreALaCorbeille(null));
+
+            tache.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(tache.estEnFonctionnement());
 
             Assertions.assertEquals(1, periodeDeTravail.mettreALaCorbeilleCalledTimes);
 
-            tache.mettreALaCorbeille();
+            tache.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(tache.estEnFonctionnement());
 
             int size = corbeille.getNbAjout(tache);
@@ -133,7 +129,7 @@ class TestTache {
             corbeille = new MockedCorbeille();
             activite = new MockedActivite(true);
 
-            tache = new Tache("nom", "id", activite, corbeille);
+            tache = new Tache("nom", "id", activite);
 
             periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
 
@@ -147,7 +143,7 @@ class TestTache {
                 Assertions.fail("Test impossible : impossible d'ajouter une période de travail à la tâche");
             }
 
-            tache.mettreALaCorbeille();
+            tache.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(tache.estEnFonctionnement());
         }
 
@@ -159,20 +155,25 @@ class TestTache {
         }
 
         @Test
+        void Test0() {
+            Assertions.assertThrows(OperationImpossible.class, () -> tache.restaurer(null));
+        }
+
+        @Test
         void Test1() throws Exception {
             activite.setEnFonctionnement(false);
-            tache.restaurer();
+            tache.restaurer(corbeille);
             Assertions.assertFalse(activite.estEnFonctionnement());
         }
 
         @Test
         void Test2() throws Exception {
-            tache.restaurer();
+            tache.restaurer(corbeille);
             Assertions.assertTrue(tache.estEnFonctionnement());
 
             Assertions.assertEquals(1, periodeDeTravail.restaurerCalledTimes);
 
-            tache.restaurer();
+            tache.restaurer(corbeille);
             Assertions.assertTrue(tache.estEnFonctionnement());
 
             int size = corbeille.getNbSuppression(tache);
@@ -192,7 +193,7 @@ class TestTache {
         void setUp() throws Exception {
             corbeille = new Corbeille();
             activite = new MockedActivite(true);
-            tache = new Tache("nom", "id", activite, corbeille);
+            tache = new Tache("nom", "id", activite);
             periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
         }
 
@@ -218,7 +219,7 @@ class TestTache {
 
         @Test
         void Test3() throws Exception {
-            periodeDeTravail = new MockedPeriodeDeTravail(new Tache("nom2", "id2", activite, corbeille), true);
+            periodeDeTravail = new MockedPeriodeDeTravail(new Tache("nom2", "id2", activite), true);
             Assertions.assertThrows(OperationImpossible.class,
                     () -> tache.ajouterPeriodeDeTravail(periodeDeTravail));
         }
@@ -232,7 +233,7 @@ class TestTache {
 
         @Test
         void Test5() throws Exception {
-            tache.mettreALaCorbeille();
+            tache.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(tache.estEnFonctionnement());
             Assertions.assertThrows(OperationImpossible.class,
                     () -> tache.ajouterPeriodeDeTravail(periodeDeTravail));
@@ -256,7 +257,7 @@ class TestTache {
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
-            tache = new Tache("nom", "id", new MockedActivite(true), corbeille);
+            tache = new Tache("nom", "id", new MockedActivite(true));
             periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
             tache.ajouterPeriodeDeTravail(periodeDeTravail);
         }
@@ -315,7 +316,7 @@ class TestTache {
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
-            tache = new Tache("nom", "id", new MockedActivite(true), corbeille);
+            tache = new Tache("nom", "id", new MockedActivite(true));
             periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
         }
 
@@ -347,7 +348,7 @@ class TestTache {
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
-            tache = new Tache("nom", "id", new MockedActivite(true), corbeille);
+            tache = new Tache("nom", "id", new MockedActivite(true));
             label = new Label("label", "labelName");
         }
 
@@ -363,7 +364,7 @@ class TestTache {
 
         @Test
         void Test5puis4() throws Exception {
-            tache.mettreALaCorbeille();
+            tache.mettreALaCorbeille(corbeille);
             Assertions.assertThrows(OperationImpossible.class, () -> tache.ajouterLabel(label));
         }
 

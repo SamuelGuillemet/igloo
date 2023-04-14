@@ -12,7 +12,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
 public interface IElementJetable extends PropertyChangeListener {
     boolean estEnFonctionnement();
 
-    void mettreALaCorbeille() throws OperationImpossible;
+    void mettreALaCorbeille(ICorbeille corbeille) throws OperationImpossible;
 
-    void restaurer() throws OperationImpossible;
+    void restaurer(ICorbeille corbeille) throws OperationImpossible;
 }
