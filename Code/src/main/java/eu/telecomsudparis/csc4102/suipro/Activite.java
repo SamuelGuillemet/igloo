@@ -39,7 +39,7 @@ public final class Activite extends ElementJetable implements IActivite {
      * @param id
      * @throws OperationImpossible
      */
-    private Activite(final String nom, final String id) throws OperationImpossible {
+    public Activite(final String nom, final String id) throws OperationImpossible {
         if (nom == null || nom.isBlank()) {
             throw new OperationImpossible("Le nom ne peut pas être null ou vide.");
         }
@@ -51,21 +51,7 @@ public final class Activite extends ElementJetable implements IActivite {
         this.id = id;
         this.taches = new LinkedHashMap<>();
         this.labels = new ArrayList<>();
-    }
 
-    /**
-     * @param nom
-     * @param id
-     * @param corbeille
-     * @throws OperationImpossible
-     */
-    public Activite(final String nom, final String id, final ICorbeille corbeille)
-            throws OperationImpossible {
-        this(nom, id);
-        if (corbeille == null) {
-            throw new OperationImpossible("La corbeille ne peut pas être null.");
-        }
-        this.setCorbeille(corbeille);
         assert invariant();
     }
 
@@ -76,8 +62,7 @@ public final class Activite extends ElementJetable implements IActivite {
         return nom != null && !nom.isBlank()
                 && id != null && !id.isBlank()
                 && taches != null
-                && labels != null
-                && super.invariant();
+                && labels != null;
     }
 
     /**
@@ -176,16 +161,16 @@ public final class Activite extends ElementJetable implements IActivite {
     }
 
     @Override
-    protected void specificMettreALaCorbeille() throws OperationImpossible {
+    protected void specificMettreALaCorbeille(final ICorbeille corbeille) throws OperationImpossible {
         for (ITache tache : taches.values()) {
-            tache.mettreALaCorbeille();
+            tache.mettreALaCorbeille(corbeille);
         }
     }
 
     @Override
-    protected void specificRestaurer() throws OperationImpossible {
+    protected void specificRestaurer(final ICorbeille corbeille) throws OperationImpossible {
         for (ITache tache : taches.values()) {
-            tache.restaurer();
+            tache.restaurer(corbeille);
         }
     }
 
