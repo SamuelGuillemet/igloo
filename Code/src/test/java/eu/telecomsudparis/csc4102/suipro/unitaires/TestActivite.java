@@ -31,32 +31,27 @@ class TestActivite {
 
         @Test
         void Test1Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite(null, "id", corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite(null, "id"));
         }
 
         @Test
         void Test1Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("", "id", corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("", "id"));
         }
 
         @Test
         void Test2Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", null, corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", null));
         }
 
         @Test
         void Test2Jeu2() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", "", corbeille));
+            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", ""));
         }
 
         @Test
         void Test3Jeu1() throws Exception {
-            Assertions.assertThrows(OperationImpossible.class, () -> new Activite("nom", "id", null));
-        }
-
-        @Test
-        void Test4Jeu1() throws Exception {
-            Activite activite = new Activite("nom", "id", corbeille);
+            Activite activite = new Activite("nom", "id");
             Assertions.assertNotNull(activite);
             Assertions.assertEquals("nom", activite.getNom());
             Assertions.assertEquals("id", activite.getId());
@@ -69,7 +64,7 @@ class TestActivite {
         @Test
         void TestMettreALaCorbeille() throws Exception {
             MockedCorbeille corbeille = new MockedCorbeille();
-            Activite activite = new Activite("nom", "id", corbeille);
+            Activite activite = new Activite("nom", "id");
             MockedTache tache = new MockedTache(activite);
             Assertions.assertNotNull(activite);
             Assertions.assertTrue(activite.estEnFonctionnement());
@@ -80,12 +75,12 @@ class TestActivite {
                 Assertions.fail("Test impossible : impossible d'ajouter une tache à une activité");
             }
 
-            activite.mettreALaCorbeille();
+            activite.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(activite.estEnFonctionnement());
 
             Assertions.assertEquals(1, tache.mettreALaCorbeilleCalledTimes);
 
-            activite.mettreALaCorbeille();
+            activite.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(activite.estEnFonctionnement());
 
             int size = corbeille.getNbAjout(activite);
@@ -99,7 +94,7 @@ class TestActivite {
         @Test
         void TestRestaurer() throws Exception {
             MockedCorbeille corbeille = new MockedCorbeille();
-            Activite activite = new Activite("nom", "id", corbeille);
+            Activite activite = new Activite("nom", "id");
             MockedTache tache = new MockedTache(activite);
             Assertions.assertNotNull(activite);
             Assertions.assertTrue(activite.estEnFonctionnement());
@@ -110,17 +105,17 @@ class TestActivite {
                 Assertions.fail("Test impossible : impossible d'ajouter une tache à une activité");
             }
 
-            activite.mettreALaCorbeille();
+            activite.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(activite.estEnFonctionnement());
 
             Assertions.assertEquals(1, tache.mettreALaCorbeilleCalledTimes);
 
-            activite.restaurer();
+            activite.restaurer(corbeille);
             Assertions.assertTrue(activite.estEnFonctionnement());
 
             Assertions.assertEquals(1, tache.restaurerCalledTimes);
 
-            activite.restaurer();
+            activite.restaurer(corbeille);
             Assertions.assertTrue(activite.estEnFonctionnement());
 
             int size = corbeille.getNbSuppression(activite);
@@ -137,7 +132,7 @@ class TestActivite {
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
-            activite = new Activite("nom", "id", corbeille);
+            activite = new Activite("nom", "id");
             tache = new MockedTache(activite);
         }
 
@@ -162,7 +157,7 @@ class TestActivite {
 
         @Test
         void Test3() throws Exception {
-            tache = new MockedTache(new Activite("nom2", "id2", corbeille));
+            tache = new MockedTache(new Activite("nom2", "id2"));
 
             Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterTache(tache));
         }
@@ -175,7 +170,7 @@ class TestActivite {
 
         @Test
         void Test5() throws Exception {
-            activite.mettreALaCorbeille();
+            activite.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(activite.estEnFonctionnement());
             Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterTache(tache));
         }
@@ -198,7 +193,7 @@ class TestActivite {
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
-            activite = new Activite("nom", "id", corbeille);
+            activite = new Activite("nom", "id");
             tache = new MockedTache(activite);
             activite.ajouterTache(tache);
         }
@@ -255,7 +250,7 @@ class TestActivite {
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
-            activite = new Activite("nom", "id", corbeille);
+            activite = new Activite("nom", "id");
             tache = new MockedTache(activite);
         }
 
@@ -289,7 +284,7 @@ class TestActivite {
         @BeforeEach
         void setUp() throws Exception {
             corbeille = new Corbeille();
-            activite = new Activite("nom", "id", corbeille);
+            activite = new Activite("nom", "id");
             label = new Label("label", "labelName");
         }
 
@@ -305,7 +300,7 @@ class TestActivite {
 
         @Test
         void Test5puis4() throws Exception {
-            activite.mettreALaCorbeille();
+            activite.mettreALaCorbeille(corbeille);
             Assertions.assertThrows(OperationImpossible.class, () -> activite.ajouterLabel(label));
         }
 
