@@ -209,12 +209,15 @@ class TestDeveloppeur {
 			corbeille.subscribe(developpeur);
 			periodeDeTravail = new MockedPeriodeDeTravail(developpeur, true);
 			developpeur.ajouterPeriodeDeTravail(periodeDeTravail);
+
+			Thread.sleep(50);
 		}
 
 		@AfterEach
 		void tearDown() {
 			periodeDeTravail = null;
 			developpeur = null;
+			corbeille = null;
 		}
 
 		@Test

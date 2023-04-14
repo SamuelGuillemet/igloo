@@ -257,12 +257,15 @@ class TestTache {
             corbeille.subscribe(tache);
             periodeDeTravail = new MockedPeriodeDeTravail(tache, true);
             tache.ajouterPeriodeDeTravail(periodeDeTravail);
+
+            Thread.sleep(50);
         }
 
         @AfterEach
         void tearDown() {
             periodeDeTravail = null;
             tache = null;
+            corbeille = null;
         }
 
         @Test
@@ -278,7 +281,7 @@ class TestTache {
         }
 
         @Test
-        void Test5() throws Exception {
+        void Test3() throws Exception {
             tache.onNext(periodeDeTravail);
             Assertions.assertFalse(tache.getPeriodesDeTravail().contains(periodeDeTravail));
         }

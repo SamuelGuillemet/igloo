@@ -198,12 +198,15 @@ class TestActivite {
             corbeille.subscribe(activite);
             tache = new MockedTache(activite);
             activite.ajouterTache(tache);
+
+            Thread.sleep(50);
         }
 
         @AfterEach
         void tearDown() throws Exception {
             activite = null;
             tache = null;
+            corbeille = null;
         }
 
         @Test
