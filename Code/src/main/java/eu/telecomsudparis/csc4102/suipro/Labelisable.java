@@ -10,7 +10,7 @@ import eu.telecomsudparis.csc4102.util.OperationImpossible;
  * élément pouvant être associé à un ou plusieurs labels.
  */
 public interface Labelisable {
-    void ajouterLabel(Label label) throws OperationImpossible;
+    void ajouterLabel(ILabel label) throws OperationImpossible;
 
-    List<Label> getLabels();
+    List<ILabel> getLabels();
 }
