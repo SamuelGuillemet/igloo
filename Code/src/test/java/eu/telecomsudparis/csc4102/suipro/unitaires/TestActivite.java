@@ -75,6 +75,8 @@ class TestActivite {
                 Assertions.fail("Test impossible : impossible d'ajouter une tache à une activité");
             }
 
+            Assertions.assertThrows(OperationImpossible.class, () -> activite.mettreALaCorbeille(null));
+
             activite.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(activite.estEnFonctionnement());
 
@@ -104,6 +106,8 @@ class TestActivite {
             } catch (OperationImpossible e) {
                 Assertions.fail("Test impossible : impossible d'ajouter une tache à une activité");
             }
+
+            Assertions.assertThrows(OperationImpossible.class, () -> activite.mettreALaCorbeille(null));
 
             activite.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(activite.estEnFonctionnement());

@@ -84,6 +84,8 @@ class TestDeveloppeur {
 				Assertions.fail("Test impossible : impossible d'ajouter une période de travail");
 			}
 
+			Assertions.assertThrows(OperationImpossible.class, () -> developpeur.mettreALaCorbeille(null));
+
 			developpeur.mettreALaCorbeille(corbeille);
 			Assertions.assertFalse(developpeur.estEnFonctionnement());
 
@@ -113,6 +115,8 @@ class TestDeveloppeur {
 			} catch (OperationImpossible e) {
 				Assertions.fail("Test impossible : impossible d'ajouter une période de travail");
 			}
+
+			Assertions.assertThrows(OperationImpossible.class, () -> developpeur.mettreALaCorbeille(null));
 
 			developpeur.mettreALaCorbeille(corbeille);
 			Assertions.assertFalse(developpeur.estEnFonctionnement());

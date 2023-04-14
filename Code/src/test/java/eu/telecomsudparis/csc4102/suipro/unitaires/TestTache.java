@@ -99,9 +99,10 @@ class TestTache {
             try {
                 tache.ajouterPeriodeDeTravail(periodeDeTravail);
             } catch (Exception e) {
-                Assertions.fail(e);
                 Assertions.fail("Test impossible : impossible d'ajouter une période de travail à la tâche");
             }
+
+            Assertions.assertThrows(OperationImpossible.class, () -> tache.mettreALaCorbeille(null));
 
             tache.mettreALaCorbeille(corbeille);
             Assertions.assertFalse(tache.estEnFonctionnement());
@@ -151,6 +152,11 @@ class TestTache {
             corbeille = null;
             activite = null;
             tache = null;
+        }
+
+        @Test
+        void Test0() {
+            Assertions.assertThrows(OperationImpossible.class, () -> tache.restaurer(null));
         }
 
         @Test

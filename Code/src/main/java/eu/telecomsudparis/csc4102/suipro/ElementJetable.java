@@ -28,6 +28,9 @@ public abstract class ElementJetable implements IElementJetable {
      * @param corbeille
      */
     public final void mettreALaCorbeille(final ICorbeille corbeille) throws OperationImpossible {
+        if (corbeille == null) {
+            throw new OperationImpossible("La corbeille ne peut pas être null.");
+        }
         this.enFonctionnement = false;
         corbeille.ajouterALaCorbeille(this);
         this.specificMettreALaCorbeille(corbeille);
@@ -43,6 +46,9 @@ public abstract class ElementJetable implements IElementJetable {
      * @param corbeille
      */
     public final void restaurer(final ICorbeille corbeille) throws OperationImpossible {
+        if (corbeille == null) {
+            throw new OperationImpossible("La corbeille ne peut pas être null.");
+        }
         this.enFonctionnement = true;
         try {
             this.specificRestaurer(corbeille);

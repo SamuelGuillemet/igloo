@@ -139,6 +139,8 @@ class TestPeriodeDeTravail {
 			Assertions.assertNotNull(periodeDeTravail);
 			Assertions.assertTrue(periodeDeTravail.estEnFonctionnement());
 
+			Assertions.assertThrows(OperationImpossible.class, () -> periodeDeTravail.mettreALaCorbeille(null));
+
 			periodeDeTravail.mettreALaCorbeille(corbeille);
 			Assertions.assertFalse(periodeDeTravail.estEnFonctionnement());
 
@@ -178,6 +180,11 @@ class TestPeriodeDeTravail {
 			tache = null;
 			developpeur = null;
 			periodeDeTravail = null;
+		}
+
+		@Test
+		void Test0() throws Exception {
+			Assertions.assertThrows(OperationImpossible.class, () -> periodeDeTravail.restaurer(null));
 		}
 
 		@Test
