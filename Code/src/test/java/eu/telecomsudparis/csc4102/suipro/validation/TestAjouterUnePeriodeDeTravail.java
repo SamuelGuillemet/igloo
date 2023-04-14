@@ -42,9 +42,6 @@ class TestAjouterUnePeriodeDeTravail {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        idTache = null;
-        idDev = null;
-        idActivite = null;
     }
 
     @Test

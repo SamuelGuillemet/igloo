@@ -3,7 +3,6 @@ package eu.telecomsudparis.csc4102.suipro.validation;
 
 import java.time.Instant;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-class TestMettreUnDeveloppeurALaCorbeille {
+class TestLabel {
     private SuiPro suiPro;
     private String alias;
     private String nom;
@@ -23,6 +22,10 @@ class TestMettreUnDeveloppeurALaCorbeille {
     private String tacheNom;
     private Instant debut1;
     private Instant fin1;
+    private String labId;
+    private String labNom;
+    private String labId2;
+    private String labNom2;
 
     @BeforeEach
     void setUp() throws OperationImpossible {
@@ -40,6 +43,17 @@ class TestMettreUnDeveloppeurALaCorbeille {
         fin1 = Instant.parse("2019-01-02T00:00:00Z");
         suiPro.ajouterUneActivite(actId, atcNom);
         suiPro.ajouterUneTache(tacheId, tacheNom, actId);
+        suiPro.ajouterUnePeriodeDeTravail(tacheId, actId, alias, debut1, fin1);
+
+        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
+
+        labId = "idlabel1";
+        labNom = "nomlabel1";
+        labId2 = "idlabel2";
+        labNom2 = "nomlabel2";
+
+        suiPro.creerLabel(labNom, labId);
+        suiPro.creerLabel(labNom2, labId2);
     }
 
     @AfterEach
@@ -50,37 +64,12 @@ class TestMettreUnDeveloppeurALaCorbeille {
     @Test
     void Test1Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUnDeveloppeurALaCorbeille(null));
+                () -> suiPro.creerLabel(labNom, labId));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUnDeveloppeurALaCorbeille(""));
-    }
-
-    @Test
-    void Test2() throws Exception {
-        Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUnDeveloppeurALaCorbeille("dev2"));
-    }
-
-    @Test
-    void Test3() throws Exception {
-        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
-        Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(alias));
-        Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(nom));
-        Assertions.assertTrue(suiPro.afficherLesDeveloppeurALaCorebille().contains(prenom));
-        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
-
-        String result = suiPro.afficherLesDeveloppeurALaCorebille();
-        Assertions.assertEquals(StringUtils.countMatches(result, alias), 1);
-    }
-
-    @Test
-    void Test4() throws Exception {
-        suiPro.ajouterUnePeriodeDeTravail(tacheId, actId, alias, debut1, fin1);
-        suiPro.mettreUnDeveloppeurALaCorbeille(alias);
-        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(debut1.toString()));
+                () -> suiPro.creerLabel("Nom3", labId));
     }
 }

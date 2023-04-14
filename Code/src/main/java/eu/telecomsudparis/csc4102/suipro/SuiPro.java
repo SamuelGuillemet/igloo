@@ -73,7 +73,7 @@ public final class SuiPro implements PropertyChangeListener {
                 && corbeille != null;
     }
 
-    //#region Ajouts
+    // #region Ajouts
 
     /**
      * ajoute un développeur.
@@ -132,9 +132,9 @@ public final class SuiPro implements PropertyChangeListener {
     /**
      * ajoute une tâche.
      * 
-     * @param id          l'identifiant de la tâche.
-     * @param nom         le nom de la tâche.
-     * @param activiteId  l'identifiant de l'activité.
+     * @param id         l'identifiant de la tâche.
+     * @param nom        le nom de la tâche.
+     * @param activiteId l'identifiant de l'activité.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
@@ -169,11 +169,11 @@ public final class SuiPro implements PropertyChangeListener {
     /**
      * ajoute une période de travail.
      * 
-     * @param tacheId     l'identifiant de la tâche.
-     * @param activiteId  l'identifiant de l'activité.
+     * @param tacheId       l'identifiant de la tâche.
+     * @param activiteId    l'identifiant de l'activité.
      * @param developpeurId l'identifiant du développeur.
-     * @param debut       l'heure de début de la période de travail.
-     * @param fin         l'heure de fin de la période de travail.
+     * @param debut         l'heure de début de la période de travail.
+     * @param fin           l'heure de fin de la période de travail.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
@@ -230,11 +230,11 @@ public final class SuiPro implements PropertyChangeListener {
     /**
      * ajoute une période de travail.
      * 
-     * @param tacheId     l'identifiant de la tâche.
-     * @param activiteId  l'identifiant de l'activité.
+     * @param tacheId        l'identifiant de la tâche.
+     * @param activiteId     l'identifiant de l'activité.
      * @param developpeurIds liste d'identifiants des développeurs.
-     * @param debut       l'heure de début de la période de travail.
-     * @param fin         l'heure de fin de la période de travail.
+     * @param debut          l'heure de début de la période de travail.
+     * @param fin            l'heure de fin de la période de travail.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
@@ -249,9 +249,9 @@ public final class SuiPro implements PropertyChangeListener {
         }
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Affichages
+    // #region Affichages
 
     /**
      * affiche les développeurs.
@@ -341,7 +341,8 @@ public final class SuiPro implements PropertyChangeListener {
      * @param activiteId l'identifiant de l'activité.
      * @param tacheId    l'identifiant de la tâche.
      * @param printType  le type d'affichage.
-     * @return la chaîne de caractères représentant la liste des périodes de travail.
+     * @return la chaîne de caractères représentant la liste des périodes de
+     *         travail.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
@@ -374,7 +375,8 @@ public final class SuiPro implements PropertyChangeListener {
      * 
      * @param activiteId l'identifiant de l'activité.
      * @param tacheId    l'identifiant de la tâche.
-     * @return la chaîne de caractères représentant la liste des périodes de travail.
+     * @return la chaîne de caractères représentant la liste des périodes de
+     *         travail.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
@@ -388,7 +390,8 @@ public final class SuiPro implements PropertyChangeListener {
      * 
      * @param developpeurId l'identifiant du développeur.
      * @param printType     le type d'affichage.
-     * @return la chaîne de caractères représentant la liste des périodes de travail.
+     * @return la chaîne de caractères représentant la liste des périodes de
+     *         travail.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
@@ -413,7 +416,8 @@ public final class SuiPro implements PropertyChangeListener {
      * affiche les périodes de travail.
      * 
      * @param developpeurId l'identifiant du développeur.
-     * @return la chaîne de caractères représentant la liste des périodes de travail.
+     * @return la chaîne de caractères représentant la liste des périodes de
+     *         travail.
      * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
      *                             de décision des tests de validation).
      */
@@ -425,7 +429,8 @@ public final class SuiPro implements PropertyChangeListener {
     /**
      * affiche les périodes de travail.
      * 
-     * @return la chaîne de caractères représentant la liste des périodes de travail.
+     * @return la chaîne de caractères représentant la liste des périodes de
+     *         travail.
      * @throws OperationImpossible
      */
     public String afficherLesDeveloppeurALaCorebille() throws OperationImpossible {
@@ -436,6 +441,7 @@ public final class SuiPro implements PropertyChangeListener {
 
     /**
      * affiche les activités.
+     * 
      * @return la chaîne de caractères représentant la liste des activités.
      * @throws OperationImpossible
      */
@@ -447,6 +453,7 @@ public final class SuiPro implements PropertyChangeListener {
 
     /**
      * affiche les tâches.
+     * 
      * @return la chaîne de caractères représentant la liste des tâches.
      * @throws OperationImpossible
      */
@@ -458,7 +465,9 @@ public final class SuiPro implements PropertyChangeListener {
 
     /**
      * affiche les périodes de travail.
-     * @return la chaîne de caractères représentant la liste des périodes de travail.
+     * 
+     * @return la chaîne de caractères représentant la liste des périodes de
+     *         travail.
      * @throws OperationImpossible
      */
     public String afficherLesPeriodesDeTravailALaCorbeille() throws OperationImpossible {
@@ -467,14 +476,16 @@ public final class SuiPro implements PropertyChangeListener {
         return Utils.printCollection(periodesDeTravail);
     }
 
-    //#endregion
+    // #endregion
 
-    //#region MiseALaCorbeille
+    // #region MiseALaCorbeille
 
     /**
      * Met un developpeur à la corbeille.
+     * 
      * @param id l'identifiant du developpeur.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void mettreUnDeveloppeurALaCorbeille(final String id)
             throws OperationImpossible {
@@ -491,8 +502,10 @@ public final class SuiPro implements PropertyChangeListener {
 
     /**
      * Met une activité à la corbeille.
+     * 
      * @param id l'identifiant de l'activité.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void mettreUneActiviteALaCorbeille(final String id)
             throws OperationImpossible {
@@ -509,9 +522,11 @@ public final class SuiPro implements PropertyChangeListener {
 
     /**
      * Met une tâche à la corbeille.
+     * 
      * @param activiteId l'identifiant de l'activité.
-     * @param tacheId l'identifiant de la tâche.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @param tacheId    l'identifiant de la tâche.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void mettreUneTacheALaCorbeille(final String activiteId, final String tacheId)
             throws OperationImpossible {
@@ -535,14 +550,16 @@ public final class SuiPro implements PropertyChangeListener {
         tache.mettreALaCorbeille();
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Restauration
+    // #region Restauration
 
     /**
      * Restaure un developpeur.
+     * 
      * @param id l'identifiant du developpeur.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void restaurerUnDeveloppeur(final String id)
             throws OperationImpossible {
@@ -559,8 +576,10 @@ public final class SuiPro implements PropertyChangeListener {
 
     /**
      * Restaure une activité.
+     * 
      * @param id l'identifiant de l'activité.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void restaurerUneActivite(final String id)
             throws OperationImpossible {
@@ -577,9 +596,11 @@ public final class SuiPro implements PropertyChangeListener {
 
     /**
      * Restaure une tâche.
+     * 
      * @param activiteId l'identifiant de l'activité.
-     * @param tacheId l'identifiant de la tâche.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @param tacheId    l'identifiant de la tâche.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
 
     public void restaurerUneTache(final String activiteId, final String tacheId)
@@ -609,9 +630,9 @@ public final class SuiPro implements PropertyChangeListener {
         tache.restaurer();
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Vider la corbeille
+    // #region Vider la corbeille
 
     /**
      * Vide la corbeille.
@@ -620,16 +641,17 @@ public final class SuiPro implements PropertyChangeListener {
         corbeille.viderLaCorbeille();
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Calculs
+    // #region Calculs
 
     /**
      * Calcul le temps de travail d'un développeur.
      * 
      * @param id l'identifiant du développeur.
      * @return le temps de travail d'un développeur.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public double calculerTempsDeTravailDeveloppeur(final String id) throws OperationImpossible {
         if (id == null || id.isBlank()) {
@@ -648,7 +670,8 @@ public final class SuiPro implements PropertyChangeListener {
      * 
      * @param id l'identifiant de l'activité.
      * @return le temps de travail d'une activité.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public double calculerTempsDeTravailActivite(final String id) throws OperationImpossible {
         if (id == null || id.isBlank()) {
@@ -666,9 +689,10 @@ public final class SuiPro implements PropertyChangeListener {
      * Calcul le temps de travail d'une tâche.
      * 
      * @param activiteId l'identifiant de l'activité.
-     * @param tacheId l'identifiant de la tâche.
+     * @param tacheId    l'identifiant de la tâche.
      * @return le temps de travail d'une tâche.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public double calculerTempsDeTravailTache(final String activiteId, final String tacheId)
             throws OperationImpossible {
@@ -697,7 +721,7 @@ public final class SuiPro implements PropertyChangeListener {
         return tache.calculerTempsDeTravail();
     }
 
-    /** 
+    /**
      * Calcul le temps de travail du projet.
      * 
      * @return le temps de travail du projet.
@@ -711,7 +735,8 @@ public final class SuiPro implements PropertyChangeListener {
      * 
      * @param label le label.
      * @return le temps de travail du projet hors d'un label.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public double calculerTempsDeTravailProjetHorsLabel(final String label) throws OperationImpossible {
         return calculerTempsDeTravailProjetHorsLabels(List.of(label));
@@ -722,7 +747,8 @@ public final class SuiPro implements PropertyChangeListener {
      * 
      * @param labels les labels.
      * @return le temps de travail du projet hors de plusieurs labels.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public double calculerTempsDeTravailProjetHorsLabels(final List<String> labels) throws OperationImpossible {
         if (labels == null || labels.isEmpty()) {
@@ -749,16 +775,17 @@ public final class SuiPro implements PropertyChangeListener {
         return tachesStream.mapToDouble(ITache::calculerTempsDeTravail).sum();
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Labels
+    // #region Labels
 
     /**
      * Crée un label.
      * 
      * @param labelName le nom du label.
-     * @param labelId l'identifiant du label.
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @param labelId   l'identifiant du label.
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void creerLabel(final String labelName, final String labelId) throws OperationImpossible {
         if (labelName == null || labelName.isBlank()) {
@@ -778,10 +805,11 @@ public final class SuiPro implements PropertyChangeListener {
     /**
      * Ajoute un label à une activité.
      * 
-     * @param labelId l'identifiant du label.
+     * @param labelId    l'identifiant du label.
      * @param activiteId l'identifiant de l'activité.
      * 
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void ajouterLabelAActivite(final String labelId, final String activiteId)
             throws OperationImpossible {
@@ -812,11 +840,12 @@ public final class SuiPro implements PropertyChangeListener {
     /**
      * Ajoute un label à une tâche.
      * 
-     * @param labelId l'identifiant du label.
+     * @param labelId    l'identifiant du label.
      * @param activiteId l'identifiant de l'activité.
-     * @param tacheId l'identifiant de la tâche.
+     * @param tacheId    l'identifiant de la tâche.
      * 
-     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table de décision des tests de validation).
+     * @throws OperationImpossible exception levée en cas d'impossibilité (cf. table
+     *                             de décision des tests de validation).
      */
     public void ajouterLabelATache(final String labelId, final String activiteId, final String tacheId)
             throws OperationImpossible {
@@ -857,65 +886,9 @@ public final class SuiPro implements PropertyChangeListener {
         tache.ajouterLabel(label);
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Getters
-
-    /**
-     * obtient la liste des développeurs.
-     * @return la liste des développeurs.
-     */
-    @Deprecated(forRemoval = true)
-    public List<Developpeur> getDeveloppeurs() {
-        return developpeurs.values().stream().toList();
-    }
-
-    /**
-     * obtient la liste des identifiants des développeurs.
-     * @return la liste des identifiants des développeurs.
-     */
-    @Deprecated(forRemoval = true)
-    public List<String> getDeveloppeursIds() {
-        return developpeurs.keySet().stream().toList();
-    }
-
-    /**
-     * obtient un développeur.
-     * @param alias l'alias du développeur.
-     * @return le développeur.
-     */
-    @Deprecated(forRemoval = true)
-    public Developpeur getDeveloppeur(final String alias) {
-        return developpeurs.get(alias);
-    }
-
-    /**
-     * obtient la liste des activités.
-     * @return la liste des activités.
-     */
-    @Deprecated(forRemoval = true)
-    public List<Activite> getActivites() {
-        return activites.values().stream().toList();
-    }
-
-    /**
-     * obtient la liste des identifiants des activités.
-     * @return la liste des identifiants des activités.
-     */
-    @Deprecated(forRemoval = true)
-    public List<String> getActivitesIds() {
-        return activites.keySet().stream().toList();
-    }
-
-    /**
-     * obtient une activité.
-     * @param id l'identifiant de l'activité.
-     * @return l'activité.
-     */
-    @Deprecated(forRemoval = true)
-    public Activite getActivite(final String id) {
-        return activites.get(id);
-    }
+    // #region Getters
 
     /**
      * obtient le nom du projet.
@@ -926,18 +899,7 @@ public final class SuiPro implements PropertyChangeListener {
         return nomDeProjet;
     }
 
-    /**
-     * @deprecated Utiliser le print pour afficher les informations.
-     * obtient la corbeille.
-     * 
-     * @return la corbeille. 
-     */
-    @Deprecated(forRemoval = true)
-    public Corbeille getCorbeille() {
-        return corbeille;
-    }
-
-    //#endregion
+    // #endregion
 
     @Override
     public String toString() {
@@ -945,10 +907,13 @@ public final class SuiPro implements PropertyChangeListener {
     }
 
     /**
-    * This method is called when an event is fire by the Corbeille when a {@link Developpeur} or an {@link Activite} is removed from it.
-    * 
-    * @param evt {@code source} must be a {@link Corbeille} and {@code propertyName} must be {@link Developpeur} or {@link Activite} string.
-    */
+     * This method is called when an event is fire by the Corbeille when a
+     * {@link Developpeur} or an {@link Activite} is removed from it.
+     * 
+     * @param evt {@code source} must be a {@link Corbeille} and
+     *            {@code propertyName} must be {@link Developpeur} or
+     *            {@link Activite} string.
+     */
     @Override
     public void propertyChange(final PropertyChangeEvent evt) {
         if (evt.getSource().getClass() != Corbeille.class) {

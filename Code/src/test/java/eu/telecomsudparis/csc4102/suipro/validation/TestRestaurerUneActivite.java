@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import eu.telecomsudparis.csc4102.suipro.SuiPro;
 import eu.telecomsudparis.csc4102.util.OperationImpossible;
 
-class TestMettreUneActiviteALaCorbeille {
+class TestRestaurerUneActivite {
     private SuiPro suiPro;
     private String id;
     private String nom;
@@ -41,6 +41,8 @@ class TestMettreUneActiviteALaCorbeille {
         fin1 = Instant.parse("2019-01-02T00:00:00Z");
         suiPro.ajouterUneTache(tacheId, tacheNom, id);
         suiPro.ajouterUnePeriodeDeTravail(tacheId, id, devAlias, debut1, fin1);
+
+        suiPro.restaurerUneActivite(id);
     }
 
     @AfterEach
@@ -51,38 +53,36 @@ class TestMettreUneActiviteALaCorbeille {
     @Test
     void Test1Jeu1() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneActiviteALaCorbeille(null));
+                () -> suiPro.restaurerUneActivite(null));
     }
 
     @Test
     void Test1Jeu2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneActiviteALaCorbeille(""));
+                () -> suiPro.restaurerUneActivite(""));
     }
 
     @Test
     void Test2() throws Exception {
         Assertions.assertThrows(OperationImpossible.class,
-                () -> suiPro.mettreUneActiviteALaCorbeille("act2"));
+                () -> suiPro.restaurerUneActivite("act2"));
     }
 
     @Test
     void Test3() throws Exception {
-        suiPro.mettreUneActiviteALaCorbeille(id);
-        Assertions.assertTrue(suiPro.afficherLesActivitesALaCorbeille().contains(id));
-        Assertions.assertTrue(suiPro.afficherLesActivitesALaCorbeille().contains(nom));
-        suiPro.mettreUneActiviteALaCorbeille(id);
-        // test idempotence
-        String result = suiPro.afficherLesActivitesALaCorbeille();
-        Assertions.assertEquals(StringUtils.countMatches(result, id), 1);
+        suiPro.restaurerUneActivite(id);
+        Assertions.assertTrue(suiPro.afficherLesActivites().contains(id));
+        Assertions.assertTrue(suiPro.afficherLesActivites().contains(nom));
 
-        Assertions.assertFalse(suiPro.afficherLesActivites().contains(id));
+        suiPro.restaurerUneActivite(id);
+        String result = suiPro.afficherLesActivites();
+        Assertions.assertEquals(StringUtils.countMatches(result, id), 1);
     }
 
     @Test
     void Test4() throws Exception {
-        suiPro.mettreUneActiviteALaCorbeille(id);
-        Assertions.assertTrue(suiPro.afficherLesTachesALaCorbeille().contains(tacheId));
-        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailALaCorbeille().contains(debut1.toString()));
+        suiPro.restaurerUneActivite(id);
+        Assertions.assertTrue(suiPro.afficherLesTaches(id).contains(tacheId));
+        Assertions.assertTrue(suiPro.afficherLesPeriodesDeTravailPourUneTache(id, tacheId).contains(debut1.toString()));
     }
 }

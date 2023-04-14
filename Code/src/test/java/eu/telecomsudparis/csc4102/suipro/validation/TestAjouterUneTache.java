@@ -27,9 +27,6 @@ class TestAjouterUneTache {
     @AfterEach
     void tearDown() {
         suiPro = null;
-        idTache = null;
-        nomTache = null;
-        idActivite = null;
     }
 
     @Test
@@ -87,13 +84,4 @@ class TestAjouterUneTache {
         Assertions.assertThrows(OperationImpossible.class,
                 () -> suiPro.ajouterUneTache(idTache, nomTache, idActivite));
     }
-
-    // @Test
-    // void Test7() throws Exception {
-    // suiPro.ajouterUneTache(idTache, nomTache, idActivite);
-    // Assertions.assertEquals(suiPro.getTache(idTache).getNom(), nomTache);
-    // Assertions.assertEquals(suiPro.getTache(idTache).getId(), idTache);
-    // Assertions.assertEquals(suiPro.getTache(idTache).getIdActivite(),
-    // idActivite);
-    // }
 }
